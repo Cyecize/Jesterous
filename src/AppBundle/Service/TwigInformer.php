@@ -17,4 +17,5 @@ class TwigInformer
     public function getWebsiteName() : string {
         return "Jesterous";
     }
+
 }

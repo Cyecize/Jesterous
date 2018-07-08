@@ -1,94 +1,1343 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <div id="wrapper">
-        <div id="container">
-            <div id="welcome">
-                <p>Testing twig injection with website name: {{ twigInformer.getWebsiteName() }}</p>
 
-                {% if is_granted('ROLE_ADMIN') %}
-                    <h1>You are admin</h1>
-                {% endif %}
+    <div class="home">
 
-                {% if is_granted('ROLE_AUTHOR') %}
-                    <h1>You are author</h1>
-                {% endif %}
+        <!-- Home Slider -->
 
-                {% if is_granted('ROLE_USER') %}
-                    <h1>You are user</h1>
+        <div class="home_slider_container">
+            <div class="owl-carousel owl-theme home_slider">
 
-                    {% else %}
+                <!-- Slider Item -->
+                <div class="owl-item">
+                    <div class="home_slider_background" style="background-image:url(images/home_slider.jpg)"></div>
+                    <div class="home_slider_content_container">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="home_slider_content">
+                                        <div class="home_slider_item_category trans_200"><a href="category.html" class="trans_200">sport</a></div>
+                                        <div class="home_slider_item_title">
+                                            <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a>
+                                        </div>
+                                        <div class="home_slider_item_link">
+                                            <a href="post.html" class="trans_200">Continue Reading
+                                                <svg version="1.1" id="link_arrow_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                     width="19px" height="13px" viewBox="0 0 19 13" enable-background="new 0 0 19 13" xml:space="preserve">
+													<polygon fill="#FFFFFF" points="12.475,0 11.061,0 17.081,6.021 0,6.021 0,7.021 17.038,7.021 11.06,13 12.474,13 18.974,6.5 "/>
+												</svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 
-                    <h1>You are probably not logged in, <a href="{{ path('security_login') }}">do it now</a> </h1>
-                {% endif %}
+                    <!-- Similar Posts -->
+                    <div class="similar_posts_container">
+                        <div class="container">
+                            <div class="row d-flex flex-row align-items-end">
 
-                <h1><span>Welcome to</span> Symfony {{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION') }} YES</h1>
+                                <!-- Similar Post -->
+                                <div class="col-lg-3 col-md-6 similar_post_col">
+                                    <div class="similar_post trans_200">
+                                        <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a>
+                                    </div>
+                                </div>
+
+                                <!-- Similar Post -->
+                                <div class="col-lg-3 col-md-6 similar_post_col">
+                                    <div class="similar_post trans_200">
+                                        <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a>
+                                    </div>
+                                </div>
+
+                                <!-- Similar Post -->
+                                <div class="col-lg-3 col-md-6 similar_post_col">
+                                    <div class="similar_post trans_200">
+                                        <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="home_slider_next_container">
+                            <div class="home_slider_next" style="background-image:url(images/home_slider_next.jpg)">
+                                <div class="home_slider_next_background trans_400"></div>
+                                <div class="home_slider_next_content trans_400">
+                                    <div class="home_slider_next_title">next</div>
+                                    <div class="home_slider_next_link">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Slider Item -->
+                <div class="owl-item">
+                    <div class="home_slider_background" style="background-image:url(images/home_slider.jpg)"></div>
+                    <div class="home_slider_content_container">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="home_slider_content">
+                                        <div class="home_slider_item_category trans_200"><a href="category.html" class="trans_200">sport</a></div>
+                                        <div class="home_slider_item_title">
+                                            <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a>
+                                        </div>
+                                        <div class="home_slider_item_link">
+                                            <a href="post.html" class="trans_200">Continue Reading
+                                                <svg version="1.1" id="link_arrow_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                     width="19px" height="13px" viewBox="0 0 19 13" enable-background="new 0 0 19 13" xml:space="preserve">
+													<polygon fill="#FFFFFF" points="12.475,0 11.061,0 17.081,6.021 0,6.021 0,7.021 17.038,7.021 11.06,13 12.474,13 18.974,6.5 "/>
+												</svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Similar Posts -->
+                    <div class="similar_posts_container">
+                        <div class="container">
+                            <div class="row d-flex flex-row align-items-end">
+
+                                <!-- Similar Post -->
+                                <div class="col-lg-3 col-md-6 similar_post_col">
+                                    <div class="similar_post trans_200">
+                                        <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a>
+                                    </div>
+                                </div>
+
+                                <!-- Similar Post -->
+                                <div class="col-lg-3 col-md-6 similar_post_col">
+                                    <div class="similar_post trans_200">
+                                        <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a>
+                                    </div>
+                                </div>
+
+                                <!-- Similar Post -->
+                                <div class="col-lg-3 col-md-6 similar_post_col">
+                                    <div class="similar_post trans_200">
+                                        <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="home_slider_next_container">
+                            <div class="home_slider_next" style="background-image:url(images/home_slider_next.jpg)">
+                                <div class="home_slider_next_background trans_400"></div>
+                                <div class="home_slider_next_content trans_400">
+                                    <div class="home_slider_next_title">next</div>
+                                    <div class="home_slider_next_link">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- Slider Item -->
+                <div class="owl-item">
+                    <div class="home_slider_background" style="background-image:url(images/home_slider.jpg)"></div>
+                    <div class="home_slider_content_container">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col">
+                                    <div class="home_slider_content">
+                                        <div class="home_slider_item_category trans_200"><a href="category.html" class="trans_200">sport</a></div>
+                                        <div class="home_slider_item_title">
+                                            <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a>
+                                        </div>
+                                        <div class="home_slider_item_link">
+                                            <a href="post.html" class="trans_200">Continue Reading
+                                                <svg version="1.1" id="link_arrow_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                     width="19px" height="13px" viewBox="0 0 19 13" enable-background="new 0 0 19 13" xml:space="preserve">
+													<polygon fill="#FFFFFF" points="12.475,0 11.061,0 17.081,6.021 0,6.021 0,7.021 17.038,7.021 11.06,13 12.474,13 18.974,6.5 "/>
+												</svg>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Similar Posts -->
+                    <div class="similar_posts_container">
+                        <div class="container">
+                            <div class="row d-flex flex-row align-items-end">
+
+                                <!-- Similar Post -->
+                                <div class="col-lg-3 col-md-6 similar_post_col">
+                                    <div class="similar_post trans_200">
+                                        <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a>
+                                    </div>
+                                </div>
+
+                                <!-- Similar Post -->
+                                <div class="col-lg-3 col-md-6 similar_post_col">
+                                    <div class="similar_post trans_200">
+                                        <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a>
+                                    </div>
+                                </div>
+
+                                <!-- Similar Post -->
+                                <div class="col-lg-3 col-md-6 similar_post_col">
+                                    <div class="similar_post trans_200">
+                                        <a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="home_slider_next_container">
+                            <div class="home_slider_next" style="background-image:url(images/home_slider_next.jpg)">
+                                <div class="home_slider_next_background trans_400"></div>
+                                <div class="home_slider_next_content trans_400">
+                                    <div class="home_slider_next_title">next</div>
+                                    <div class="home_slider_next_link">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
             </div>
 
-            <div id="status">
-                <p>
-                    <svg id="icon-status" width="1792" height="1792" viewBox="0 0 1792 1792" xmlns="http://www.w3.org/2000/svg"><path d="M1671 566q0 40-28 68l-724 724-136 136q-28 28-68 28t-68-28l-136-136-362-362q-28-28-28-68t28-68l136-136q28-28 68-28t68 28l294 295 656-657q28-28 68-28t68 28l136 136q28 28 28 68z" fill="#759E1A"/></svg>
-
-                    Your application is now ready. You can start working on it at:
-                    <code>{{ base_dir }}</code>
-                </p>
-            </div>
-
-            <div id="next">
-                <h2>What's next?</h2>
-                <p>
-                    <svg id="icon-book" version="1.1" xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" viewBox="-12.5 9 64 64" enable-background="new -12.5 9 64 64" xml:space="preserve">
-                        <path fill="#AAA" d="M6.8,40.8c2.4,0.8,4.5-0.7,4.9-2.5c0.2-1.2-0.3-2.1-1.3-3.2l-0.8-0.8c-0.4-0.5-0.6-1.3-0.2-1.9
-                            c0.4-0.5,0.9-0.8,1.8-0.5c1.3,0.4,1.9,1.3,2.9,2.2c-0.4,1.4-0.7,2.9-0.9,4.2l-0.2,1c-0.7,4-1.3,6.2-2.7,7.5
-                            c-0.3,0.3-0.7,0.5-1.3,0.6c-0.3,0-0.4-0.3-0.4-0.3c0-0.3,0.2-0.3,0.3-0.4c0.2-0.1,0.5-0.3,0.4-0.8c0-0.7-0.6-1.3-1.3-1.3
-                            c-0.6,0-1.4,0.6-1.4,1.7s1,1.9,2.4,1.8c0.8,0,2.5-0.3,4.2-2.5c2-2.5,2.5-5.4,2.9-7.4l0.5-2.8c0.3,0,0.5,0.1,0.8,0.1
-                            c2.4,0.1,3.7-1.3,3.7-2.3c0-0.6-0.3-1.2-0.9-1.2c-0.4,0-0.8,0.3-1,0.8c-0.1,0.6,0.8,1.1,0.1,1.5c-0.5,0.3-1.4,0.6-2.7,0.4l0.3-1.3
-                            c0.5-2.6,1-5.7,3.2-5.8c0.2,0,0.8,0,0.8,0.4c0,0.2,0,0.2-0.2,0.5c-0.2,0.3-0.3,0.4-0.2,0.7c0,0.7,0.5,1.1,1.2,1.1
-                            c0.9,0,1.2-1,1.2-1.4c0-1.2-1.2-1.8-2.6-1.8c-1.5,0.1-2.8,0.9-3.7,2.1c-1.1,1.3-1.8,2.9-2.3,4.5c-0.9-0.8-1.6-1.8-3.1-2.3
-                            c-1.1-0.7-2.3-0.5-3.4,0.3c-0.5,0.4-0.8,1-1,1.6c-0.4,1.5,0.4,2.9,0.8,3.4l0.9,1c0.2,0.2,0.6,0.8,0.4,1.5c-0.3,0.8-1.2,1.3-2.1,1
-                            c-0.4-0.2-1-0.5-0.9-0.9c0.1-0.2,0.2-0.3,0.3-0.5s0.1-0.3,0.1-0.3c0.2-0.6-0.1-1.4-0.7-1.6c-0.6-0.2-1.2,0-1.3,0.8
-                            C4.3,38.4,4.7,40,6.8,40.8z M46.1,20.9c0-4.2-3.2-7.5-7.1-7.5h-3.8C34.8,10.8,32.7,9,30.2,9L-2.3,9.1c-2.8,0.1-4.9,2.4-4.9,5.4
-                            L-7,58.6c0,4.8,8.1,13.9,11.6,14.1l34.7-0.1c3.9,0,7-3.4,7-7.6L46.1,20.9z M-0.3,36.4c0-8.6,6.5-15.6,14.5-15.6
-                            c8,0,14.5,7,14.5,15.6S22.1,52,14.2,52C6.1,52-0.3,45-0.3,36.4z M42.1,65.1c0,1.8-1.5,3.1-3.1,3.1H4.6c-0.7,0-3-1.8-4.5-4.4h30.4
-                            c2.8,0,5-2.4,5-5.4V17.9h3.7c1.6,0,2.9,1.4,2.9,3.1V65.1L42.1,65.1z"/>
-                    </svg>
-
-                    Read the documentation to learn
-                    <a href="https://symfony.com/doc/{{ constant('Symfony\\Component\\HttpKernel\\Kernel::VERSION')[:3] }}/page_creation.html">
-                        How to create your first page in Symfony
-                    </a>
-                </p>
+            <div class="custom_nav_container home_slider_nav_container">
+                <div class="custom_prev custom_prev_home_slider">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+						<polyline fill="#FFFFFF" points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+					</svg>
+                </div>
+                <ul id="custom_dots" class="custom_dots custom_dots_home_slider">
+                    <li class="custom_dot custom_dot_home_slider active"><span></span></li>
+                    <li class="custom_dot custom_dot_home_slider"><span></span></li>
+                    <li class="custom_dot custom_dot_home_slider"><span></span></li>
+                </ul>
+                <div class="custom_next custom_next_home_slider">
+                    <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                         width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+						<polyline fill="#FFFFFF" points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+					</svg>
+                </div>
             </div>
 
         </div>
     </div>
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+
+                <!-- Main Content -->
+
+                <div class="col-lg-9">
+                    <div class="main_content">
+
+                        <!-- Blog Section - Don't Miss -->
+
+                        <div class="blog_section">
+                            <div class="section_panel d-flex flex-row align-items-center justify-content-start">
+                                <div class="section_title">Don't Miss</div>
+                                <div class="section_tags ml-auto">
+                                    <ul>
+                                        <li class="active"><a href="category.html">all</a></li>
+                                        <li><a href="category.html">style hunter</a></li>
+                                        <li><a href="category.html">vogue</a></li>
+                                        <li><a href="category.html">health & fitness</a></li>
+                                        <li><a href="category.html">travel</a></li>
+                                    </ul>
+                                </div>
+                                <div class="section_panel_more">
+                                    <ul>
+                                        <li>more
+                                            <ul>
+                                                <li><a href="category.html">new look 2018</a></li>
+                                                <li><a href="category.html">street fashion</a></li>
+                                                <li><a href="category.html">business</a></li>
+                                                <li><a href="category.html">recipes</a></li>
+                                                <li><a href="category.html">sport</a></li>
+                                                <li><a href="category.html">celebrities</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="section_content">
+                                <div class="grid clearfix">
+
+                                    <!-- Largest Card With Image -->
+                                    <div class="card card_largest_with_image grid-item">
+                                        <img class="card-img-top" src="images/post_1.jpg" alt="https://unsplash.com/@cjtagupa">
+                                        <div class="card-body">
+                                            <div class="card-title"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <p class="card-text">Pick the yellow peach that looks like a sunset with its red, orange, and pink coat skin, peel it off with your teeth. Sink them into unripened...</p>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card Without Image -->
+                                    <div class="card card_default card_small_no_image grid-item">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card With Background -->
+                                    <div class="card card_default card_small_with_background grid-item">
+                                        <div class="card_background" style="background-image:url(images/post_4.jpg)"></div>
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card With Image -->
+                                    <div class="card card_small_with_image grid-item">
+                                        <img class="card-img-top" src="images/post_2.jpg" alt="https://unsplash.com/@jakobowens1">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card With Image -->
+                                    <div class="card card_small_with_image grid-item">
+                                        <img class="card-img-top" src="images/post_3.jpg" alt="https://unsplash.com/@jannerboy62">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Default Card No Image -->
+
+                                    <div class="card card_default card_default_no_image grid-item">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Default Card No Image -->
+
+                                    <div class="card card_default card_default_no_image grid-item">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Default Card No Image -->
+
+                                    <div class="card card_default card_default_no_image grid-item">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Blog Section - What's Trending -->
+
+                        <div class="blog_section">
+                            <div class="section_panel d-flex flex-row align-items-center justify-content-start">
+                                <div class="section_title">What's Trending</div>
+                                <div class="section_tags ml-auto">
+                                    <ul>
+                                        <li class="active"><a href="category.html">all</a></li>
+                                        <li><a href="category.html">style hunter</a></li>
+                                        <li><a href="category.html">vogue</a></li>
+                                        <li><a href="category.html">health & fitness</a></li>
+                                        <li><a href="category.html">travel</a></li>
+                                    </ul>
+                                </div>
+                                <div class="section_panel_more">
+                                    <ul>
+                                        <li>more
+                                            <ul>
+                                                <li><a href="category.html">new look 2018</a></li>
+                                                <li><a href="category.html">street fashion</a></li>
+                                                <li><a href="category.html">business</a></li>
+                                                <li><a href="category.html">recipes</a></li>
+                                                <li><a href="category.html">sport</a></li>
+                                                <li><a href="category.html">celebrities</a></li>
+                                            </ul>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="section_content">
+                                <div class="grid clearfix">
+
+                                    <!-- Large Card With Background -->
+                                    <div class="card card_large_with_background grid-item">
+                                        <div class="card_background" style="background-image:url(images/post_8.jpg)"></div>
+                                        <div class="card-body">
+                                            <div class="card-title"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Large Card With Image -->
+                                    <div class="card grid-item card_large_with_image">
+                                        <img class="card-img-top" src="images/post_9.jpg" alt="">
+                                        <div class="card-body">
+                                            <div class="card-title"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <p class="card-text">Pick the yellow peach that looks like a sunset with its red, orange, and pink coat skin, peel it off with your teeth. Sink them into unripened...</p>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Default Card With Image -->
+                                    <div class="card card_small_with_image grid-item">
+                                        <img class="card-img-top" src="images/post_5.jpg" alt="">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Default Card With Background -->
+
+                                    <div class="card card_default card_default_with_background grid-item">
+                                        <div class="card_background" style="background-image:url(images/post_6.jpg)"></div>
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Default Card No Image -->
+                                    <div class="card card_default card_default_no_image grid-item">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Default Card No Image -->
+                                    <div class="card card_default card_default_no_image grid-item">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Default Card With Background -->
+
+                                    <div class="card card_default card_default_with_background grid-item">
+                                        <div class="card_background" style="background-image:url(images/post_7.jpg)"></div>
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a></div>
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <!-- Blog Section - Videos -->
+
+                        <div class="blog_section">
+                            <div class="section_panel d-flex flex-row align-items-center justify-content-start">
+                                <div class="section_title">Most Popular Videos</div>
+                            </div>
+                            <div class="section_content">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="videos">
+                                            <div class="player_container">
+                                                <div id="P1" class="player"
+                                                     data-property="{videoURL:'2ScS5kwm7nI',containment:'self',startAt:0,mute:false,autoPlay:false,loop:false,opacity:1}">
+                                                </div>
+                                            </div>
+                                            <div class="playlist">
+                                                <div class="playlist_background"></div>
+
+                                                <!-- Video -->
+                                                <div class="video_container video_command active" onclick="jQuery('#P1').YTPChangeVideo({videoURL: '2ScS5kwm7nI', mute:false, addRaster:true})">
+                                                    <div class="video d-flex flex-row align-items-center justify-content-start">
+                                                        <div class="video_image"><div><img src="images/video_1.jpg" alt=""></div><img class="play_img" src="images/play.png" alt=""></div>
+                                                        <div class="video_content">
+                                                            <div class="video_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <div class="video_info"><span>1.2M views</span><span>Sep 29</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Video -->
+                                                <div class="video_container video_command" onclick="jQuery('#P1').YTPChangeVideo({videoURL: 'BzMLA8YIgG0', mute:false, addRaster:true})">
+                                                    <div class="video d-flex flex-row align-items-center justify-content-start">
+                                                        <div class="video_image"><div><img src="images/video_2.jpg" alt=""></div><img class="play_img" src="images/play.png" alt=""></div>
+                                                        <div class="video_content">
+                                                            <div class="video_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <div class="video_info"><span>1.2M views</span><span>Sep 29</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Video -->
+                                                <div class="video_container video_command" onclick="jQuery('#P1').YTPChangeVideo({videoURL: 'bpbcSdqvtUQ', mute:false, addRaster:true})">
+                                                    <div class="video d-flex flex-row align-items-center justify-content-start">
+                                                        <div class="video_image"><div><img src="images/video_3.jpg" alt=""></div><img class="play_img" src="images/play.png" alt=""></div>
+                                                        <div class="video_content">
+                                                            <div class="video_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <div class="video_info"><span>1.2M views</span><span>Sep 29</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Video -->
+                                                <div class="video_container video_command" onclick="jQuery('#P1').YTPChangeVideo({videoURL: 'UjYemgbhJF0', mute:false, addRaster:true})">
+                                                    <div class="video d-flex flex-row align-items-center justify-content-start">
+                                                        <div class="video_image"><div><img src="images/video_4.jpg" alt=""></div><img class="play_img" src="images/play.png" alt=""></div>
+                                                        <div class="video_content">
+                                                            <div class="video_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <div class="video_info"><span>1.2M views</span><span>Sep 29</span></div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Blog Section - Latest -->
+
+                        <div class="blog_section">
+                            <div class="section_panel d-flex flex-row align-items-center justify-content-start">
+                                <div class="section_title">Latest Articles</div>
+                            </div>
+                            <div class="section_content">
+                                <div class="grid clearfix">
+
+                                    <!-- Small Card With Image -->
+                                    <div class="card card_small_with_image grid-item">
+                                        <img class="card-img-top" src="images/post_10.jpg" alt="">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card Without Image -->
+                                    <div class="card card_default card_small_no_image grid-item">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card With Image -->
+                                    <div class="card card_small_with_image grid-item">
+                                        <img class="card-img-top" src="images/post_15.jpg" alt="">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card With Image -->
+                                    <div class="card card_small_with_image grid-item">
+                                        <img class="card-img-top" src="images/post_13.jpg" alt="https://unsplash.com/@jakobowens1">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card With Background -->
+                                    <div class="card card_default card_small_with_background grid-item">
+                                        <div class="card_background" style="background-image:url(images/post_11.jpg)"></div>
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card With Background -->
+                                    <div class="card card_default card_small_with_background grid-item">
+                                        <div class="card_background" style="background-image:url(images/post_16.jpg)"></div>
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card With Image -->
+                                    <div class="card card_small_with_image grid-item">
+                                        <img class="card-img-top" src="images/post_14.jpg" alt="">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card Without Image -->
+                                    <div class="card card_default card_small_no_image grid-item">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Small Card Without Image -->
+                                    <div class="card card_default card_small_no_image grid-item">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in Physics?</a></div>
+                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span></small>
+                                        </div>
+                                    </div>
+
+                                    <!-- Default Card With Background -->
+                                    <div class="card card_default card_default_with_background grid-item">
+                                        <div class="card_background" style="background-image:url(images/post_12.jpg)"></div>
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a></div>
+                                        </div>
+                                    </div>
+
+                                    <!-- Default Card With Background -->
+                                    <div class="card card_default card_default_with_background grid-item">
+                                        <div class="card_background" style="background-image:url(images/post_6.jpg)"></div>
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a href="post.html">How Did van Gogh’s Turbulent Mind Depict One of the Most</a></div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="load_more">
+                        <div id="load_more" class="load_more_button text-center trans_200">Load More</div>
+                    </div>
+                </div>
+
+                <!-- Sidebar -->
+
+                <div class="col-lg-3">
+                    <div class="sidebar">
+                        <div class="sidebar_background"></div>
+
+                        <!-- Top Stories -->
+
+                        <div class="sidebar_section">
+                            <div class="sidebar_title_container">
+                                <div class="sidebar_title">Top Stories</div>
+                                <div class="sidebar_slider_nav">
+                                    <div class="custom_nav_container sidebar_slider_nav_container">
+                                        <div class="custom_prev custom_prev_top">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+											</svg>
+                                        </div>
+                                        <ul id="custom_dots" class="custom_dots custom_dots_top">
+                                            <li class="custom_dot custom_dot_top active"><span></span></li>
+                                            <li class="custom_dot custom_dot_top"><span></span></li>
+                                            <li class="custom_dot custom_dot_top"><span></span></li>
+                                        </ul>
+                                        <div class="custom_next custom_next_top">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+											</svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar_section_content">
+
+                                <!-- Top Stories Slider -->
+                                <div class="sidebar_slider_container">
+                                    <div class="owl-carousel owl-theme sidebar_slider_top">
+
+                                        <!-- Top Stories Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_1.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_2.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_3.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_4.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Top Stories Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_1.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_2.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_3.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_4.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Top Stories Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_1.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_2.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_3.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/top_4.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advertising -->
+
+                        <div class="sidebar_section">
+                            <div class="advertising">
+                                <div class="advertising_background" style="background-image:url(images/post_17.jpg)"></div>
+                                <div class="advertising_content d-flex flex-column align-items-start justify-content-end">
+                                    <div class="advertising_perc">-15%</div>
+                                    <div class="advertising_link"><a href="#">How Did van Gogh’s Turbulent Mind</a></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Newest Videos -->
+
+                        <div class="sidebar_section newest_videos">
+                            <div class="sidebar_title_container">
+                                <div class="sidebar_title">Newest Videos</div>
+                                <div class="sidebar_slider_nav">
+                                    <div class="custom_nav_container sidebar_slider_nav_container">
+                                        <div class="custom_prev custom_prev_vid">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+											</svg>
+                                        </div>
+                                        <ul id="custom_dots" class="custom_dots custom_dots_vid">
+                                            <li class="custom_dot custom_dot_vid active"><span></span></li>
+                                            <li class="custom_dot custom_dot_vid"><span></span></li>
+                                            <li class="custom_dot custom_dot_vid"><span></span></li>
+                                        </ul>
+                                        <div class="custom_next custom_next_vid">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+											</svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar_section_content">
+
+                                <!-- Sidebar Slider -->
+                                <div class="sidebar_slider_container">
+                                    <div class="owl-carousel owl-theme sidebar_slider_vid">
+
+                                        <!-- Newest Videos Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_1.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_2.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_3.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_4.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Newest Videos Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_1.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_2.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_3.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_4.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Newest Videos Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_1.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_2.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_3.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Newest Videos Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image"><div><img src="images/vid_4.jpg" alt=""></div></div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Advertising 2 -->
+
+                        <div class="sidebar_section">
+                            <div class="advertising_2">
+                                <div class="advertising_background" style="background-image:url(images/post_18.jpg)"></div>
+                                <div class="advertising_2_content d-flex flex-column align-items-center justify-content-center">
+                                    <div class="advertising_2_link"><a href="#">Turbulent <span>Mind</span></a></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Future Events -->
+
+                        <div class="sidebar_section future_events">
+                            <div class="sidebar_title_container">
+                                <div class="sidebar_title">Future Events</div>
+                                <div class="sidebar_slider_nav">
+                                    <div class="custom_nav_container sidebar_slider_nav_container">
+                                        <div class="custom_prev custom_prev_events">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+											</svg>
+                                        </div>
+                                        <ul id="custom_dots" class="custom_dots custom_dots_events">
+                                            <li class="custom_dot custom_dot_events active"><span></span></li>
+                                            <li class="custom_dot custom_dot_events"><span></span></li>
+                                            <li class="custom_dot custom_dot_events"><span></span></li>
+                                        </ul>
+                                        <div class="custom_next custom_next_events">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 width="7px" height="12px" viewBox="0 0 7 12" enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe" points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+											</svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar_section_content">
+
+                                <!-- Sidebar Slider -->
+                                <div class="sidebar_slider_container">
+                                    <div class="owl-carousel owl-theme sidebar_slider_events">
+
+                                        <!-- Future Events Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">13</div>
+                                                            <div class="event_month">apr</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">27</div>
+                                                            <div class="event_month">apr</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">02</div>
+                                                            <div class="event_month">may</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">09</div>
+                                                            <div class="event_month">may</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Future Events Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">13</div>
+                                                            <div class="event_month">apr</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">27</div>
+                                                            <div class="event_month">apr</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">02</div>
+                                                            <div class="event_month">may</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">09</div>
+                                                            <div class="event_month">may</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Future Events Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">13</div>
+                                                            <div class="event_month">apr</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">27</div>
+                                                            <div class="event_month">apr</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">02</div>
+                                                            <div class="event_month">may</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Future Events Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="event_date d-flex flex-column align-items-center justify-content-center">
+                                                            <div class="event_day">09</div>
+                                                            <div class="event_month">may</div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent Mind</div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
+
 {% block stylesheets %}
-<style>
-    body { background: #F5F5F5; font: 18px/1.5 sans-serif; }
-    h1, h2 { line-height: 1.2; margin: 0 0 .5em; }
-    h1 { font-size: 36px; }
-    h2 { font-size: 21px; margin-bottom: 1em; }
-    p { margin: 0 0 1em 0; }
-    a { color: #0000F0; }
-    a:hover { text-decoration: none; }
-    code { background: #F5F5F5; max-width: 100px; padding: 2px 6px; word-wrap: break-word; }
-    #wrapper { background: #FFF; margin: 1em auto; max-width: 800px; width: 95%; }
-    #container { padding: 2em; }
-    #welcome, #status { margin-bottom: 2em; }
-    #welcome h1 span { display: block; font-size: 75%; }
-    #icon-status, #icon-book { float: left; height: 64px; margin-right: 1em; margin-top: -4px; width: 64px; }
-    #icon-book { display: none; }
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/main_styles.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/responsive.css') }}">
+{% endblock %}
 
-    @media (min-width: 768px) {
-        #wrapper { width: 80%; margin: 2em auto; }
-        #icon-book { display: inline-block; }
-        #status a, #next a { display: block; }
-
-        @-webkit-keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
-        @keyframes fade-in { 0% { opacity: 0; } 100% { opacity: 1; } }
-        .sf-toolbar { opacity: 0; -webkit-animation: fade-in 1s .2s forwards; animation: fade-in 1s .2s forwards;}
-    }
-</style>
+{% block javascripts %}
+    <script src="{{ asset('styles/plugins/jquery.mb.YTPlayer-3.1.12/jquery.mb.YTPlayer.js') }}"></script>
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
 {% endblock %}

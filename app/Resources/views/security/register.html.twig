@@ -3,9 +3,10 @@
 {% block body %}
     <h1>Register</h1>
     {% if error %}
-        <h1>{{ error }}</h1>
+        <h1>{{ error }}</h1>\
     {% endif %}
 
+    <h1>{{ localLang.usernameAlreadyTaken }}</h1>
     <form  method="post" class="form-stacked" enctype="multipart/form-data" action="{{ path('security_register') }}" name = "authenticate">
 
         <fieldset>
@@ -33,6 +34,7 @@
                     <input name="user_register[confPassword]" type="password" required placeholder="Потв. парола" class="input-xlarge">
                 </div>
             </div>
+
             {{ form_row(form._token) }}
             <hr>
             <div class="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="Създаване на профил"></div>

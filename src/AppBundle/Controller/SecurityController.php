@@ -14,6 +14,7 @@ use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserRegisterType;
 use AppBundle\Repository\RoleRepository;
+use AppBundle\Service\LocalLanguage;
 use AppBundle\Service\UserValidator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -22,7 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
-class SecurityController extends Controller
+class SecurityController extends BaseController
 {
 
 
@@ -30,10 +31,11 @@ class SecurityController extends Controller
      * @Route("/login", name="security_login")
      * @param AuthenticationUtils $authUtils
      * @param Request $request
+     * @param LocalLanguage $language
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
 
-    public function loginAction(AuthenticationUtils $authUtils, Request $request)
+    public function loginAction(AuthenticationUtils $authUtils, Request $request, LocalLanguage $language)
     {
 //        if ($this->isUserLogged())
 //            return $this->redirectToRoute("homepage");
@@ -45,14 +47,14 @@ class SecurityController extends Controller
         $lastUsername = $authUtils->getLastUsername();
 
         if ($error != null) {
-            $error = "Wrong Password!";
+            $error = $language->passwordIsIncorrect();
             $repo = $this->getDoctrine()->getRepository(User::class);
             $existingUser = $repo->findOneBy(array("username" => $lastUsername));
             if ($existingUser == null)
                 $existingUser = $repo->findOneBy(array("email" => $lastUsername));
             if ($existingUser == null) {
                 $lastUsername = null;
-                $error = "Username or Email does not exist!";
+                $error = $language->usernameDoesNotExist();
             }
         }
 
@@ -67,9 +69,10 @@ class SecurityController extends Controller
     /**
      * @Route("/register", name="security_register")
      * @param Request $request
+     * @param LocalLanguage $language
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function registerAction(Request $request)
+    public function registerAction(Request $request, LocalLanguage $language)
     {
         $userRepo = $this->getDoctrine()->getRepository(User::class);
         $user = new User();
@@ -81,12 +84,12 @@ class SecurityController extends Controller
             //validate Username
             $userInDb = $userRepo->findOneBy(array('username' => $user->getUsername()));
             if ($userInDb != null) {
-                $error = "Потребителското име е заето!";
+                $error = $language->usernameAlreadyTaken();
                 $user->setUsername("");
                 goto escape;
             }
             if (!UserValidator::isUsernameValid($user->getUsername())) {
-                $error = "Невалидно потребителско име!";
+                $error = $language->invalidUsername();
                 $user->setUsername("");
                 goto  escape;
             }
@@ -94,23 +97,23 @@ class SecurityController extends Controller
             //validate email
             $email = $userRepo->findOneBy(array('email' => $user->getEmail()));
             if ($email != null) {
-                $error = "E-Mail адресът е зает!";
+                $error = $language->emailAlreadyInUse();
                 $user->setEmail("");
                 goto  escape;
             }
             if (!filter_var($user->getEmail(), FILTER_VALIDATE_EMAIL)) {
-                $error = "Невалиден E-Mail адрес!";
+                $error = $language->invalidEmailAddress();
                 $user->setEmail("");
                 goto  escape;
             }
             //end email validation
             //password validation
             if ($user->getPassword() != $user->getConfPassword()) {
-                $error = "Паролите не съвпадат";
+                $error = $language->passwordsDoNotMatch();
                 goto  escape;
             }
             if (!UserValidator::isPasswordValid($user->getPassword())) {
-                $error = "Паролата е под " . Config::MINIMUM_PASSWORD_LENGTH . " знака";
+                $error = $language->passwordIsLessThan(Config::MINIMUM_PASSWORD_LENGTH);
                 goto escape;
             }
 
