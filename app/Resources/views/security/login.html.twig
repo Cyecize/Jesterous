@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Register</h1>
+{% if error %}
+    <h1>{{ error }}</h1>
+{% endif %}
+
+<form action="{{ path('security_login') }}" method="post">
+    <input type="hidden" name="next" value="/">
+    <fieldset>
+        <div class="control-group">
+            <label class="control-label">Потребителско име</label>
+            <div class="controls">
+                <input type="text" name="_username" placeholder="Потр. име" id="username" class="input-xlarge">
+            </div>
+        </div>
+        <div class="control-group">
+            <label class="control-label">Парола</label>
+            <div class="controls">
+                <input name="_password" type="password" placeholder="***********" id="password"
+                       class="input-xlarge">
+            </div>
+        </div>
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+
+        <div class="control-group">
+
+
+            <input tabindex="3" class="btn btn-inverse large" type="submit" value="Напред">
+
+
+            <hr>
+        </div>
+    </fieldset>
+</form>
+
+{% endblock %}
