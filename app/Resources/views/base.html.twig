@@ -26,112 +26,15 @@
 
 </head>
 <body>
-<div class="super_container">
 
-    <header class="header">
-        <div class="container">
-            <div class="row">
-                <div class="col">
-                    <div class="header_content d-flex flex-row align-items-center justify-content-start">
-                        <div class="logo"><a href="/">Jesterous</a></div>
-                        <nav class="main_nav">
-                            <ul>
-                                <li class="active"><a href="/">Home</a></li>
-                                <li><a href="#">Articles</a></li>
-                                <li><a href="#">Poetry</a></li>
-                                <li><a href="#">Stories</a></li>
-                                <li><a href="{{ path('contacts_page') }}">Contact</a></li>
-                            </ul>
-                        </nav>
-                        <div class="search_container ml-auto">
-                            <div class="weather">
-                                <div class="temperature">+10°</div>
-                                <img class="weather_icon" src="images/cloud.png" alt="">
-                            </div>
-                            <form action="#">
-                                <input type="search" class="header_search_input" required="required" placeholder="Type to Search...">
-                                <img class="header_search_icon" src="images/search.png" alt="">
-                            </form>
+{% embed 'partials/header.html.twig' %} {% endembed %}
 
-                        </div>
-                        <div class="hamburger ml-auto menu_mm">
-                            <i class="fa fa-bars trans_200 menu_mm" aria-hidden="true"></i>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    <div class="menu d-flex flex-column align-items-end justify-content-start text-right menu_mm trans_400">
-        <div class="menu_close_container">
-            <div class="menu_close">
-                <div></div>
-                <div></div>
-            </div>
-        </div>
-        <div class="logo menu_mm"><a href="#">Avision</a></div>
-        <div class="search">
-            <form action="#">
-                <input type="search" class="header_search_input menu_mm" required="required"
-                       placeholder="Type to Search...">
-                <img class="header_search_icon menu_mm" src="images/search_2.png" alt="">
-            </form>
-        </div>
-        <nav class="menu_nav">
-            <ul class="menu_mm">
-                <li class="menu_mm"><a href="index.html">home</a></li>
-                <li class="menu_mm"><a href="#">Fashion</a></li>
-                <li class="menu_mm"><a href="#">Gadgets</a></li>
-                <li class="menu_mm"><a href="#">Lifestyle</a></li>
-                <li class="menu_mm"><a href="#">Video</a></li>
-                <li class="menu_mm"><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </div>
+{% block body %}{% endblock %}
 
-    {% block body %}{% endblock %}
+{% embed 'partials/footer.html.twig' %} {% endembed %}
 
-    <footer class="footer">
-        <div class="container">
-            <div class="row row-lg-eq-height">
-                <div class="col-lg-9 order-lg-1 order-2">
-                    <div class="footer_content">
-                        <div class="footer_logo"><a href="#">avision</a></div>
-                        <div class="footer_social">
-                            <ul>
-                                <li class="footer_social_facebook"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                <li class="footer_social_twitter"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                                <li class="footer_social_pinterest"><a href="#"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-                                <li class="footer_social_vimeo"><a href="#"><i class="fa fa-vimeo" aria-hidden="true"></i></a></li>
-                                <li class="footer_social_instagram"><a href="#"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                                <li class="footer_social_google"><a href="#"><i class="fa fa-google" aria-hidden="true"></i></a></li>
-                            </ul>
-                        </div>
-                        <div class="copyright"><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-                            Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
-                            <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></div>
-                    </div>
-                </div>
-                <div class="col-lg-3 order-lg-2 order-1">
-                    <div class="subscribe">
-                        <div class="subscribe_background"></div>
-                        <div class="subscribe_content">
-                            <div class="subscribe_title">Subscribe</div>
-                            <form action="#">
-                                <input type="email" class="sub_input" placeholder="Your Email" required="required">
-                                <button class="sub_button">
-                                    <svg version="1.1" id="link_arrow_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                         width="19px" height="13px" viewBox="0 0 19 13" enable-background="new 0 0 19 13" xml:space="preserve">
-										<polygon fill="#FFFFFF" points="12.475,0 11.061,0 17.081,6.021 0,6.021 0,7.021 17.038,7.021 11.06,13 12.474,13 18.974,6.5 "/>
-									</svg>
-                                </button>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </footer>
+<!-- to be removed -->
+<div class="language-selection">
     <label>BG
         <input name="lang" type="radio" value="bg">
     </label>
@@ -141,25 +44,50 @@
     </label>
 </div>
 
-<script src="{{ asset('styles/js/jquery-3.2.1.min.js') }}"></script>
-<script src="{{ asset('styles/styles/bootstrap4/popper.js') }}"></script>
-<script src="{{ asset('styles/styles/bootstrap4/bootstrap.min.js') }}"></script>
-<script src="{{ asset('styles/plugins/OwlCarousel2-2.2.1/owl.carousel.js') }}"></script>
-<script src="{{ asset('styles/plugins/easing/easing.js') }}"></script>
-<script src="{{ asset('styles/plugins/masonry/masonry.js') }}"></script>
-<!-- these scripts are not present in all pages -->
-<script src="{{ asset('styles/plugins/masonry/images_loaded.js') }}"></script>
-<script src="{{ asset('styles/plugins/parallax-js-master/parallax.min.js') }}"></script>
+<!-- scripts -->
+{% embed 'partials/scripts.html.twig' %} {% endembed %}
 {% block javascripts %}{% endblock %}
 
+<!-- to be removed -->
 <script>
     $(function () {
-        $('input[name="lang"]').on('click', function (e) {
+        var currentLang = getCookie("lang");
+        var inputs = $('input[name="lang"]');
+
+        inputs.each(function (ind, el) {
+            if (el.value === currentLang)
+                el.checked = true;
+        });
+
+        inputs.on('click', function (e) {
             var lng = e.target.value;
             document.cookie = "lang=" + lng;
             location.reload();
         });
     });
+
+
+    $(function () {
+        var activeNav = '.route{{ app.request.pathinfo }}'.replace("/", "-");
+        console.log(activeNav);
+        $(activeNav).addClass('active');
+    });
+
+    function getCookie(cname) {
+        var name = cname + "=";
+        var decodedCookie = decodeURIComponent(document.cookie);
+        var ca = decodedCookie.split(';');
+        for (var i = 0; i < ca.length; i++) {
+            var c = ca[i];
+            while (c.charAt(0) == ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
 </script>
 
 </body>

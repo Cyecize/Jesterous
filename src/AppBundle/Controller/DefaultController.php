@@ -33,6 +33,15 @@ class DefaultController extends BaseController
     }
 
     /**
+     * @Route("/categories", name="categories_page")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function categoriesAction(){
+        return $this->render("default/categories.html.twig", array());
+    }
+
+
+    /**
      * @Route("/admin", name="admin_panel")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * add @ Security("has_role('ROLE_ADMIN')")

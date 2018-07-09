@@ -25,6 +25,30 @@ interface LanguagePack
 
     function invalidUsername(): string;
 
-    function passwordsDoNotMatch() : string ;
+    function passwordsDoNotMatch(): string;
+
+    function home(): string;
+
+    function blogPosts(): string;
+
+    function contacts(): string;
+
+    function typeToSearch(): string;
+
+    function topArticles(): string;
+
+    function nextArticle() : string ;
+
+    function readMore() : string ;
+
+    function yourName() : string ;
+
+    function yourEmail() : string ;
+
+    function yourMessage() : string ;
+
+    function sendMessage() : string ;
+
+    function loadMore() : string ;
 
 }

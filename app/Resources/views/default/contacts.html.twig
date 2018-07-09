@@ -12,13 +12,13 @@
                         <div class="post_comment">
                             <div class="contact_form_container">
                                 <form action="#">
-                                    <input type="text" class="contact_input contact_input_name" placeholder="Your Name"
+                                    <input type="text" class="contact_input contact_input_name" placeholder="{{ localLang.yourName }}"
                                            required="required">
                                     <input type="email" class="contact_input contact_input_email"
-                                           placeholder="Your Email" required="required">
-                                    <textarea class="contact_text" placeholder="Your Message"
+                                           placeholder="{{ localLang.yourEmail }}" required="required">
+                                    <textarea class="contact_text" placeholder="{{ localLang.yourMessage }}"
                                               required="required"></textarea>
-                                    <button type="submit" class="contact_button">Send Message</button>
+                                    <button type="submit" class="contact_button">{{ localLang.sendMessage }}</button>
                                 </form>
                             </div>
                         </div>
@@ -36,5 +36,4 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('styles/js/contact.js') }}"></script>
 {% endblock %}

@@ -21,19 +21,31 @@ class LocalLanguage implements LanguagePack
      */
     private $languagePack;
 
+    /**
+     * @var string
+     */
+    private $currentLang;
+
     public function __construct()
     {
         $this->initLang();
     }
 
-    private function initLang() : void{
-        if(!isset($_COOKIE[Config::COOKIE_LANG_NAME])){
+    public function getLocalLang(): string
+    {
+        return strtolower($this->currentLang);
+    }
+
+    private function initLang(): void
+    {
+        if (!isset($_COOKIE[Config::COOKIE_LANG_NAME])) {
             $this->languagePack = new BulgarianLanguagePack();
-            setcookie(Config::COOKIE_LANG_NAME, Config::COOKIE_BG_LANG);
+            $this->currentLang = Config::COOKIE_BG_LANG;
+            setcookie(Config::COOKIE_LANG_NAME, $this->currentLang);
             return;
         }
-        $langType  = $_COOKIE[Config::COOKIE_LANG_NAME];
-        switch (strtolower($langType)){
+        $langType = $_COOKIE[Config::COOKIE_LANG_NAME];
+        switch (strtolower($langType)) {
             case Config::COOKIE_EN_LANG:
                 $this->languagePack = new EnglishLanguagePack();
                 break;
@@ -43,9 +55,14 @@ class LocalLanguage implements LanguagePack
             default:
                 $this->languagePack = new BulgarianLanguagePack();
                 setcookie(Config::COOKIE_LANG_NAME, Config::COOKIE_BG_LANG);
+                $langType = Config::COOKIE_BG_LANG;
                 break;
         }
+        $this->currentLang = $langType;
     }
+
+
+    //IMPLEMENTATIONS
 
     public function usernameAlreadyTaken(): string
     {
@@ -79,11 +96,71 @@ class LocalLanguage implements LanguagePack
 
     function invalidUsername(): string
     {
-       return $this->languagePack->invalidUsername();
+        return $this->languagePack->invalidUsername();
     }
 
     function passwordsDoNotMatch(): string
     {
         return $this->languagePack->passwordsDoNotMatch();
+    }
+
+    function home(): string
+    {
+        return $this->languagePack->home();
+    }
+
+    function blogPosts(): string
+    {
+        return $this->languagePack->blogPosts();
+    }
+
+    function contacts(): string
+    {
+        return $this->languagePack->contacts();
+    }
+
+    function typeToSearch(): string
+    {
+        return $this->languagePack->typeToSearch();
+    }
+
+    function topArticles(): string
+    {
+        return $this->languagePack->topArticles();
+    }
+
+    function nextArticle(): string
+    {
+        return $this->languagePack->nextArticle();
+    }
+
+    function readMore(): string
+    {
+        return $this->languagePack->readMore();
+    }
+
+    function yourName(): string
+    {
+        return $this->languagePack->yourName();
+    }
+
+    function yourEmail(): string
+    {
+        return $this->languagePack->yourEmail();
+    }
+
+    function yourMessage(): string
+    {
+        return $this->languagePack->yourMessage();
+    }
+
+    function sendMessage(): string
+    {
+        return $this->languagePack->sendMessage();
+    }
+
+    function loadMore(): string
+    {
+       return $this->languagePack->loadMore();
     }
 }
