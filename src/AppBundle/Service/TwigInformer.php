@@ -9,13 +9,17 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Constants\Config;
+
 class TwigInformer
 {
-    /**
-     * @return string
-     */
+
     public function getWebsiteName() : string {
         return "Jesterous";
+    }
+
+    public function passwordMinLength() : int{
+        return Config::MINIMUM_PASSWORD_LENGTH;
     }
 
 }

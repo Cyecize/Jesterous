@@ -19,6 +19,8 @@ interface LanguagePack
 
     function passwordIsLessThan(int $count): string;
 
+    function passwordIsLessThanLength() : string ;
+
     function invalidEmailAddress(): string;
 
     function emailAlreadyInUse(): string;

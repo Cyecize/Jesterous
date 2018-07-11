@@ -52,6 +52,6 @@ class DefaultController extends BaseController
         if(!$this->isAdminLogged())
             return $this->redirectToRoute('homepage');
 
-        return $this->render("static/test.html.twig");
+        return $this->render("partials/haha.html.twig");
     }
 }

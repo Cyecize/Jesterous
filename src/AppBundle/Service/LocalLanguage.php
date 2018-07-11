@@ -13,6 +13,7 @@ use AppBundle\Constants\Config;
 use AppBundle\Contracts\LanguagePack;
 use AppBundle\Service\LanguagePacks\BulgarianLanguagePack;
 use AppBundle\Service\LanguagePacks\EnglishLanguagePack;
+use Symfony\Component\Debug\Exception\UndefinedMethodException;
 
 class LocalLanguage implements LanguagePack
 {
@@ -34,6 +35,13 @@ class LocalLanguage implements LanguagePack
     public function getLocalLang(): string
     {
         return strtolower($this->currentLang);
+    }
+
+    public function forName(string $funcName): string
+    {
+        if (method_exists($this->languagePack, $funcName))
+            return $this->languagePack->{$funcName}();
+        return $funcName;
     }
 
     private function initLang(): void
@@ -161,6 +169,11 @@ class LocalLanguage implements LanguagePack
 
     function loadMore(): string
     {
-       return $this->languagePack->loadMore();
+        return $this->languagePack->loadMore();
+    }
+
+    function passwordIsLessThanLength(): string
+    {
+        return $this->languagePack->passwordIsLessThanLength();
     }
 }

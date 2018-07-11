@@ -1,45 +1,26 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Register</h1>
-    {% if error %}
-        <h1>{{ error }}</h1>\
-    {% endif %}
 
-    <h1>{{ localLang.usernameAlreadyTaken }}</h1>
-    <form  method="post" class="form-stacked" enctype="multipart/form-data" action="{{ path('security_register') }}" name = "authenticate">
-
-        <fieldset>
-            <div class="control-group">
-                <label class="control-label">Потребителско име</label>
-                <div class="controls">
-                    <input name="user_register[username]" maxlength="35" value="{{ userform.username }}" type="text" required placeholder="Потр. име" class="input-xlarge">
+    <div class="home">
+        <div class="home_background parallax-window" data-parallax="scroll" data-image-src="/images/category.jpg"
+             data-speed="0.8"></div>
+    </div>
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+                <div class="col-lg-9">
+                    <div class="main_content">
+                        {% embed 'partials/lang/'~ localLang.getLocalLang ~'/register.html.twig' %} {% endembed %}
+                    </div>
                 </div>
             </div>
-            <div class="control-group">
-                <label class="control-label">Email адрес</label>
-                <div class="controls">
-                    <input name="user_register[email]" maxlength="35" value="{{ userform.email }}" type="email" required placeholder="Email" class="input-xlarge">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Парола:</label>
-                <div class="controls">
-                    <input name="user_register[password]" type="password" maxlength="20" required placeholder="Поне 6 знака" class="input-xlarge">
-                </div>
-            </div>
-            <div class="control-group">
-                <label class="control-label">Парола отново:</label>
-                <div class="controls">
-                    <input name="user_register[confPassword]" type="password" required placeholder="Потв. парола" class="input-xlarge">
-                </div>
-            </div>
+        </div>
+    </div>
 
-            {{ form_row(form._token) }}
-            <hr>
-            <div class="actions"><input tabindex="9" class="btn btn-inverse large" type="submit" value="Създаване на профил"></div>
+{% endblock %}
 
-        </fieldset>
-    </form>
-
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/category.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/contact_responsive.css') }}">
 {% endblock %}

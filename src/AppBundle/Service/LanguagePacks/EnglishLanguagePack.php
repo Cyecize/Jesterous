@@ -9,6 +9,7 @@
 namespace AppBundle\Service\LanguagePacks;
 
 
+use AppBundle\Constants\Config;
 use AppBundle\Contracts\LanguagePack;
 
 class EnglishLanguagePack implements LanguagePack
@@ -136,5 +137,10 @@ class EnglishLanguagePack implements LanguagePack
     function loadMore(): string
     {
        return self::LOAD_MORE;
+    }
+
+    function passwordIsLessThanLength(): string
+    {
+        return self::passwordIsLessThan(Config::MINIMUM_PASSWORD_LENGTH);
     }
 }

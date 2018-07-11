@@ -1,36 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Register</h1>
-{% if error %}
-    <h1>{{ error }}</h1>
-{% endif %}
 
-<form action="{{ path('security_login') }}" method="post">
-    <input type="hidden" name="next" value="/">
-    <fieldset>
-        <div class="control-group">
-            <label class="control-label">Потребителско име</label>
-            <div class="controls">
-                <input type="text" name="_username" placeholder="Потр. име" id="username" class="input-xlarge">
+    <div class="home">
+        <div class="home_background parallax-window" data-parallax="scroll" data-image-src="/images/category.jpg" data-speed="0.8"></div>
+    </div>
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+                <div class="col-lg-9">
+                    <div class="main_content">
+                        {% embed 'partials/lang/' ~  localLang.getLocalLang ~'/login.html.twig' %} {% endembed %}
+                    </div>
+                </div>
             </div>
         </div>
-        <div class="control-group">
-            <label class="control-label">Парола</label>
-            <div class="controls">
-                <input name="_password" type="password" placeholder="***********" id="password"
-                       class="input-xlarge">
-            </div>
-        </div>
-        <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+    </div>
+{% endblock %}
 
-        <div class="control-group">
-
-            <input tabindex="3" class="btn btn-inverse large" type="submit" value="Напред">
-
-            <hr>
-        </div>
-    </fieldset>
-</form>
-
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/category.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/contact_responsive.css') }}">
 {% endblock %}
