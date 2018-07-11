@@ -46,8 +46,6 @@ class User implements UserInterface
      */
     private $password;
 
-    private $confPassword;
-
     /**
      * @var \DateTime
      *
@@ -161,22 +159,6 @@ class User implements UserInterface
     public function getPassword()
     {
         return $this->password;
-    }
-
-    /**
-     * @return mixed
-     */
-    public function getConfPassword()
-    {
-        return $this->confPassword;
-    }
-
-    /**
-     * @param mixed $confPassword
-     */
-    public function setConfPassword($confPassword): void
-    {
-        $this->confPassword = $confPassword;
     }
 
 

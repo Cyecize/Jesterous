@@ -68,7 +68,7 @@
 
 
     $(function () {
-        var activeNav = '.route{{ app.request.pathinfo }}'.replace("/", "-");
+        var activeNav = '.route{{ app.request.pathinfo }}'.replace(/\//g, "-");
         console.log(activeNav);
         $(activeNav).addClass('active');
     });

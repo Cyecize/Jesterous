@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+
+{% block body %}
+    <div class="home">
+        <div class="home_background parallax-window" data-parallax="scroll"
+             data-image-src="{{ article.backgroundImageLink }}" data-speed="0.8"></div>
+    </div>
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+
+                <!-- Main Content -->
+
+                <div class="col-lg-9">
+                    <h2 class="text-dark">Title: {{ article.title }}</h2>
+                    <hr>
+                        <p>Category: {{ article.category.categoryName }}</p>
+                        <p>Language of Category: {{ article.category.language.localeName }}</p>
+                        <p>Views: {{ article.views}}</p>
+                        <p>Date: {{ article.dateAdded.format("M, d, Y")}}</p>
+                    <p>TODO: fix header color</p>
+                    <hr>
+                    <div class="main_content">
+                        {{ article.mainContent|raw }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/category.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/responsive.css') }}">
+{% endblock %}

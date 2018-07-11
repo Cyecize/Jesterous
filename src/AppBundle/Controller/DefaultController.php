@@ -2,6 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Article;
+use AppBundle\Entity\ArticleCategory;
+use AppBundle\Entity\Language;
 use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -18,8 +21,12 @@ class DefaultController extends BaseController
      */
     public function indexAction(Request $request)
     {
+        $categories = $this->getDoctrine()->getRepository(ArticleCategory::class)->findAll();
+        $languages = $this->getDoctrine()->getRepository(Language::class)->findAll();
+
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
+            'categories'=>$categories,
         ]);
     }
 
@@ -37,6 +44,21 @@ class DefaultController extends BaseController
      */
     public function categoriesAction(){
         return $this->render("default/categories.html.twig", array());
+    }
+
+
+    /**
+     * @Route("/articles/{id}", name="show_article", defaults={"id"=null})
+     * @param Request $request
+     * @param $id
+     * @return Response
+     */
+    public function viewArticleAction(Request $request, $id){
+        $article = $this->getDoctrine()->getRepository(Article::class)->findOneBy(array('id'=>$id));
+
+        return $this->render('default/article.html.twig', [
+            'article'=>$article
+        ]);
     }
 
 
