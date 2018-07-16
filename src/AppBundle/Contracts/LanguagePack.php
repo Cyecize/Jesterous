@@ -53,4 +53,6 @@ interface LanguagePack
 
     function loadMore() : string ;
 
+    function subscribe() : string ;
+
 }

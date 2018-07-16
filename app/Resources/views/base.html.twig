@@ -33,16 +33,6 @@
 
 {% embed 'partials/footer.html.twig' %} {% endembed %}
 
-<!-- to be removed -->
-<div class="language-selection">
-    <label>BG
-        <input name="lang" type="radio" value="bg">
-    </label>
-    <label>
-        EN
-        <input name="lang" type="radio" value="en">
-    </label>
-</div>
 
 <!-- scripts -->
 {% embed 'partials/scripts.html.twig' %} {% endembed %}
@@ -50,44 +40,12 @@
 
 <!-- to be removed -->
 <script>
-    $(function () {
-        var currentLang = getCookie("lang");
-        var inputs = $('input[name="lang"]');
-
-        inputs.each(function (ind, el) {
-            if (el.value === currentLang)
-                el.checked = true;
-        });
-
-        inputs.on('click', function (e) {
-            var lng = e.target.value;
-            document.cookie = "lang=" + lng;
-            location.reload();
-        });
-    });
-
 
     $(function () {
         var activeNav = '.route{{ app.request.pathinfo }}'.replace(/\//g, "-");
-        console.log(activeNav);
         $(activeNav).addClass('active');
     });
 
-    function getCookie(cname) {
-        var name = cname + "=";
-        var decodedCookie = decodeURIComponent(document.cookie);
-        var ca = decodedCookie.split(';');
-        for (var i = 0; i < ca.length; i++) {
-            var c = ca[i];
-            while (c.charAt(0) == ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
 </script>
 
 </body>

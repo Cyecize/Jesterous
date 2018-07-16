@@ -39,6 +39,8 @@ class BulgarianLanguagePack implements LanguagePack
 
     public const LOAD_MORE = "Покажи Повече";
 
+    public const SUBSCRIBE = "Абониране";
+
     public function usernameAlreadyTaken(): string
     {
         return "Потребителското име е заето!";
@@ -142,5 +144,10 @@ class BulgarianLanguagePack implements LanguagePack
     function passwordIsLessThanLength(): string
     {
         return self::passwordIsLessThan(Config::MINIMUM_PASSWORD_LENGTH);
+    }
+
+    function subscribe(): string
+    {
+        return self::SUBSCRIBE;
     }
 }

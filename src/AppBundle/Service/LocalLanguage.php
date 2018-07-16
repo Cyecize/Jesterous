@@ -176,4 +176,9 @@ class LocalLanguage implements LanguagePack
     {
         return $this->languagePack->passwordIsLessThanLength();
     }
+
+    function subscribe(): string
+    {
+       return $this->languagePack->subscribe();
+    }
 }

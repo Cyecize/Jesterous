@@ -39,6 +39,8 @@ class EnglishLanguagePack implements LanguagePack
 
     public const LOAD_MORE = "Load More";
 
+    public const SUBSCRIBE = "Subscribe";
+
     public function usernameAlreadyTaken(): string
     {
         return "Username already taken!";
@@ -142,5 +144,10 @@ class EnglishLanguagePack implements LanguagePack
     function passwordIsLessThanLength(): string
     {
         return self::passwordIsLessThan(Config::MINIMUM_PASSWORD_LENGTH);
+    }
+
+    function subscribe(): string
+    {
+      return self::SUBSCRIBE;
     }
 }
