@@ -181,4 +181,9 @@ class LocalLanguage implements LanguagePack
     {
        return $this->languagePack->subscribe();
     }
+
+    function latestArticles(): string
+    {
+        return $this->languagePack->latestArticles();
+    }
 }

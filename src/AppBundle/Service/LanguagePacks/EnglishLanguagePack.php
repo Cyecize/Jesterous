@@ -41,6 +41,8 @@ class EnglishLanguagePack implements LanguagePack
 
     public const SUBSCRIBE = "Subscribe";
 
+    public const LATEST_ARTICLES = "Latest Posts";
+
     public function usernameAlreadyTaken(): string
     {
         return "Username already taken!";
@@ -58,12 +60,12 @@ class EnglishLanguagePack implements LanguagePack
 
     public function passwordIsLessThan(int $count): string
     {
-       return "Password is less than " . $count . " characters long!";
+        return "Password is less than " . $count . " characters long!";
     }
 
     function invalidEmailAddress(): string
     {
-       return "Invalid Email address!";
+        return "Invalid Email address!";
     }
 
     function emailAlreadyInUse(): string
@@ -73,7 +75,7 @@ class EnglishLanguagePack implements LanguagePack
 
     function invalidUsername(): string
     {
-        return  "Invalid username!";
+        return "Invalid username!";
     }
 
     function passwordsDoNotMatch(): string
@@ -138,7 +140,7 @@ class EnglishLanguagePack implements LanguagePack
 
     function loadMore(): string
     {
-       return self::LOAD_MORE;
+        return self::LOAD_MORE;
     }
 
     function passwordIsLessThanLength(): string
@@ -148,6 +150,11 @@ class EnglishLanguagePack implements LanguagePack
 
     function subscribe(): string
     {
-      return self::SUBSCRIBE;
+        return self::SUBSCRIBE;
+    }
+
+    function latestArticles(): string
+    {
+        return self::LATEST_ARTICLES;
     }
 }

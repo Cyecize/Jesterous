@@ -55,4 +55,6 @@ interface LanguagePack
 
     function subscribe() : string ;
 
+    function latestArticles() : string ;
+
 }

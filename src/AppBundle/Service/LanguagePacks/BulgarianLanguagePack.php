@@ -41,6 +41,8 @@ class BulgarianLanguagePack implements LanguagePack
 
     public const SUBSCRIBE = "Абониране";
 
+    public const LATEST_ARTICLES = "Нови статии";
+
     public function usernameAlreadyTaken(): string
     {
         return "Потребителското име е заето!";
@@ -149,5 +151,10 @@ class BulgarianLanguagePack implements LanguagePack
     function subscribe(): string
     {
         return self::SUBSCRIBE;
+    }
+
+    function latestArticles(): string
+    {
+        return self::LATEST_ARTICLES;
     }
 }
