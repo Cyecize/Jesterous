@@ -22,11 +22,13 @@ class DefaultController extends BaseController
     public function indexAction(Request $request)
     {
         $categories = $this->getDoctrine()->getRepository(ArticleCategory::class)->findAll();
+        $latestPosts = $this->getDoctrine()->getRepository(Article::class)->findBy(array(), array(), 10);
         $languages = $this->getDoctrine()->getRepository(Language::class)->findAll();
 
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
             'categories'=>$categories,
+            'latestPosts'=>$latestPosts,
         ]);
     }
 

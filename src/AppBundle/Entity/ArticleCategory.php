@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -42,6 +43,13 @@ class ArticleCategory
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parentCategory;
+
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\ArticleCategory", mappedBy="parentCategory")
+     */
+    private $childrenCategories;
 
     /**
      * Get id
@@ -108,6 +116,23 @@ class ArticleCategory
     {
         $this->parentCategory = $parentCategory;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getChildrenCategories()
+    {
+        return $this->childrenCategories;
+    }
+
+    /**
+     * @param ArrayCollection $childrenCategories
+     */
+    public function setChildrenCategories(ArrayCollection $childrenCategories): void
+    {
+        $this->childrenCategories = $childrenCategories;
+    }
+
 
 
 

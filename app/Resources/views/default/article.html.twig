@@ -1,5 +1,14 @@
 {% extends 'base.html.twig' %}
 
+{% block ogType %}article{% endblock %}
+{% block ogUrl %}{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}{% endblock %}
+{% block title %}{{ article.title }}{% endblock %}
+{% block ogDescription %}{{ article.summary}}{% endblock %}
+{% block ogImage %}{{ article.backgroundImageLink }}{% endblock %}
+{% block facebookMetas %}
+    <meta property="article:section" content="{{ article.category.categoryName }}">
+    <meta property="article:tag" content="lifestyle">
+{% endblock %}
 
 {% block body %}
     <div class="home">
@@ -16,6 +25,7 @@
                 <div class="col-lg-9">
                     <h2 class="text-dark">Title: {{ article.title }}</h2>
                     <hr>
+
                         <p>Category: {{ article.category.categoryName }}</p>
                         <p>Language of Category: {{ article.category.language.localeName }}</p>
                         <p>Views: {{ article.views}}</p>
