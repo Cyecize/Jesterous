@@ -6,6 +6,7 @@ use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Language;
 use AppBundle\Entity\User;
+use AppBundle\Service\ArticleDbManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -17,18 +18,23 @@ class DefaultController extends BaseController
     /**
      * @Route("/", name="homepage")
      * @param Request $request
+     * @param ArticleDbManager $articleDbManager
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, ArticleDbManager $articleDbManager)
     {
         $categories = $this->getDoctrine()->getRepository(ArticleCategory::class)->findAll();
         $latestPosts = $this->getDoctrine()->getRepository(Article::class)->findBy(array(), array(), 10);
         $languages = $this->getDoctrine()->getRepository(Language::class)->findAll();
 
+        $slider = $articleDbManager->forgeSliderViewModel($latestPosts); //TODO change latest posts with something else more relevant
+
+
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
             'categories'=>$categories,
             'latestPosts'=>$latestPosts,
+            'sliderArticles'=>$slider,
         ]);
     }
 
