@@ -17,15 +17,15 @@
                         <div class="container">
                             <div class="row">
                                 <div class="col">
-                                    <div class="home_slider_content">
+                                    <div class="home_slider_content" style="background:rgba(0,0,0,0.4); padding: 10px; -webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;">
                                         <div class="home_slider_item_category trans_200"><a href="category.html" class="trans_200">{{ sliderItem.article.category.categoryName }}</a>
                                         </div>
                                         <div class="home_slider_item_title">
                                             <a href="{{ path('show_article', {'id':sliderItem.article.id}) }}">{{ sliderItem.article.title }}</a>
                                         </div>
-                                        <div class="home_slider_item_link">
-                                            <a href="{{ path('show_article', {'id': sliderItem.article.id}) }}" class="trans_200">
-                                                {{ localLang.readMore }}<i class="fa fa-hand-o-right" aria-hidden="true"></i>
+                                        <div class="home_slider_item_link" >
+                                            <a href="{{ path('show_article', {'id': sliderItem.article.id}) }}" class="text-light">
+                                                {{ localLang.readMore }} &nbsp;<i class="fa fa-hand-o-right" aria-hidden="true"></i>
                                             </a>
                                         </div>
                                     </div>
@@ -544,7 +544,6 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 

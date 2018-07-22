@@ -1,0 +1,13 @@
+.font-pacifico{
+    font-family: Pacifico, sans-serif;
+    font-variant: normal;
+}
+
+.font-cookie{
+    font-family: Cookie, sans-serif;
+    font-variant: normal;
+}
+
+.font-cookie span{
+    color: #5383d3;
+}
