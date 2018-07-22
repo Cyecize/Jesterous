@@ -7,6 +7,7 @@ use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Language;
 use AppBundle\Entity\User;
 use AppBundle\Service\ArticleDbManager;
+use AppBundle\Service\LocalLanguage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -19,6 +20,7 @@ class DefaultController extends BaseController
      * @Route("/", name="homepage")
      * @param Request $request
      * @param ArticleDbManager $articleDbManager
+     * @param LocalLanguage $language
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request, ArticleDbManager $articleDbManager)
@@ -27,7 +29,12 @@ class DefaultController extends BaseController
         $latestPosts = $this->getDoctrine()->getRepository(Article::class)->findBy(array(), array(), 10);
         $languages = $this->getDoctrine()->getRepository(Language::class)->findAll();
 
-        $slider = $articleDbManager->forgeSliderViewModel($latestPosts); //TODO change latest posts with something else more relevant
+        $langBasedPosts = array();
+        foreach ($latestPosts as $post){
+            if($post->getCategory()->getLanguage()->getLocaleName() == $this->currentLang)
+                $langBasedPosts[] = $post;
+        }
+        $slider = $articleDbManager->forgeSliderViewModel($langBasedPosts); //TODO change latest posts with something else more relevant
 
 
         return $this->render('default/index.html.twig', [

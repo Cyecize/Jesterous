@@ -3,7 +3,6 @@
 {% block body %}
 
     <div class="home">
-
         <!-- Home Slider -->
         <div class="home_slider_container">
             <div class="owl-carousel owl-theme home_slider">
@@ -11,9 +10,7 @@
                 <!-- Slider Item -->
                 <!--THIS DIV IS GOING TO BE FOR-EACHED!-->
                 <!-- slider shows as many as we pass to it costom.js initHomeSlider() -->
-
                 {% for sliderItem in sliderArticles %}
-
                     <div class="owl-item">
                     <div class="home_slider_background" style="background-image:url('{{ sliderItem.article.backgroundImageLink }}')"></div>
                     <div class="home_slider_content_container">
@@ -62,20 +59,18 @@
                                 </div>
                             </div>
                         </div>
-
                     </div>
                 </div>
                 {% endfor %}
-                <!-- Slider Item -->
 
             </div>
 
+            <!-- dots control section -->
             <div class="custom_nav_container home_slider_nav_container">
                 <div class="custom_prev custom_prev_home_slider">
                     <i class="fa fa-chevron-left" aria-hidden="true"></i>
                 </div>
                 <ul id="custom_dots" class="custom_dots custom_dots_home_slider">
-
                     {% for i in sliderArticles %}
                         <li class="custom_dot custom_dot_home_slider"><span></span></li>
                     {% endfor %}
