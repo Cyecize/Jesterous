@@ -9,22 +9,30 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Entity\Article;
+use AppBundle\Entity\ArticleCategory;
 use AppBundle\ViewModel\SliderArticlesViewModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use function PHPSTORM_META\elementType;
 
-class ArticleDbManager
+class ArticleDbManager implements IArticleDbManager
 {
     /**
      * @var EntityManagerInterface
      */
     private $entityManager;
 
+    /**
+     * @var \AppBundle\Repository\ArticleRepository|\Doctrine\Common\Persistence\ObjectRepository
+     */
+    private $articleRepo;
+
     public function __construct(EntityManagerInterface $em)
     {
         $this->entityManager = $em;
+        $this->articleRepo = $em->getRepository(Article::class);
     }
 
     /**
@@ -67,5 +75,34 @@ class ArticleDbManager
                 $sliderViewModelArr[] = $slide;
         }
         return $sliderViewModelArr;
+    }
+
+    /**
+     * @param ArticleCategory $articleCategory
+     * @return Article[]
+     */
+    function findArticlesByCategory(ArticleCategory $articleCategory): array
+    {
+        return $this->articleRepo->findBy(array('category'=>$articleCategory));
+    }
+
+    /**
+     * @param ArticleCategory[] $articleCategories
+     * @return Article[]
+     */
+    function findArticlesByCategories(array $articleCategories): array
+    {
+        return $this->articleRepo->findBy(array('category'=>$articleCategories));
+    }
+
+    /**
+     *
+     * @param int $offset
+     * @return Article[]
+     */
+    function findArticlesForLatestPosts(int $offset): array
+    {
+        return $this->articleRepo->findBy(array(), array('dateAdded'=>"DESC"), 3, $offset);
+        //TODO change limit from 3 to something
     }
 }

@@ -3,84 +3,84 @@
  * Created by PhpStorm.
  * User: ceci
  * Date: 7/8/2018
- * Time: 9:24 PM
+ * Time: 9:26 PM
  */
 
 namespace AppBundle\Service\LanguagePacks;
 
 
 use AppBundle\Constants\Config;
-use AppBundle\Contracts\LanguagePack;
+use AppBundle\Contracts\ILanguagePack;
 
-class BulgarianLanguagePack implements LanguagePack
+class EnglishILanguagePack implements ILanguagePack
 {
 
-    public const HOME = "Начало";
+    public const HOME = "Home";
 
-    public const BLOG_POSTS = "Публикации";
+    public const BLOG_POSTS = "Blog Posts";
 
-    public const CONTACT = "Контакти";
+    public const CONTACT = "Contacts";
 
-    public const TYPE_TO_SEARCH = "Търсене";
+    public const TYPE_TO_SEARCH = "Type to Search...";
 
-    public const TOP_ARTICLES = "Популяни";
+    public const TOP_ARTICLES = "Top Articles";
 
-    public const NEXT_ARTICLE = "Сладваща";
+    public const NEXT_ARTICLE = "NEXT";
 
-    public const READ_MORE = "Прочетете повече";
+    public const READ_MORE = "Read More...";
 
-    public const YOUR_NAME = "Вашето име";
+    public const YOUR_NAME = "Your Name";
 
-    public const YOUR_EMAIL = "Вашият Email адрес";
+    public const YOUR_EMAIL = "Your Email";
 
-    public const YOUR_MESSAGE = "Вашето запитване";
+    public const YOUR_MESSAGE = "Message";
 
-    public const SEND_MESSAGE = "Изпращане";
+    public const SEND_MESSAGE = "Send Message";
 
-    public const LOAD_MORE = "Покажи Повече";
+    public const LOAD_MORE = "Load More";
 
-    public const SUBSCRIBE = "Абониране";
+    public const SUBSCRIBE = "Subscribe";
 
-    public const LATEST_ARTICLES = "Нови публикации";
+    public const LATEST_ARTICLES = "Latest Posts";
 
     public function usernameAlreadyTaken(): string
     {
-        return "Потребителското име е заето!";
+        return "Username already taken!";
     }
 
     public function passwordIsIncorrect(): string
     {
-        return "Грешна парола!";
+        return "Password is incorrect!";
     }
 
     public function usernameDoesNotExist(): string
     {
-        return "Потребителското име не съществува";
+        return "Username does not exist!";
     }
 
     public function passwordIsLessThan(int $count): string
     {
-        return "Паролата е под " . $count . " знака!";
+        return "Password is less than " . $count . " characters long!";
     }
 
     function invalidEmailAddress(): string
     {
-        return "Невалиден Email адрес!";
+        return "Invalid Email address!";
     }
 
     function emailAlreadyInUse(): string
     {
-        return "Email адресът е зает!";
+        return "Email already in use!";
     }
 
     function invalidUsername(): string
     {
-        return "Невалидно портребителско име!";
+        return "Invalid username!";
     }
 
     function passwordsDoNotMatch(): string
     {
-        return "Паролите не съвпадат!";
+        return "Passwords did not match!";
     }
 
     function home(): string

@@ -89,7 +89,6 @@
             <div class="row row-lg-eq-height">
 
                 <!-- Main Content -->
-
                 <div class="col-lg-9">
                     <div class="main_content">
 
@@ -205,7 +204,6 @@
                             </div>
                         </div>
 
-
                         <!-- sub section -->
                         <div class="blog_section">
                             <div class="section_panel d-flex flex-row align-items-center justify-content-start">
@@ -223,9 +221,10 @@
 
                             <div class="section_content">
                                 <hr>
-                                <div class="flex align-items-center">
+                                <div class="flex align-items-center font-pacifico text-info" style="font-size: 1.8em;">
                                     Може ли разстоянието наистина да те раздели от приятелите ти... Ако искаш да си с
-                                    някого, когото обичаш, не си ли вече там при него?
+                                    някого, когото обичаш, не си ли вече там при него?<br>
+                                    Can the distance really separate you from your friends?... If you want to be with someone you love, aren't you already there with him?
                                 </div>
                                 <hr>
                             </div>
@@ -238,28 +237,11 @@
                             <div class="section_panel d-flex flex-row align-items-center justify-content-start">
                                 <div class="section_title">{{ localLang.latestArticles }}</div>
                             </div>
-                            <div class="section_content">
-                                <div class="grid clearfix">
-
-
+                            <div class="section_content" >
+                                <div class="grid clearfix" id="latestPostsHolder" >
                                     {% for post in latestPosts %}
-                                        <!-- Small Card With Background -->
-                                        <div class="card card_default card_small_with_background grid-item">
-                                            <div class="card_background"
-                                                 style="background:linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)),url('{{ post.backgroundImageLink }}'); -webkit-background-size: cover;background-size: cover;"></div>
-                                            <div class="card-body">
-                                                <div class="card-title card-title-small"><a
-                                                            href="{{ path('show_article', {'id': post.id}) }}">{{ post.title }}</a>
-                                                </div>
-                                                <small class="post_meta "><a href="#"
-                                                                             class="text-light">{{ post.author.username }}</a><span
-                                                            class="text-light">{{ post.dateAdded.format("d - M - Y") }}</span>
-                                                </small>
-                                            </div>
-                                        </div>
-
+                                        {% embed 'partials/articles/small-card-with-background.html.twig' with {'article':post} %} {% endembed %}
                                     {% endfor %}
-
                                 </div>
 
                             </div>
@@ -267,8 +249,7 @@
 
                     </div>
                     <div class="load_more">
-                        <div id="load_more"
-                             class="load_more_button text-center trans_200">{{ localLang.loadMore }}</div>
+                        <div id="load_more" class="load_more_button text-center trans_200">{{ localLang.loadMore }}</div>
                     </div>
                 </div>
 
@@ -283,13 +264,7 @@
                                 <div class="sidebar_slider_nav">
                                     <div class="custom_nav_container sidebar_slider_nav_container">
                                         <div class="custom_prev custom_prev_top">
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                                 width="7px" height="12px" viewBox="0 0 7 12"
-                                                 enable-background="new 0 0 7 12" xml:space="preserve">
-												<polyline fill="#bebebe"
-                                                          points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
-											</svg>
+                                           <i class="fa fa-chevron-left" aria-hidden="true"></i>
                                         </div>
                                         <ul id="custom_dots" class="custom_dots custom_dots_top">
                                             <li class="custom_dot custom_dot_top active"><span></span></li>
@@ -297,13 +272,7 @@
                                             <li class="custom_dot custom_dot_top"><span></span></li>
                                         </ul>
                                         <div class="custom_next custom_next_top">
-                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
-                                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-                                                 width="7px" height="12px" viewBox="0 0 7 12"
-                                                 enable-background="new 0 0 7 12" xml:space="preserve">
-												<polyline fill="#bebebe"
-                                                          points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
-											</svg>
+                                            <i class="fa fa-chevron-right" aria-hidden="true"></i>
                                         </div>
                                     </div>
                                 </div>
@@ -538,6 +507,19 @@
                             </div>
                         </div>
 
+                        <!-- example quote -->
+                        <br>
+                        <div class="sidebar_section">
+                            <div class="sidebar_title_container">
+                                <div class="sidebar_title font-pacifico">Ричард Бах</div>
+                            </div>
+
+                            <div class="sidebar_section_content">
+                                <p class="font-pacifico text-info"  style="font-size: 1.6em;">  Може ли разстоянието наистина да те раздели от приятелите ти... Ако искаш да си с
+                                    някого, когото обичаш, не си ли вече там при него?</p>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -555,4 +537,25 @@
 
 {% block javascripts %}
     {#<script src="{{ asset('styles/plugins/jquery.mb.YTPlayer-3.1.12/jquery.mb.YTPlayer.js') }}"></script>#}
+    <script>
+        var numberOfLatestArticles = Number('{{ latestPosts|length }}');
+
+        $(function () {
+            var latestPostsHolder = $('#latestPostsHolder');
+
+            $('#load_more').on('click', function () {
+                $.ajax({
+                    method:"GET",
+                    url:"{{ path('load_more_articles') }}?offset=" + numberOfLatestArticles,
+                    success:function (data) {
+                        latestPostsHolder.append(data).imagesLoaded(function () {
+                            latestPostsHolder.masonry( 'reloadItems' );
+                            latestPostsHolder.masonry();
+                        });
+                    },
+                    error:console.error
+                })
+            });
+        });
+    </script>
 {% endblock %}

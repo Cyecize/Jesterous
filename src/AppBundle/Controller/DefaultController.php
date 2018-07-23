@@ -2,15 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Contracts\IArticleCategoryDbManager;
+use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Entity\Article;
-use AppBundle\Entity\ArticleCategory;
-use AppBundle\Entity\Language;
-use AppBundle\Entity\User;
+use AppBundle\Service\ArticleCategoryDbManager;
 use AppBundle\Service\ArticleDbManager;
-use AppBundle\Service\LocalLanguage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -20,28 +18,21 @@ class DefaultController extends BaseController
      * @Route("/", name="homepage")
      * @param Request $request
      * @param ArticleDbManager $articleDbManager
-     * @param LocalLanguage $language
+     * @param ArticleCategoryDbManager $articleCategoryDbManager
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request, ArticleDbManager $articleDbManager)
+    public function indexAction(Request $request, IArticleDbManager $articleDbManager, IArticleCategoryDbManager $articleCategoryDbManager)
     {
-        $categories = $this->getDoctrine()->getRepository(ArticleCategory::class)->findAll();
-        $latestPosts = $this->getDoctrine()->getRepository(Article::class)->findBy(array(), array(), 10);
-        $languages = $this->getDoctrine()->getRepository(Language::class)->findAll();
-
-        $langBasedPosts = array();
-        foreach ($latestPosts as $post){
-            if($post->getCategory()->getLanguage()->getLocaleName() == $this->currentLang)
-                $langBasedPosts[] = $post;
-        }
-        $slider = $articleDbManager->forgeSliderViewModel($langBasedPosts); //TODO change latest posts with something else more relevant
+        $categories = $articleCategoryDbManager->findLocaleCategories();
+        $latestPosts = $articleDbManager->findArticlesForLatestPosts(0);
+        $sliderArticles = $articleDbManager->forgeSliderViewModel($articleDbManager->findArticlesByCategories($articleCategoryDbManager->findLocaleCategories()));
 
 
         return $this->render('default/index.html.twig', [
             'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
             'categories'=>$categories,
             'latestPosts'=>$latestPosts,
-            'sliderArticles'=>$slider,
+            'sliderArticles'=>$sliderArticles,
         ]);
     }
 

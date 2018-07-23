@@ -9,7 +9,7 @@
 namespace AppBundle\Contracts;
 
 
-interface LanguagePack
+interface ILanguagePack
 {
     function usernameAlreadyTaken(): string;
 

@@ -1,0 +1,6 @@
+{% for article in articles %}
+    {% embed 'partials/articles/small-card-with-background.html.twig' with {'article':article} %} {% endembed %}
+{% endfor %}
+<script>
+    numberOfLatestArticles += Number('{{ articles|length }}');
+</script>

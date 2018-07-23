@@ -33,6 +33,10 @@ services:
         arguments:
         $em: '@Doctrine\ORM\EntityManagerInterface'
 
+    AppBundle\Service\ArticleCategoryDbManager:
+        arguments:
+        $em: '@Doctrine\ORM\EntityManagerInterface'
+
     # add more services, or override services that need manual wiring
     # AppBundle\Service\ExampleService:
     #     arguments:

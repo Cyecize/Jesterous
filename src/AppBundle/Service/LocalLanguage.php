@@ -10,15 +10,15 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Constants\Config;
-use AppBundle\Contracts\LanguagePack;
-use AppBundle\Service\LanguagePacks\BulgarianLanguagePack;
-use AppBundle\Service\LanguagePacks\EnglishLanguagePack;
+use AppBundle\Contracts\ILanguagePack;
+use AppBundle\Service\LanguagePacks\BulgarianILanguagePack;
+use AppBundle\Service\LanguagePacks\EnglishILanguagePack;
 use Symfony\Component\Debug\Exception\UndefinedMethodException;
 
-class LocalLanguage implements LanguagePack
+class LocalLanguage implements ILanguagePack
 {
     /**
-     * @var LanguagePack
+     * @var ILanguagePack
      */
     private $languagePack;
 
@@ -47,7 +47,7 @@ class LocalLanguage implements LanguagePack
     private function initLang(): void
     {
         if (!isset($_COOKIE[Config::COOKIE_LANG_NAME])) {
-            $this->languagePack = new BulgarianLanguagePack();
+            $this->languagePack = new BulgarianILanguagePack();
             $this->currentLang = Config::COOKIE_BG_LANG;
             setcookie(Config::COOKIE_LANG_NAME, $this->currentLang);
             return;
@@ -55,13 +55,13 @@ class LocalLanguage implements LanguagePack
         $langType = $_COOKIE[Config::COOKIE_LANG_NAME];
         switch (strtolower($langType)) {
             case Config::COOKIE_EN_LANG:
-                $this->languagePack = new EnglishLanguagePack();
+                $this->languagePack = new EnglishILanguagePack();
                 break;
             case Config::COOKIE_BG_LANG:
-                $this->languagePack = new BulgarianLanguagePack();
+                $this->languagePack = new BulgarianILanguagePack();
                 break;
             default:
-                $this->languagePack = new BulgarianLanguagePack();
+                $this->languagePack = new BulgarianILanguagePack();
                 setcookie(Config::COOKIE_LANG_NAME, Config::COOKIE_BG_LANG);
                 $langType = Config::COOKIE_BG_LANG;
                 break;

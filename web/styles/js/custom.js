@@ -17,7 +17,7 @@
 
  ******************************/
 
-$(document).ready(function () {
+var customController = (function () {
     "use strict";
 
     /*
@@ -354,4 +354,6 @@ $(document).ready(function () {
 
     }
 
-});
+    return {initGrid:initGrid};
+
+})();
