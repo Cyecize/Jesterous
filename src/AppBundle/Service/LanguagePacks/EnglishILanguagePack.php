@@ -43,6 +43,20 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const LATEST_ARTICLES = "Latest Posts";
 
+    public const REPLY = "Reply";
+
+    public const COMMENTS = "Comments";
+
+    public const LOGIN = "Login";
+
+    public const REGISTER = "Register";
+
+    public const POST_COMMENT = "Post Comment";
+
+    public const YOUR_COMMENT = "Your Comment";
+
+    public const LOGOUT = "Logout";
+
     public function usernameAlreadyTaken(): string
     {
         return "Username already taken!";
@@ -156,5 +170,40 @@ class EnglishILanguagePack implements ILanguagePack
     function latestArticles(): string
     {
         return self::LATEST_ARTICLES;
+    }
+
+    function comments(): string
+    {
+        return self::COMMENTS;
+    }
+
+    function reply(): string
+    {
+        return self::REPLY;
+    }
+
+    function login(): string
+    {
+        return self::LOGIN;
+    }
+
+    function register(): string
+    {
+        return self::REGISTER;
+    }
+
+    function postComment(): string
+    {
+        return self::POST_COMMENT;
+    }
+
+    function yourComment(): string
+    {
+         return self::YOUR_COMMENT;
+    }
+
+    function logout(): string
+    {
+        return self::LOGOUT;
     }
 }

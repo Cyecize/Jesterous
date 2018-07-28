@@ -32,11 +32,12 @@ class SecurityController extends BaseController
      * @param Request $request
      * @param LocalLanguage $language
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @Security("is_anonymous()", message="You are already logged in")
      */
 
     public function loginAction(AuthenticationUtils $authUtils, Request $request, LocalLanguage $language)
     {
-        if ($this->isUserLogged())
+        if ($this->isUserLogged()) //TODO override 403 page to avoid using this
            return $this->redirectToRoute("homepage");
 
         $lastUsername = null;
@@ -127,7 +128,6 @@ class SecurityController extends BaseController
         }
 
         escape:
-
         return $this->render("security/register.html.twig", array(
             "userform" => $userBindingModel,
             'form' => $bindForm->createView(),

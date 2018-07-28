@@ -19,7 +19,7 @@ interface ILanguagePack
 
     function passwordIsLessThan(int $count): string;
 
-    function passwordIsLessThanLength() : string ;
+    function passwordIsLessThanLength(): string;
 
     function invalidEmailAddress(): string;
 
@@ -39,22 +39,36 @@ interface ILanguagePack
 
     function topArticles(): string;
 
-    function nextArticle() : string ;
+    function nextArticle(): string;
 
-    function readMore() : string ;
+    function readMore(): string;
 
-    function yourName() : string ;
+    function yourName(): string;
 
-    function yourEmail() : string ;
+    function yourEmail(): string;
 
-    function yourMessage() : string ;
+    function yourMessage(): string;
 
-    function sendMessage() : string ;
+    function sendMessage(): string;
 
-    function loadMore() : string ;
+    function loadMore(): string;
 
-    function subscribe() : string ;
+    function subscribe(): string;
 
-    function latestArticles() : string ;
+    function latestArticles(): string;
+
+    function comments(): string;
+
+    function reply(): string;
+
+    function login(): string;
+
+    function register(): string;
+
+    function postComment(): string;
+
+    function yourComment(): string;
+
+    function logout() : string ;
 
 }

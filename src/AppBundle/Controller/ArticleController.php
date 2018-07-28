@@ -8,9 +8,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\Contracts\IArticleCategoryDbManager;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Comment;
+use AppBundle\Form\CommentType;
 use AppBundle\Service\ArticleCategoryDbManager;
 use AppBundle\Service\ArticleDbManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -32,13 +35,51 @@ class ArticleController extends BaseController
         $offset = $request->get("offset");
         if ($offset == null)
             $offset = 0;
-        if($offset < 0)
+        if ($offset < 0)
             $offset = 0;
 
         $articles = $articleDbManager->findArticlesForLatestPosts($offset);
 
-        return $this->render("queries/load-more-query.html.twig",[
-            'articles'=>$articles,
+        return $this->render("queries/load-more-query.html.twig", [
+            'articles' => $articles,
         ]);
+    }
+
+
+    /**
+     * @Route("/articles/comments/leave", name="leave_comment_post", methods={"POST"})
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function leaveCommentAction(Request $request)
+    {
+
+        $commentBindingModel = new CommentBindingModel();
+        $form = $this->createForm(CommentType::class, $commentBindingModel);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            //TODO to be replaced with comment service
+            $article = $this->getDoctrine()->getRepository(Article::class)->findOneBy(array('id' => $commentBindingModel->getArticleId()));
+            $user = $this->getUser();
+
+
+            $comment = new Comment();
+            $comment->setArticle($article);
+            $comment->setCommenterEmail($commentBindingModel->getCommenterEmail());
+            $comment->setCommenterName($commentBindingModel->getCommenterName());
+            $comment->setContent($commentBindingModel->getContent());
+            if ($user != null)
+                $comment->setUser($user);
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+
+            return $this->redirect(trim($commentBindingModel->getRedirect()));
+        }
+
+        return $this->redirect('/');
     }
 }

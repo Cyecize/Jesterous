@@ -43,6 +43,7 @@ class ArticleDbManager implements IArticleDbManager
     {
         $similar = $this->entityManager->getRepository(Article::class)
             ->findBy(array('category' => $article->getCategory()), array(), 3);
+        //TODO filter articles to not show the current one, and get rid of that magic LIMIT = 3
         return $similar;
     }
 

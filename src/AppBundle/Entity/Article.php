@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Constants\Config;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -86,6 +88,17 @@ class Article
     private $category;
 
 
+    /**
+     * @var Comment[]
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="article", fetch="EAGER")
+     */
+    private $comments;
+
+
+    public function __construct()
+    {
+        $this->dateAdded = new \DateTime('now', new \DateTimeZone(Config::DEFAULT_TIMEZONE));
+    }
 
     /**
      * Get id
@@ -295,6 +308,23 @@ class Article
     public function setCategory(ArticleCategory $category): void
     {
         $this->category = $category;
+    }
+
+    /**
+     * @return Comment[]
+     */
+    public function getComments()
+    {
+        //TODO improve autocomplete
+        return $this->comments;
+    }
+
+    /**
+     * @param Comment[] $comments
+     */
+    public function setComments(array $comments): void
+    {
+        $this->comments = $comments;
     }
 
 

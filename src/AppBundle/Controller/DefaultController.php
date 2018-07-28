@@ -2,9 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\Contracts\IArticleCategoryDbManager;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Comment;
+use AppBundle\Form\CommentType;
 use AppBundle\Service\ArticleCategoryDbManager;
 use AppBundle\Service\ArticleDbManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -17,8 +20,8 @@ class DefaultController extends BaseController
     /**
      * @Route("/", name="homepage")
      * @param Request $request
-     * @param ArticleDbManager $articleDbManager
-     * @param ArticleCategoryDbManager $articleCategoryDbManager
+     * @param IArticleDbManager $articleDbManager
+     * @param IArticleCategoryDbManager $articleCategoryDbManager
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function indexAction(Request $request, IArticleDbManager $articleDbManager, IArticleCategoryDbManager $articleCategoryDbManager)
@@ -57,13 +60,18 @@ class DefaultController extends BaseController
      * @Route("/articles/{id}", name="show_article", defaults={"id"=null})
      * @param Request $request
      * @param $id
+     * @param IArticleDbManager $articleDbManager
      * @return Response
      */
-    public function viewArticleAction(Request $request, $id){
+    public function viewArticleAction(Request $request, $id, IArticleDbManager $articleDbManager){
         $article = $this->getDoctrine()->getRepository(Article::class)->findOneBy(array('id'=>$id));
+        //TODO no checks for invalid id keep in mind!
+        $similarArticles = $articleDbManager->findSimilarArticles($article);
 
         return $this->render('default/article.html.twig', [
-            'article'=>$article
+            'article'=>$article,
+            'similarArticles'=>$similarArticles,
+            'form'=>$this->createForm(CommentType::class)->createView(),
         ]);
     }
 

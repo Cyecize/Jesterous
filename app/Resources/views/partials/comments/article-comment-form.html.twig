@@ -1,0 +1,24 @@
+<div class="post_comment" id="postCommentSection">
+    <div class="post_comment_title">{{ localLang.postComment }}</div>
+    <div class="row">
+        <div class="col-xl-8">
+            <div class="post_comment_form_container">
+                <form action="{{ path('leave_comment_post') }}" method="post" enctype="multipart/form-data">
+                    <input type="hidden" value="{{ path('show_article', {'id':article.id}) }}#postCommentSection" name="comment[redirect]">
+                    {% if app.user %}
+                        <input name="comment[commenterName]" type="hidden" value="{{ app.user.username }}"  required="required">
+                        <input name="comment[commenterEmail]"  value="{{ app.user.email }}" type="hidden" required="required">
+                    {% else %}
+                        <input name="comment[commenterName]" type="text" class="comment_input comment_input_name" placeholder="{{ localLang.yourName }}" required="required">
+                        <input name="comment[commenterEmail]" type="email" class="comment_input comment_input_email" placeholder="{{ localLang.yourEmail }}" required="required">
+                    {% endif %}
+
+                    {{ form_row(form._token) }}
+                    <input type="hidden" value="{{ article.id }}" name="comment[articleId]">
+                    <textarea name="comment[content]" class="comment_text" placeholder="{{ localLang.yourComment }}" required="required"></textarea>
+                    <button type="submit" class="comment_button">{{ localLang.postComment }}</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

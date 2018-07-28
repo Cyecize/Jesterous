@@ -1,0 +1,10 @@
+<li class="comment">
+    {% embed 'partials/comments/article-comment-body.html.twig' with {'comment':comment} %} {% endembed %}
+    <div class="ml-2">
+        <ul class="comment_list clearfix">
+            {% for reply in comment.replies %}
+                {% embed 'partials/comments/article-replies-block.html.twig' with {'reply':reply} %} {% endembed %}
+            {% endfor %}
+        </ul>
+    </div>
+</li>

@@ -1,0 +1,10 @@
+<li class="comment float-right clearfix" style="width: 97.5%;">
+    {% embed 'partials/comments/article-comment-body.html.twig' with {'comment':reply} %} {% endembed %}
+    <div class="ml-2">
+        <ul class="comment_list clearfix">
+            {% for reply in reply.replies %}
+                {% embed 'partials/comments/article-replies-block.html.twig' with {'reply':reply} %} {% endembed %}
+            {% endfor %}
+        </ul>
+    </div>
+</li>

@@ -3,7 +3,7 @@
 {% block ogType %}article{% endblock %}
 {% block ogUrl %}{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}{% endblock %}
 {% block title %}{{ article.title }}{% endblock %}
-{% block ogDescription %}{{ article.summary}}{% endblock %}
+{% block ogDescription %}{{ article.summary }}{% endblock %}
 {% block ogImage %}{{ article.backgroundImageLink }}{% endblock %}
 {% block facebookMetas %}
     <meta property="article:section" content="{{ article.category.categoryName }}">
@@ -11,9 +11,15 @@
 {% endblock %}
 
 {% block body %}
+
     <div class="home">
         <div class="home_background parallax-window" data-parallax="scroll"
              data-image-src="{{ article.backgroundImageLink }}" data-speed="0.8"></div>
+        <div class="home_content">
+            <div class="post_category trans_200"><a href="category.html"
+                                                    class="trans_200">{{ article.category.categoryName }}</a></div>
+            <div class="post_title">{{ article.title }}</div>
+        </div>
     </div>
 
     <div class="page_content">
@@ -23,17 +29,339 @@
                 <!-- Main Content -->
 
                 <div class="col-lg-9">
-                    <h2 class="text-dark">Title: {{ article.title }}</h2>
-                    <hr>
+                    {#<h2 class="text-dark">Title: {{ article.title }}</h2>#}
+                    {#<hr>#}
 
-                        <p>Category: {{ article.category.categoryName }}</p>
-                        <p>Language of Category: {{ article.category.language.localeName }}</p>
-                        <p>Views: {{ article.views}}</p>
-                        <p>Date: {{ article.dateAdded.format("M, d, Y")}}</p>
-                    <p>TODO: fix header color</p>
-                    <hr>
-                    <div class="main_content">
-                        {{ article.mainContent|raw }}
+                    {#<p>Category: {{ article.category.categoryName }}</p>#}
+                    {#<p>Language of Category: {{ article.category.language.localeName }}</p>#}
+                    {#<p>Views: {{ article.views}}</p>#}
+                    {#<p>Date: {{ article.dateAdded.format("M, d, Y")}}</p>#}
+                    {#<p>TODO: fix header color</p>#}
+                    {#<hr>#}
+                    {#<div class="main_content">#}
+                    {#{{ article.mainContent|raw }}#}
+                    {#</div>#}
+                    <div class="post_content">
+
+                        <!-- Top Panel -->
+                        {% embed 'partials/articles/article-author-info-panel.html.twig' with {'article':article} %} {% endembed %}
+                        <!-- Post Body -->
+
+                        <div class="post_body">
+                            {{ article.mainContent|raw }}
+                            <!-- Post Tags -->
+                            <div class="post_tags">
+                                <ul>
+                                    <li class="post_tag"><a href="#">Liberty</a></li>
+                                    <li class="post_tag"><a href="#">Manual</a></li>
+                                    <li class="post_tag"><a href="#">Interpretation</a></li>
+                                    <li class="post_tag"><a href="#">Recommendation</a></li>
+                                </ul>
+                            </div>
+                            <small>Views: {{ article.views }}</small>
+                        </div>
+
+                        <!-- Bottom Panel -->
+                        {% embed 'partials/articles/article-author-info-panel.html.twig' with {'article':article} %} {% endembed %}
+
+                        <!-- Similar Posts -->
+                        <div class="similar_posts">
+                            <div class="grid clearfix">
+
+                                {% for article in similarArticles %}
+                                    <!-- Small Card With Image -->
+                                    <div class="card card_small_with_image grid-item">
+                                        <img class="card-img-top" src="{{ article.backgroundImageLink }}"
+                                             alt="https://unsplash.com/@jakobowens1">
+                                        <div class="card-body">
+                                            <div class="card-title card-title-small"><a
+                                                        href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a>
+                                            </div>
+                                            <small class="post_meta"><a
+                                                        href="#">{{ article.author.username }}</a><span>{{ article.dateAdded.format("D M, Y -  H:m a") }}</span>
+                                            </small>
+                                        </div>
+                                    </div>
+                                {% endfor %}
+
+
+                            </div>
+
+                            <!-- Post Comment -->
+                            {% embed 'partials/comments/article-comment-form.html.twig' with {'article':article} %} {% endembed %}
+
+                            {% embed 'partials/comments/article-comment-section.html.twig' with {'comments':article.comments} %} {% endembed %}
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3">
+                    <div class="sidebar">
+                        <div class="sidebar_background"></div>
+
+                        <!-- Top Stories -->
+
+                        <div class="sidebar_section">
+                            <div class="sidebar_title_container">
+                                <div class="sidebar_title">Top Stories</div>
+                                <div class="sidebar_slider_nav">
+                                    <div class="custom_nav_container sidebar_slider_nav_container">
+                                        <div class="custom_prev custom_prev_top">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 width="7px" height="12px" viewBox="0 0 7 12"
+                                                 enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe"
+                                                          points="0,5.61 5.609,0 7,0 7,1.438 2.438,6 7,10.563 7,12 5.609,12 -0.002,6.39 "/>
+											</svg>
+                                        </div>
+                                        <ul id="custom_dots" class="custom_dots custom_dots_top">
+                                            <li class="custom_dot custom_dot_top active"><span></span></li>
+                                            <li class="custom_dot custom_dot_top"><span></span></li>
+                                            <li class="custom_dot custom_dot_top"><span></span></li>
+                                        </ul>
+                                        <div class="custom_next custom_next_top">
+                                            <svg version="1.1" xmlns="http://www.w3.org/2000/svg"
+                                                 xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+                                                 width="7px" height="12px" viewBox="0 0 7 12"
+                                                 enable-background="new 0 0 7 12" xml:space="preserve">
+												<polyline fill="#bebebe"
+                                                          points="6.998,6.39 1.389,12 -0.002,12 -0.002,10.562 4.561,6 -0.002,1.438 -0.002,0 1.389,0 7,5.61 "/>
+											</svg>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="sidebar_section_content">
+
+                                <!-- Top Stories Slider -->
+                                <div class="sidebar_slider_container">
+                                    <div class="owl-carousel owl-theme sidebar_slider_top">
+
+                                        <!-- Top Stories Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_1.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_2.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_3.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_4.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Top Stories Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_1.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_2.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_3.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_4.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                        <!-- Top Stories Slider Item -->
+                                        <div class="owl-item">
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_1.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_2.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_3.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                            <!-- Sidebar Post -->
+                                            <div class="side_post">
+                                                <a href="post.html">
+                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+                                                        <div class="side_post_image">
+                                                            <div><img src="/images/top_4.jpg" alt=""></div>
+                                                        </div>
+                                                        <div class="side_post_content">
+                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
+                                                                Mind
+                                                            </div>
+                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
+                                                        </div>
+                                                    </div>
+                                                </a>
+                                            </div>
+
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -43,6 +371,10 @@
 
 
 {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/category.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/responsive.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/post.js') }}"></script>
 {% endblock %}

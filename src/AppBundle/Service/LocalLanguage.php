@@ -179,11 +179,46 @@ class LocalLanguage implements ILanguagePack
 
     function subscribe(): string
     {
-       return $this->languagePack->subscribe();
+        return $this->languagePack->subscribe();
     }
 
     function latestArticles(): string
     {
         return $this->languagePack->latestArticles();
+    }
+
+    function comments(): string
+    {
+        return $this->languagePack->comments();
+    }
+
+    function reply(): string
+    {
+        return $this->languagePack->reply();
+    }
+
+    function login(): string
+    {
+        return $this->languagePack->login();
+    }
+
+    function register(): string
+    {
+        return $this->languagePack->register();
+    }
+
+    function postComment(): string
+    {
+        return $this->languagePack->postComment();
+    }
+
+    function yourComment(): string
+    {
+        return $this->languagePack->yourComment();
+    }
+
+    function logout(): string
+    {
+        return $this->languagePack->logout();
     }
 }

@@ -1,0 +1,12 @@
+<div class="post_panel post_panel_top d-flex flex-row align-items-center justify-content-start">
+    <div class="author_image"><div><img src="{{ article.author.profileImage }}" alt=""></div></div>
+    <div class="post_meta"><a href="#">{{ article.author.username }}</a><span>{{ article.dateAdded.format("D M, Y -  H:m a") }}</span></div>
+    <div class="post_share ml-sm-auto">
+        <span>share</span>
+        <ul class="post_share_list">
+            <li class="post_share_item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
+            <li class="post_share_item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
+            <li class="post_share_item"><a href="#"><i class="fa fa-google" aria-hidden="true"></i></a></li>
+        </ul>
+    </div>
+</div>

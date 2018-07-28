@@ -45,7 +45,6 @@ class UserRegisterBindingModel
 
     }
 
-
     /**
      * @return mixed
      */

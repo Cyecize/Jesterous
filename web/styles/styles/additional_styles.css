@@ -11,3 +11,7 @@
 .font-cookie span{
     color: #5383d3;
 }
+
+.reply_button:focus{
+    outline: none;
+}

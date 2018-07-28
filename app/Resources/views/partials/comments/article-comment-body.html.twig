@@ -1,0 +1,26 @@
+<div class="comment_body">
+    <div class="comment_panel d-flex flex-row align-items-center justify-content-start">
+        {% if comment.user %}
+            <div class="author_image">
+                <div><img src="{{ comment.user.profileImage }}" alt=""></div>
+            </div>
+            <small class="post_meta"><a
+                        href="#">{{ comment.user.username }}</a><span>{{ comment.dateAdded.format('D M, Y -  H:m a') }}</span>
+            </small>
+        {% else %}
+            <div class="author_image">
+                <div><img src="{{ asset('images/profile-default.png') }}"></div>
+            </div>
+            <small class="post_meta"><span >{{ comment.commenterName }}</span><span>{{ comment.dateAdded.format('D M, Y -  H:m a') }}</span>
+            </small>
+        {% endif %}
+        <button target_comment_id="{{ comment.id }}" type="button"
+                class="reply_button ml-auto">{{ localLang.reply }}</button>
+    </div>
+    <div class="comment_content">
+        <p>{{ comment.content }}</p>
+    </div>
+    <div class="reply-form" style="display: none;">
+        <h3>I am replying</h3>
+    </div>
+</div>

@@ -43,6 +43,20 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const LATEST_ARTICLES = "Нови публикации";
 
+    public const REPLY = "Отговор";
+
+    public const COMMENTS = "Коментари";
+
+    public const LOGIN = "Вход";
+
+    public const REGISTER = "Регистрация";
+
+    public const POST_COMMENT = "Оставете Коментар";
+
+    public const YOUR_COMMENT = "Вашия коментар";
+
+    public const LOGOUT = "Изход";
+
     public function usernameAlreadyTaken(): string
     {
         return "Потребителското име е заето!";
@@ -156,5 +170,40 @@ class BulgarianILanguagePack implements ILanguagePack
     function latestArticles(): string
     {
         return self::LATEST_ARTICLES;
+    }
+
+    function comments(): string
+    {
+        return self::COMMENTS;
+    }
+
+    function reply(): string
+    {
+        return self::REPLY;
+    }
+
+    function login(): string
+    {
+        return self::LOGIN;
+    }
+
+    function register(): string
+    {
+        return self::REGISTER;
+    }
+
+    function postComment(): string
+    {
+        return self::POST_COMMENT;
+    }
+
+    function yourComment(): string
+    {
+        return self::YOUR_COMMENT;
+    }
+
+    function logout(): string
+    {
+        return self::LOGOUT;
     }
 }
