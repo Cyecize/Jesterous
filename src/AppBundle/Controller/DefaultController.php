@@ -68,6 +68,15 @@ class DefaultController extends BaseController
         //TODO no checks for invalid id keep in mind!
         $similarArticles = $articleDbManager->findSimilarArticles($article);
 
+        //TODO ajax call increment view
+        $article->setViews($article->getViews() + 1);
+        $this->getDoctrine()->getManager()->merge($article);
+        $this->getDoctrine()->getManager()->flush();
+
+        foreach ($article->getComments() as $comment){
+            $a =  $comment->getId();
+        }
+
         return $this->render('default/article.html.twig', [
             'article'=>$article,
             'similarArticles'=>$similarArticles,

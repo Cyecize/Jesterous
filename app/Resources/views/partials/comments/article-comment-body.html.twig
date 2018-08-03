@@ -1,26 +1,36 @@
-<div class="comment_body">
+<div class="comment_body" id="comment_id_{{ comment.id }}">
     <div class="comment_panel d-flex flex-row align-items-center justify-content-start">
         {% if comment.user %}
             <div class="author_image">
                 <div><img src="{{ comment.user.profileImage }}" alt=""></div>
             </div>
-            <small class="post_meta"><a
-                        href="#">{{ comment.user.username }}</a><span>{{ comment.dateAdded.format('D M, Y -  H:m a') }}</span>
+            <small class="post_meta">
+                <a href="#">{{ comment.user.username }}</a>
+                {% if comment.parentComment %} <a href="#comment_id_{{ comment.parentComment.id }}"> <i class="fa fa-reply" aria-hidden="false"></i> {{ comment.parentComment.commenterName }} </a> {% endif %}
+                <span>{{ comment.dateAdded|date("d/m, Y - H:i ") }}</span>
             </small>
         {% else %}
             <div class="author_image">
                 <div><img src="{{ asset('images/profile-default.png') }}"></div>
             </div>
-            <small class="post_meta"><span >{{ comment.commenterName }}</span><span>{{ comment.dateAdded.format('D M, Y -  H:m a') }}</span>
-            </small>
+            <small class="post_meta"><span>{{ comment.commenterName }}</span><span>{{ comment.dateAdded|date("d/m, Y - H:i ") }}</span></small>
         {% endif %}
+        {% if app.user and comment.user == null or app.user.id != comment.user.id %}
         <button target_comment_id="{{ comment.id }}" type="button"
                 class="reply_button ml-auto">{{ localLang.reply }}</button>
+        {% endif %}
     </div>
     <div class="comment_content">
         <p>{{ comment.content }}</p>
     </div>
     <div class="reply-form" style="display: none;">
-        <h3>I am replying</h3>
+        <form action="{{ path('leave_reply_post') }}" method="post" enctype="multipart/form-data">
+            <input type="hidden" value="{{ path('show_article', {'id':article.id}) }}#comment_id_{{ comment.id }}" name="reply[redirect]">
+            <input type="hidden" value="{{ comment.id }}" name="reply[parentCommentId]">
+            {{ form_row(form._token) }}
+
+            <textarea name="reply[content]" class="comment_text" placeholder="{{ localLang.yourComment }}" required="required"></textarea>
+            <button type="submit" class="comment_button">{{ localLang.reply }}</button>
+        </form>
     </div>
 </div>

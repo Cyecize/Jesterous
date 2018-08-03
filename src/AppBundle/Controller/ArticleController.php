@@ -9,11 +9,13 @@
 namespace AppBundle\Controller;
 
 use AppBundle\BindingModel\CommentBindingModel;
+use AppBundle\BindingModel\ReplyBindingModel;
 use AppBundle\Contracts\IArticleCategoryDbManager;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Comment;
 use AppBundle\Form\CommentType;
+use AppBundle\Form\ReplyType;
 use AppBundle\Service\ArticleCategoryDbManager;
 use AppBundle\Service\ArticleDbManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -81,5 +83,38 @@ class ArticleController extends BaseController
         }
 
         return $this->redirect('/');
+    }
+
+    /**
+     * @Route("/articles/comments/reply", name="leave_reply_post", methods={"POST"})
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function leaveReplyAction(Request $request)
+    {
+        //TODO to be replaced with comment service
+        $bindingModel = new ReplyBindingModel();
+        $form = $this->createForm(ReplyType::class, $bindingModel);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted()){
+            $user = $this->getUser();
+
+            $comment = new Comment();
+            $comment->setCommenterEmail($user->getEmail());
+            $comment->setCommenterName($user->getUsername());
+            $comment->setContent($bindingModel->getContent());
+            $comment->setUser($user);
+            $comment->setParentComment($this->getDoctrine()->getRepository(Comment::class)->findOneBy(array('id'=>$bindingModel->getParentCommentId())));
+
+            $entityManager = $this->getDoctrine()->getManager();
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            return $this->redirect(trim($bindingModel->getRedirect()));
+        }
+
+        return $this->redirect("/");
     }
 }
