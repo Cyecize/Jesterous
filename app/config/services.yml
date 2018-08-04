@@ -11,7 +11,7 @@ services:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
     #end exceptions
-    
+
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
