@@ -11,6 +11,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Entity\ArticleCategory;
+use AppBundle\Exception\CategoryNotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -40,9 +41,17 @@ class CategoryDbManager implements ICategoryDbManager
         $this->localLanguage = $localLanguage;
     }
 
+    /**
+     * @param string $name
+     * @return ArticleCategory|null|object
+     * @throws CategoryNotFoundException
+     */
     function findOneByName(string $name)
     {
-        return $this->catRepo->findOneBy(array('categoryName'=>$name));
+        $cat = $this->catRepo->findOneBy(array('categoryName'=>$name));
+        if($cat == null)
+            throw new CategoryNotFoundException("Category with name ". $name . "was not found!");
+        return $cat;
     }
 
     function findOneById(int $id)

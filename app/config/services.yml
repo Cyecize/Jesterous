@@ -4,6 +4,14 @@ parameters:
     #parameter_name: value
 
 services:
+    #exceptions
+    published_message.listener:
+        class: AppBundle\EventListener\PublishedMessageExceptionListener
+        tags:
+            - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
+
+    #end exceptions
+    
     # default configuration for services in *this* file
     _defaults:
         # automatically injects dependencies in your services
@@ -40,5 +48,3 @@ twig:
   globals:
         twigInformer: '@AppBundle\Service\TwigInformer'
         localLang: '@AppBundle\Service\LocalLanguage'
-        bulgarianLang: 'bg'
-        englishLang: 'en'
