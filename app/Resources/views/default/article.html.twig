@@ -16,7 +16,7 @@
         <div class="home_background parallax-window" data-parallax="scroll"
              data-image-src="{{ article.backgroundImageLink }}" data-speed="0.8"></div>
         <div class="home_content">
-            <div class="post_category trans_200"><a href="category.html"
+            <div class="post_category trans_200"><a href="{{ path('category_details', {'catName':article.category.categoryName}) }}"
                                                     class="trans_200">{{ article.category.categoryName }}</a></div>
             <div class="post_title">{{ article.title }}</div>
         </div>

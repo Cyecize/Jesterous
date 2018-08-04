@@ -11,8 +11,10 @@ namespace AppBundle\Service;
 
 use AppBundle\Constants\Config;
 use AppBundle\Contracts\ILanguagePack;
+use AppBundle\Entity\Language;
 use AppBundle\Service\LanguagePacks\BulgarianILanguagePack;
 use AppBundle\Service\LanguagePacks\EnglishILanguagePack;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Debug\Exception\UndefinedMethodException;
 
 class LocalLanguage implements ILanguagePack
@@ -27,9 +29,20 @@ class LocalLanguage implements ILanguagePack
      */
     private $currentLang;
 
-    public function __construct()
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    public function __construct(EntityManagerInterface $em)
     {
+        $this->entityManager = $em;
         $this->initLang();
+    }
+
+    public function findCurrentLangs() : array {
+        return $this->entityManager->getRepository(Language::class)
+            ->findBy(array('localeName'=>array(Config::COOKIE_NEUTRAL_LANG, $this->currentLang)));
     }
 
     public function getLocalLang(): string

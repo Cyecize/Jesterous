@@ -327,6 +327,11 @@ class Article
         $this->comments = $comments;
     }
 
+    //overrides
+    public  function __toString()
+    {
+        return $this->id  . "";
+    }
 
 }
 

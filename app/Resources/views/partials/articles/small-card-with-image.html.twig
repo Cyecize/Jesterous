@@ -1,0 +1,10 @@
+<!-- Small Card With Image -->
+<div class="card card_small_with_image grid-item">
+    <img class="card-img-top" src="{{ article.backgroundImageLink }}" alt="{{ article.summary }}">
+    <div class="card-body">
+        <div class="card-title card-title-small">
+            <a href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a>
+        </div>
+        <small class="post_meta"><a href="#">{{ article.author.username }}</a><span>{{ article.dateAdded.format("d - M - Y") }}</span></small>
+    </div>
+</div>

@@ -48,15 +48,6 @@ class DefaultController extends BaseController
     }
 
     /**
-     * @Route("/categories", name="categories_page")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function categoriesAction(){
-        return $this->render("default/categories.html.twig", array());
-    }
-
-
-    /**
      * @Route("/articles/{id}", name="show_article", defaults={"id"=null})
      * @param Request $request
      * @param $id

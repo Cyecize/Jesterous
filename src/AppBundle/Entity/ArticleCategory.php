@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * ArticleCategory
@@ -46,10 +47,21 @@ class ArticleCategory
 
 
     /**
-     * @var ArrayCollection
+     * @var ArticleCategory[]
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\ArticleCategory", mappedBy="parentCategory")
      */
     private $childrenCategories;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Article", mappedBy="category")
+     * @var Article[]
+     */
+    private $articles;
+
+    public function __construct()
+    {
+
+    }
 
     /**
      * Get id
@@ -133,6 +145,36 @@ class ArticleCategory
         $this->childrenCategories = $childrenCategories;
     }
 
+    /**
+     * @return Article[]
+     */
+    public function getArticles(): PersistentCollection
+    {
+        return $this->articles;
+    }
+
+    /**
+     * @return Article[]
+     */
+    public function getArticlesRecursive() : array {
+        $res = array();
+
+        foreach ($this->articles as $article)
+            $res[] = $article;
+
+        foreach ($this->childrenCategories as $childrenCategory) {
+         $res =  array_merge($res, $childrenCategory->getArticlesRecursive());
+        }
+        return array_unique($res);
+    }
+
+    /**
+     * @param Article $articles
+     */
+    public function setArticles(Article $articles): void
+    {
+        $this->articles = $articles;
+    }
 
 
 

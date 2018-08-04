@@ -12,12 +12,14 @@ use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\BindingModel\ReplyBindingModel;
 use AppBundle\Contracts\IArticleCategoryDbManager;
 use AppBundle\Contracts\IArticleDbManager;
+use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Comment;
 use AppBundle\Form\CommentType;
 use AppBundle\Form\ReplyType;
 use AppBundle\Service\ArticleCategoryDbManager;
 use AppBundle\Service\ArticleDbManager;
+use AppBundle\ViewModel\CategoriesViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -25,6 +27,36 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends BaseController
 {
+
+    /**
+     * @Route("/categories", name="categories_page")
+     * @param ICategoryDbManager $categoryDbManager
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function categoriesAction(ICategoryDbManager $categoryDbManager){
+        $categories = $categoryDbManager->findAllLocalCategories();
+        $viewModel = new CategoriesViewModel(array_shift($categories), $categories);
+
+        return $this->render("default/categories.html.twig", array(
+            'viewModel'=>$viewModel,
+        ));
+    }
+    /**
+     * @Route("/categories/{catName}", name="category_details", defaults={"catName":null})
+     * @param $catName
+     * @param ICategoryDbManager $categoryDbManager
+     * @return Response
+     */
+    public function showCategoriesAction($catName, ICategoryDbManager $categoryDbManager){
+        $categories = $categoryDbManager->findAllLocalCategories();
+        $viewModel = new CategoriesViewModel($categoryDbManager->findOneByName($catName), $categories);
+
+        return $this->render("default/categories.html.twig", array(
+            'viewModel'=>$viewModel,
+        ));
+    }
+
+
 
     /**
      * @param Request $request
@@ -46,7 +78,6 @@ class ArticleController extends BaseController
             'articles' => $articles,
         ]);
     }
-
 
     /**
      * @Route("/articles/comments/leave", name="leave_comment_post", methods={"POST"})
