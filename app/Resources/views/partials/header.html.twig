@@ -1,10 +1,10 @@
 <header class="header">
-    <div class="container">
+    <div class="container" style="max-width: 1600px;">
         <div class="row">
             <div class="col">
                 <div class="header_content d-flex flex-row align-items-center justify-content-start">
                     <div class="logo"><a href="/"><img src="{{ asset('images/jesterous-logo.png') }}" class="logo" style="max-height: 85px;" alt="">
-                            <span class="font-cookie"><span>{{ twigInformer.websiteName }}</span></span></a></div>
+                            <span class="font-kirang-hearang">{{ twigInformer.websiteName }}</span></a></div>
                     <nav class="main_nav">
                         <ul>
                             <li class="route-"><a href="/">{{ localLang.home }}</a></li>
@@ -80,6 +80,21 @@
                 <li class="menu_mm"><a href="{{ path('security_login') }}">{{ localLang.login }}</a> </li>
                 <li class="menu_mm"><a href="{{ path('security_register') }}">{{ localLang.register }}</a> </li>
             {% endif %}
+            <li class="menu_mm">
+                <div class="language-selection">
+                    <div>
+                        <label class="m-0">BG
+                            <input name="lang" type="checkbox" value="bg">
+                        </label>
+                    </div>
+                    <div>
+                        <label class="m-0">
+                            EN
+                            <input  name="lang" type="checkbox" value="en">
+                        </label>
+                    </div>
+                </div>
+            </li>
         </ul>
     </nav>
 </div>

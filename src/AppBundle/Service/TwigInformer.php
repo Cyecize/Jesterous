@@ -10,16 +10,32 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Constants\Config;
+use AppBundle\Contracts\IQuoteDbManager;
+use AppBundle\Entity\Quote;
 
 class TwigInformer
 {
 
+    /**
+     * @var IQuoteDbManager
+     */
+    private $quoteDbManager;
+
+    public function __construct(IQuoteDbManager $quoteDb)
+    {
+        $this->quoteDbManager = $quoteDb;
+    }
+
     public function getWebsiteName() : string {
-        return "Jesterous";
+        return "JEsterous";
     }
 
     public function passwordMinLength() : int{
         return Config::MINIMUM_PASSWORD_LENGTH;
+    }
+
+    public function findQuote() : Quote{
+        return $this->quoteDbManager->findRandomQuote();
     }
 
 }

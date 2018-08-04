@@ -57,6 +57,12 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const LOGOUT = "Изход";
 
+    public const LIKE = "Харесване";
+
+    public const LIKES = "Харесвания";
+
+    public const LOGIN_TO_LIKE = "влезте в профила си, за да харесате";
+
     public function usernameAlreadyTaken(): string
     {
         return "Потребителското име е заето!";
@@ -205,5 +211,20 @@ class BulgarianILanguagePack implements ILanguagePack
     function logout(): string
     {
         return self::LOGOUT;
+    }
+
+    function like(): string
+    {
+        return self::LIKE;
+    }
+
+    function likes(): string
+    {
+        return self::LIKES;
+    }
+
+    function loginToLike(): string
+    {
+        return self::LOGIN_TO_LIKE;
     }
 }

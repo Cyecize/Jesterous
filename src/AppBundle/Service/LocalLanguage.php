@@ -221,4 +221,19 @@ class LocalLanguage implements ILanguagePack
     {
         return $this->languagePack->logout();
     }
+
+    function like(): string
+    {
+        return $this->languagePack->like();
+    }
+
+    function likes(): string
+    {
+         return $this->languagePack->likes();
+    }
+
+    function loginToLike(): string
+    {
+        return $this->languagePack->loginToLike();
+    }
 }

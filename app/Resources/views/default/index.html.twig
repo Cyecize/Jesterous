@@ -12,55 +12,61 @@
                 <!-- slider shows as many as we pass to it costom.js initHomeSlider() -->
                 {% for sliderItem in sliderArticles %}
                     <div class="owl-item">
-                    <div class="home_slider_background" style="background-image:url('{{ sliderItem.article.backgroundImageLink }}')"></div>
-                    <div class="home_slider_content_container">
-                        <div class="container">
-                            <div class="row">
-                                <div class="col">
-                                    <div class="home_slider_content" style="background:rgba(0,0,0,0.4); padding: 10px; -webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;">
-                                        <div class="home_slider_item_category trans_200"><a href="category.html" class="trans_200">{{ sliderItem.article.category.categoryName }}</a>
-                                        </div>
-                                        <div class="home_slider_item_title">
-                                            <a href="{{ path('show_article', {'id':sliderItem.article.id}) }}">{{ sliderItem.article.title }}</a>
-                                        </div>
-                                        <div class="home_slider_item_link" >
-                                            <a href="{{ path('show_article', {'id': sliderItem.article.id}) }}" class="text-light">
-                                                {{ localLang.readMore }} &nbsp;<i class="fa fa-hand-o-right" aria-hidden="true"></i>
-                                            </a>
+                        <div class="home_slider_background"
+                             style="background-image:url('{{ sliderItem.article.backgroundImageLink }}')"></div>
+                        <div class="home_slider_content_container">
+                            <div class="container">
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="home_slider_content"
+                                             style="background:rgba(0,0,0,0.4); padding: 10px; -webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;">
+                                            <div class="home_slider_item_category trans_200"><a href="category.html"
+                                                                                                class="trans_200">{{ sliderItem.article.category.categoryName }}</a>
+                                            </div>
+                                            <div class="home_slider_item_title">
+                                                <a href="{{ path('show_article', {'id':sliderItem.article.id}) }}">{{ sliderItem.article.title }}</a>
+                                            </div>
+                                            <div class="home_slider_item_link">
+                                                <a href="{{ path('show_article', {'id': sliderItem.article.id}) }}"
+                                                   class="text-light">
+                                                    {{ localLang.readMore }} &nbsp;<i class="fa fa-hand-o-right"
+                                                                                      aria-hidden="true"></i>
+                                                </a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Similar Posts -->
-                    <div class="similar_posts_container">
-                        <div class="container">
-                            <div class="row d-flex flex-row align-items-end">
+                        <!-- Similar Posts -->
+                        <div class="similar_posts_container">
+                            <div class="container">
+                                <div class="row d-flex flex-row align-items-end">
 
-                                <!-- Similar Posts -->
-                                {% for similarArticle in sliderItem.similarArticles %}
-                                <div class="col-lg-3 col-md-6 similar_post_col">
-                                    <div class="similar_post trans_200">
-                                        <a href="{{ path('show_article',{'id':similarArticle.id}) }}">{{ similarArticle.title }}</a>
+                                    <!-- Similar Posts -->
+                                    {% for similarArticle in sliderItem.similarArticles %}
+                                        <div class="col-lg-3 col-md-6 similar_post_col">
+                                            <div class="similar_post trans_200">
+                                                <a href="{{ path('show_article',{'id':similarArticle.id}) }}">{{ similarArticle.title }}</a>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                            <div class="home_slider_next_container">
+                                <div class="home_slider_next"
+                                     style="background-image:url('{{ sliderItem.nextArticle.backgroundImageLink }}'); -webkit-background-size: cover;background-size: cover;">
+                                    <div class="home_slider_next_background trans_400"></div>
+                                    <div class="home_slider_next_content trans_400">
+                                        <div class="home_slider_next_title">{{ localLang.nextArticle }}</div>
+                                        <div class="home_slider_next_link">{{ sliderItem.nextArticle.title }}</div>
                                     </div>
                                 </div>
-                                {% endfor %}
-                            </div>
-                        </div>
-
-                        <div class="home_slider_next_container">
-                            <div class="home_slider_next" style="background-image:url('{{ sliderItem.nextArticle.backgroundImageLink }}'); -webkit-background-size: cover;background-size: cover;">
-                                <div class="home_slider_next_background trans_400"></div>
-                                <div class="home_slider_next_content trans_400">
-                                    <div class="home_slider_next_title">{{ localLang.nextArticle }}</div>
-                                    <div class="home_slider_next_link">{{ sliderItem.nextArticle.title }}</div>
-                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
                 {% endfor %}
 
             </div>
@@ -91,7 +97,6 @@
                 <!-- Main Content -->
                 <div class="col-lg-9">
                     <div class="main_content">
-
                         <!-- Blog Section - What's Trending -->
 
                         <div class="blog_section">
@@ -214,17 +219,27 @@
 
 
                         <!--  example quote -->
+                        {% set quote = twigInformer.findQuote %}
+                        {% set nameLocaleMethod = localLang.getLocalLang ~ 'AuthorName' %}
+                        {% set contentLocaleMethod = localLang.getLocalLang ~ 'Quote' %}
+
                         <div class="blog_section">
                             <div class="section_panel d-flex flex-row">
-                                <div class="section_title">Ричард бах</div>
+                                <div class="section_title">{{ attribute(quote, nameLocaleMethod) }}</div>
                             </div>
 
                             <div class="section_content">
                                 <hr>
                                 <div class="flex align-items-center font-pacifico text-info" style="font-size: 1.8em;">
-                                    Може ли разстоянието наистина да те раздели от приятелите ти... Ако искаш да си с
-                                    някого, когото обичаш, не си ли вече там при него?<br>
-                                    Can the distance really separate you from your friends?... If you want to be with someone you love, aren't you already there with him?
+                                    {{ attribute(quote, contentLocaleMethod) }}
+                                </div>
+                                <div class="like-section mt-2">
+                                    {% if app.user %}
+                                    <button class="btn btn-info btn-sm active"><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{ localLang.like }}</button>
+                                    {% else %}
+                                        <a href="{{ path('security_login') }}" >{{ localLang.loginToLike }}</a>
+                                    {% endif %}
+                                    {#<span class="ml-2 text-info quote-like-count">{{ localLang.likes }}: {{ quote.likes }}</span>#}
                                 </div>
                                 <hr>
                             </div>
@@ -237,8 +252,8 @@
                             <div class="section_panel d-flex flex-row align-items-center justify-content-start">
                                 <div class="section_title">{{ localLang.latestArticles }}</div>
                             </div>
-                            <div class="section_content" >
-                                <div class="grid clearfix" id="latestPostsHolder" >
+                            <div class="section_content">
+                                <div class="grid clearfix" id="latestPostsHolder">
                                     {% for post in latestPosts %}
                                         {% embed 'partials/articles/small-card-with-background.html.twig' with {'article':post} %} {% endembed %}
                                     {% endfor %}
@@ -249,7 +264,8 @@
 
                     </div>
                     <div class="load_more">
-                        <div id="load_more" class="load_more_button text-center trans_200">{{ localLang.loadMore }}</div>
+                        <div id="load_more"
+                             class="load_more_button text-center trans_200">{{ localLang.loadMore }}</div>
                     </div>
                 </div>
 
@@ -264,7 +280,7 @@
                                 <div class="sidebar_slider_nav">
                                     <div class="custom_nav_container sidebar_slider_nav_container">
                                         <div class="custom_prev custom_prev_top">
-                                           <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                                            <i class="fa fa-chevron-left" aria-hidden="true"></i>
                                         </div>
                                         <ul id="custom_dots" class="custom_dots custom_dots_top">
                                             <li class="custom_dot custom_dot_top active"><span></span></li>
@@ -282,7 +298,6 @@
                                 <!-- Top Stories Slider -->
                                 <div class="sidebar_slider_container">
                                     <div class="owl-carousel owl-theme sidebar_slider_top">
-
                                         <!-- Top Stories Slider Item -->
                                         <div class="owl-item">
 
@@ -428,97 +443,11 @@
                                             </div>
 
                                         </div>
-
-                                        <!-- Top Stories Slider Item -->
-                                        <div class="owl-item">
-
-                                            <!-- Sidebar Post -->
-                                            <div class="side_post">
-                                                <a href="post.html">
-                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
-                                                        <div class="side_post_image">
-                                                            <div><img src="images/top_1.jpg" alt=""></div>
-                                                        </div>
-                                                        <div class="side_post_content">
-                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
-                                                                Mind
-                                                            </div>
-                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-
-                                            <!-- Sidebar Post -->
-                                            <div class="side_post">
-                                                <a href="post.html">
-                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
-                                                        <div class="side_post_image">
-                                                            <div><img src="images/top_2.jpg" alt=""></div>
-                                                        </div>
-                                                        <div class="side_post_content">
-                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
-                                                                Mind
-                                                            </div>
-                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-
-                                            <!-- Sidebar Post -->
-                                            <div class="side_post">
-                                                <a href="post.html">
-                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
-                                                        <div class="side_post_image">
-                                                            <div><img src="images/top_3.jpg" alt=""></div>
-                                                        </div>
-                                                        <div class="side_post_content">
-                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
-                                                                Mind
-                                                            </div>
-                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-
-                                            <!-- Sidebar Post -->
-                                            <div class="side_post">
-                                                <a href="post.html">
-                                                    <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
-                                                        <div class="side_post_image">
-                                                            <div><img src="images/top_4.jpg" alt=""></div>
-                                                        </div>
-                                                        <div class="side_post_content">
-                                                            <div class="side_post_title">How Did van Gogh’s Turbulent
-                                                                Mind
-                                                            </div>
-                                                            <small class="post_meta">Katy Liu<span>Sep 29</span></small>
-                                                        </div>
-                                                    </div>
-                                                </a>
-                                            </div>
-
-                                        </div>
-
                                     </div>
                                 </div>
                             </div>
                         </div>
 
-                        <!-- example quote -->
-                        <br>
-                        <div class="sidebar_section">
-                            <div class="sidebar_title_container">
-                                <div class="sidebar_title font-pacifico">Ричард Бах</div>
-                            </div>
-
-                            <div class="sidebar_section_content">
-                                <p class="font-pacifico text-info"  style="font-size: 1.6em;">  Може ли разстоянието наистина да те раздели от приятелите ти... Ако искаш да си с
-                                    някого, когото обичаш, не си ли вече там при него?</p>
-                            </div>
-                        </div>
 
                     </div>
                 </div>
@@ -546,15 +475,15 @@
 
             $('#load_more').on('click', function () {
                 $.ajax({
-                    method:"GET",
-                    url:"{{ path('load_more_articles') }}?offset=" + numberOfLatestArticles,
-                    success:function (data) {
+                    method: "GET",
+                    url: "{{ path('load_more_articles') }}?offset=" + numberOfLatestArticles,
+                    success: function (data) {
                         latestPostsHolder.append(data).imagesLoaded(function () {
-                            latestPostsHolder.masonry( 'reloadItems' );
+                            latestPostsHolder.masonry('reloadItems');
                             latestPostsHolder.masonry();
                         });
                     },
-                    error:console.error
+                    error: console.error
                 })
             });
         });

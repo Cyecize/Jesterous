@@ -57,6 +57,12 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const LOGOUT = "Logout";
 
+    public const LIKE = "Like";
+
+    public const LIKES = "likes";
+
+    public const LOGIN_TO_LIKE = "login to like";
+
     public function usernameAlreadyTaken(): string
     {
         return "Username already taken!";
@@ -205,5 +211,20 @@ class EnglishILanguagePack implements ILanguagePack
     function logout(): string
     {
         return self::LOGOUT;
+    }
+
+    function like(): string
+    {
+        return self::LIKE;
+    }
+
+    function likes(): string
+    {
+        return self::LIKES;
+    }
+
+    function loginToLike(): string
+    {
+        return self::LOGIN_TO_LIKE;
     }
 }

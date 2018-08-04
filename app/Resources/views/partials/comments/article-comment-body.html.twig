@@ -15,7 +15,7 @@
             </div>
             <small class="post_meta"><span>{{ comment.commenterName }}</span><span>{{ comment.dateAdded|date("d/m, Y - H:i ") }}</span></small>
         {% endif %}
-        {% if app.user and comment.user == null or app.user.id != comment.user.id %}
+        {% if (app.user and comment.user == null) or (app.user and app.user.id != comment.user.id) %}
         <button target_comment_id="{{ comment.id }}" type="button"
                 class="reply_button ml-auto">{{ localLang.reply }}</button>
         {% endif %}

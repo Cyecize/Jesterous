@@ -69,6 +69,12 @@ interface ILanguagePack
 
     function yourComment(): string;
 
-    function logout() : string ;
+    function logout(): string;
+
+    function like(): string;
+
+    function likes(): string;
+
+    function loginToLike(): string;
 
 }

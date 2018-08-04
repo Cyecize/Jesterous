@@ -1,17 +1,115 @@
-.font-pacifico{
+/**
+Table of content
+
+1 -> fonts
+
+
+2-> header
+
+
+3-> Back to Top Btn
+ */
+
+/* fonts */
+.font-pacifico {
     font-family: Pacifico, sans-serif;
     font-variant: normal;
 }
 
-.font-cookie{
+.font-cookie {
     font-family: Cookie, sans-serif;
     font-variant: normal;
 }
 
-.font-cookie span{
+.font-cookie span {
     color: #5383d3;
 }
 
-.reply_button:focus{
+.font-kirang-hearang {
+    font-family: 'Kirang Haerang', cursive;
+}
+
+/* !fonts */
+
+/*header */
+.reply_button:focus {
     outline: none;
+}
+
+header .logo a {
+    font-size: 40px;
+    text-transform: none;
+    font-weight: 100;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+/*!header */
+
+/*
+    BACKTO TOP
+ */
+.back-to-top {
+    display: none;
+    padding: 0px;
+    cursor: pointer;
+    position: fixed;
+    bottom: 30px;
+    right: 40px;
+    width: 70px;
+    height: 70px;
+    -webkit-border-radius: 50%;
+    -moz-border-radius: 50%;
+    border-radius: 50%;
+    z-index: 5000;
+}
+
+.back-to-top:hover {
+    -webkit-transform: rotate(360deg);
+    -moz-transform: rotate(360deg);
+    -ms-transform: rotate(360deg);
+    -o-transform: rotate(360deg);
+    transform: rotate(360deg);
+    -webkit-transition-duration: 0.7s;
+    -moz-transition-duration: 0.7s;
+    -o-transition-duration: 0.7s;
+    transition-duration: 0.7s;
+
+}
+
+.back-to-top .fa {
+    position: absolute;
+    font-size: 2.8em;
+    left: 12px;
+    top: 9px;
+}
+
+/*
+    end BACK TO TOP
+ */
+
+@media screen and (max-width: 1280px) {
+    header .logo a {
+        font-size: 20px;
+        font-weight: 700;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .back-to-top {
+        width: 40px;
+        height: 40px;
+        bottom: 20px;
+        right: 20px;
+    }
+
+    .back-to-top .fa {
+        font-size: 1.5em;
+        left: 8px;
+        top: 4px;
+    }
+
 }

@@ -381,7 +381,8 @@
 	}
 	.post_panel_top .post_share
 	{
-		display: none;
+		display: block;
+		margin: 0 auto;
 	}
 	.bottom_panel .author_image,
 	.bottom_panel .post_meta
