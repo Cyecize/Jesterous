@@ -217,34 +217,7 @@
                             {% embed 'partials/lang/' ~  localLang.localLang ~'/subscribe-form.html.twig' %}{% endembed %}
                         </div>
 
-
-                        <!--  example quote -->
-                        {% set quote = twigInformer.findQuote %}
-                        {% set nameLocaleMethod = localLang.getLocalLang ~ 'AuthorName' %}
-                        {% set contentLocaleMethod = localLang.getLocalLang ~ 'Quote' %}
-
-                        <div class="blog_section">
-                            <div class="section_panel d-flex flex-row">
-                                <div class="section_title">{{ attribute(quote, nameLocaleMethod) }}</div>
-                            </div>
-
-                            <div class="section_content">
-                                <hr>
-                                <div class="flex align-items-center font-pacifico text-info" style="font-size: 1.8em;">
-                                    {{ attribute(quote, contentLocaleMethod) }}
-                                </div>
-                                <div class="like-section mt-2">
-                                    {% if app.user %}
-                                    <button class="btn btn-info btn-sm active"><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{ localLang.like }}</button>
-                                    {% else %}
-                                        <a href="{{ path('security_login') }}" >{{ localLang.loginToLike }}</a>
-                                    {% endif %}
-                                    {#<span class="ml-2 text-info quote-like-count">{{ localLang.likes }}: {{ quote.likes }}</span>#}
-                                </div>
-                                <hr>
-                            </div>
-
-                        </div>
+                        {% embed 'partials/quotes/main-content-quote.html.twig'%} {% endembed %}
 
                         <!-- Blog Section - Latest -->
 

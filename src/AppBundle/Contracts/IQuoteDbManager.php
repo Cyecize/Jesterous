@@ -10,6 +10,7 @@ namespace AppBundle\Contracts;
 
 
 use AppBundle\Entity\Quote;
+use AppBundle\Entity\User;
 
 interface IQuoteDbManager
 {
@@ -20,4 +21,11 @@ interface IQuoteDbManager
     function findAll(): array;
 
     function findAllVisibleQuotes(): array;
+
+    function like(User $user, int $quoteId, bool $dislike = false);
+
+    function findOneById(int $id);
+
+    function hasLike(User $user, int $quoteId) : bool ;
+
 }

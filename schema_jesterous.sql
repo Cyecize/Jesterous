@@ -159,7 +159,7 @@ CREATE TABLE `likes` (
   PRIMARY KEY (`id`),
   KEY `IDX_49CA4E7DA76ED395` (`user_id`),
   CONSTRAINT `FK_49CA4E7DA76ED395` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=59 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -168,6 +168,7 @@ CREATE TABLE `likes` (
 
 LOCK TABLES `likes` WRITE;
 /*!40000 ALTER TABLE `likes` DISABLE KEYS */;
+INSERT INTO `likes` VALUES (55,2,'2018-08-04 22:06:21'),(56,2,'2018-08-04 22:06:24');
 /*!40000 ALTER TABLE `likes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -184,8 +185,8 @@ CREATE TABLE `likes_quotes` (
   PRIMARY KEY (`quote_id`,`like_id`),
   KEY `IDX_A5D2527CDB805178` (`quote_id`),
   KEY `IDX_A5D2527C859BFA32` (`like_id`),
-  CONSTRAINT `FK_A5D2527C859BFA32` FOREIGN KEY (`like_id`) REFERENCES `likes` (`id`),
-  CONSTRAINT `FK_A5D2527CDB805178` FOREIGN KEY (`quote_id`) REFERENCES `quotes` (`id`)
+  CONSTRAINT `FK_A5D2527C859BFA32` FOREIGN KEY (`like_id`) REFERENCES `likes` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `FK_A5D2527CDB805178` FOREIGN KEY (`quote_id`) REFERENCES `quotes` (`id`) ON DELETE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -195,6 +196,7 @@ CREATE TABLE `likes_quotes` (
 
 LOCK TABLES `likes_quotes` WRITE;
 /*!40000 ALTER TABLE `likes_quotes` DISABLE KEYS */;
+INSERT INTO `likes_quotes` VALUES (2,56),(5,55);
 /*!40000 ALTER TABLE `likes_quotes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -207,13 +209,13 @@ DROP TABLE IF EXISTS `quotes`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `quotes` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `bg_author_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `en_author_name` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
-  `bg_quote` longtext COLLATE utf8_unicode_ci NOT NULL,
-  `en_quote` longtext COLLATE utf8_unicode_ci NOT NULL,
+  `bg_author_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `en_author_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `bg_quote` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
+  `en_quote` longtext CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL,
   `is_visible` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -222,7 +224,7 @@ CREATE TABLE `quotes` (
 
 LOCK TABLES `quotes` WRITE;
 /*!40000 ALTER TABLE `quotes` DISABLE KEYS */;
-INSERT INTO `quotes` VALUES (1,'Ричард Бах','Richard Bach','Може ли разстоянието наистина да те раздели от приятелите ти... Ако искаш да си с някого, когото обичаш, не си ли вече там при него?','Can the distance really separate you from your friends?... If you want to be with someone you love, aren\'t you already there with him?',1),(2,'Игнат','Ignat','Човек може единствено да прави едно нещо и то е нищо да не може да прави.','A man can only do one thing right and that is to do nothing.',1),(3,'Аврам Иванов','Avram John','На седмия ден господ си почина, след като създаде @Игнат.','On the seventh day god had a rest right after he created @Ignat.',1),(4,'Горан Гаврилов','Goran Gavrilov','Любовта е като полтъргайст, а аз съм екзорсист.','Love is like a poltergeist, but I am an exorcist.',1);
+INSERT INTO `quotes` VALUES (1,'Ричард Бах','Richard Bach','Може ли разстоянието наистина да те раздели от приятелите ти... Ако искаш да си с някого, когото обичаш, не си ли вече там при него?','Can the distance really separate you from your friends?... If you want to be with someone you love, aren\'t you already there with him?',1),(2,'Игнат','Ignat','Човек може единствено да прави едно нещо и то е нищо да не може да прави.','A man can only do one thing right and that is to do nothing.',1),(3,'Аврам Иванов','Avram John','На седмия ден господ си почина, след като създаде @Игнат.','On the seventh day god had a rest right after he created @Ignat.',1),(5,'Горан Гаврилов','Goran Gavrilov','Любовта е като полтъргайст, а аз съм екзорсист.','Love is like a poltergeist, but I am an exorcist.',1);
 /*!40000 ALTER TABLE `quotes` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,4 +304,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2018-08-04 19:49:16
+-- Dump completed on 2018-08-04 22:12:38

@@ -9,8 +9,11 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Contracts\ILikeDbManager;
 use AppBundle\Contracts\IQuoteDbManager;
+use AppBundle\Entity\LikeReaction;
 use AppBundle\Entity\Quote;
+use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 
 class QuoteDbManager implements IQuoteDbManager
@@ -25,17 +28,24 @@ class QuoteDbManager implements IQuoteDbManager
      */
     private $quoteRepo;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * @var ILikeDbManager
+     */
+    private $likeDbManager;
+
+    public function __construct(EntityManagerInterface $em, ILikeDbManager $likeDbManager)
     {
         $this->entityManager = $em;
         $this->quoteRepo = $em->getRepository(Quote::class);
+        $this->likeDbManager = $likeDbManager;
     }
 
     function findRandomQuote(): Quote
     {
         $arr = $this->quoteRepo->findAll();
         shuffle($arr);
-        return array_pop($arr);
+        $quote =  array_pop($arr);
+        return $quote;
     }
 
     function findTopQuote(): Quote
@@ -51,5 +61,39 @@ class QuoteDbManager implements IQuoteDbManager
     function findAllVisibleQuotes(): array
     {
         return $this->quoteRepo->findBy(array('isVisible' => true));
+    }
+
+    function like(User $user, int $quoteId, bool $isDislike = false)
+    {
+        $quote = $this->findOneById($quoteId);
+        if($isDislike){
+            foreach ($quote->getLikes() as $like){
+                if($like->getUser()->getId() == $user->getId()){
+                    $this->likeDbManager->remove($like);
+                    return;
+                }
+            }
+        }else{
+            $like = $this->likeDbManager->createLike(LikeReaction::constructOverload($user));
+            $quote->addLike($like);
+        }
+
+        $this->entityManager->merge($quote);
+        $this->entityManager->flush();
+    }
+
+    function findOneById(int $id)
+    {
+        return $this->quoteRepo->findOneBy(array('id'=>$id));
+    }
+
+    function hasLike(User $user, int $quoteId) : bool
+    {
+        $quote = $this->findOneById($quoteId);
+        foreach ($quote->getLikes() as $like) {
+            if($user->getId() == $like->getUser()->getId())
+                return true;
+        }
+        return false;
     }
 }

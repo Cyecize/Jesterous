@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use function Symfony\Component\DependencyInjection\Tests\Fixtures\factoryFunction;
 
@@ -60,15 +61,15 @@ class Quote
 
     /**
      * @var LikeReaction[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\LikeReaction")
-     * @ORM\JoinTable(name="likes_quotes", joinColumns={@ORM\JoinColumn(name="quote_id", referencedColumnName="id")}, inverseJoinColumns={@ORM\JoinColumn(name="like_id", referencedColumnName="id")})
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\LikeReaction", fetch="EAGER")
+     * @ORM\JoinTable(name="likes_quotes", joinColumns={@ORM\JoinColumn(name="quote_id", referencedColumnName="id", onDelete="CASCADE")}, inverseJoinColumns={@ORM\JoinColumn(name="like_id", referencedColumnName="id", onDelete="CASCADE")})
      */
     private $likes;
 
     public function __construct()
     {
         $this->isVisible = false;
-        $this->likes = 0;
+        $this->likes = new ArrayCollection();
     }
 
 
@@ -200,6 +201,41 @@ class Quote
     public function getIsVisible()
     {
         return $this->isVisible;
+    }
+
+    /**
+     * @return LikeReaction[]
+     */
+    public function getLikes(): ArrayCollection
+    {
+        return $this->likes->unwrap();
+    }
+
+    /**
+     * @param LikeReaction[] $likes
+     */
+    public function setLikes(array $likes): void
+    {
+        $this->likes = $likes;
+    }
+
+    public function addLike(LikeReaction $like = null)
+    {
+        $this->likes->add($like);
+    }
+
+    public function removeLike(LikeReaction $likeReaction = null)
+    {
+        $this->likes->remove($likeReaction);
+    }
+
+    public function hasUserLiked(User $user): bool
+    {
+        foreach ($this->likes as $like) {
+            if ($like->getUser()->getId() == $user->getId())
+                return true;
+        }
+        return false;
     }
 
 }
