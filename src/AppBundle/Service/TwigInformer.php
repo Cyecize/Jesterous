@@ -10,6 +10,8 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Constants\Config;
+use AppBundle\Contracts\IArticleDbManager;
+use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Contracts\IQuoteDbManager;
 use AppBundle\Entity\Quote;
 
@@ -21,9 +23,21 @@ class TwigInformer
      */
     private $quoteDbManager;
 
-    public function __construct(IQuoteDbManager $quoteDb)
+    /**
+     * @var IArticleDbManager
+     */
+    private $articleDbManager;
+
+    /**
+     * @var ICategoryDbManager
+     */
+    private $categoryDbManager;
+
+    public function __construct(IQuoteDbManager $quoteDb, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager)
     {
         $this->quoteDbManager = $quoteDb;
+        $this->articleDbManager = $articleDbManager;
+        $this->categoryDbManager = $categoryDbManager;
     }
 
     public function getWebsiteName() : string {
@@ -36,6 +50,10 @@ class TwigInformer
 
     public function findQuote() : Quote{
         return $this->quoteDbManager->findRandomQuote();
+    }
+
+    public function findPopularArticlesForSidebar() : array {
+        return $this->articleDbManager->findArticlesByCategories($this->categoryDbManager->findAllLocalCategories());
     }
 
 }

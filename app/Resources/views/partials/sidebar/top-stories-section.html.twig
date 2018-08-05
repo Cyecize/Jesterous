@@ -1,0 +1,46 @@
+<!-- Top Stories -->
+<div class="sidebar_section">
+    <div class="sidebar_title_container">
+        <div class="sidebar_title">{{ localLang.topArticles }}</div>
+        <div class="sidebar_slider_nav">
+            <div class="custom_nav_container sidebar_slider_nav_container">
+                <div class="custom_prev custom_prev_top">
+                    <i class="fa fa-chevron-left" aria-hidden="true"></i>
+                </div>
+                <ul id="custom_dots" class="custom_dots custom_dots_top">
+                    <li class="custom_dot custom_dot_top active"><span></span></li>
+                    <li class="custom_dot custom_dot_top"><span></span></li>
+                    <li class="custom_dot custom_dot_top"><span></span></li>
+                    <li class="custom_dot custom_dot_top"><span></span></li>
+                    <li class="custom_dot custom_dot_top"><span></span></li>
+                    <li class="custom_dot custom_dot_top"><span></span></li>
+                </ul>
+                <div class="custom_next custom_next_top">
+                    <i class="fa fa-chevron-right" aria-hidden="true"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="sidebar_section_content">
+
+        <!-- Top Stories Slider -->
+        <div class="sidebar_slider_container">
+            <div class="owl-carousel owl-theme sidebar_slider_top">
+                <!-- Top Stories Slider Item -->
+                {#lets hope that indexes are in order and not shuffled like 1 3 4 5 #}
+                {% set globalIndexCount = 0 %}
+
+                <div class="owl-item">
+                    {% for article in twigInformer.findPopularArticlesForSidebar %}
+                    {% set globalIndexCount = globalIndexCount + 1 %}
+                    {% if globalIndexCount % 5 == 0 %}
+                </div> <!-- close and reopen tag to achieve multiple divs effect -->
+                <div class="owl-item">
+                    {% endif %}
+                    {% embed 'partials/articles/sidebar-post.html.twig' with{'article':article} %}{% endembed %}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -21,18 +21,6 @@
                 <!-- Main Content -->
 
                 <div class="col-lg-9">
-                    {#<h2 class="text-dark">Title: {{ article.title }}</h2>#}
-                    {#<hr>#}
-
-                    {#<p>Category: {{ article.category.categoryName }}</p>#}
-                    {#<p>Language of Category: {{ article.category.language.localeName }}</p>#}
-                    {#<p>Views: {{ article.views}}</p>#}
-                    {#<p>Date: {{ article.dateAdded.format("M, d, Y")}}</p>#}
-                    {#<p>TODO: fix header color</p>#}
-                    {#<hr>#}
-                    {#<div class="main_content">#}
-                    {#{{ article.mainContent|raw }}#}
-                    {#</div>#}
                     <div class="post_content">
 
                         <!-- Top Panel -->
@@ -61,22 +49,8 @@
                             <div class="grid clearfix">
 
                                 {% for article in similarArticles %}
-                                    <!-- Small Card With Image -->
-                                    {#<div class="card card_small_with_image grid-item">#}
-                                        {#<img class="card-img-top" src="{{ article.backgroundImageLink }}"#}
-                                             {#alt="https://unsplash.com/@jakobowens1">#}
-                                        {#<div class="card-body">#}
-                                            {#<div class="card-title card-title-small"><a#}
-                                                        {#href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a>#}
-                                            {#</div>#}
-                                            {#<small class="post_meta"><a#}
-                                                        {#href="#">{{ article.author.username }}</a><span>{{ article.dateAdded.format("D M, Y -  H:m a") }}</span>#}
-                                            {#</small>#}
-                                        {#</div>#}
-                                    {#</div>#}
                                     {% embed 'partials/articles/small-card-with-image.html.twig' with {'article':article} %} {% endembed %}
                                 {% endfor %}
-
 
                             </div>
 

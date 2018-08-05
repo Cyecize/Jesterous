@@ -1,0 +1,14 @@
+<!-- Sidebar Post -->
+<div class="side_post">
+    <a href="{{ path('show_article', {'id':article.id}) }}">
+        <div class="d-flex flex-row align-items-xl-center align-items-start justify-content-start">
+            <div class="side_post_image">
+                <div><img src="{{ article.backgroundImageLink }}" alt=""></div>
+            </div>
+            <div class="side_post_content">
+                <div class="side_post_title">{{ article.title }}</div>
+                <small class="post_meta">{{ article.author.username }}<span>{{ article.dateAdded.format("d - M - Y") }}</span></small>
+            </div>
+        </div>
+    </a>
+</div>

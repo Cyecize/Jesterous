@@ -28,8 +28,10 @@
         <form action="{{ path('leave_reply_post') }}" method="post" enctype="multipart/form-data">
             <input type="hidden" value="{{ path('show_article', {'id':article.id}) }}#comment_id_{{ comment.id }}" name="reply[redirect]">
             <input type="hidden" value="{{ comment.id }}" name="reply[parentCommentId]">
+            {% if app.user %}
             <input name="reply[commenterName]" type="hidden" value="{{ app.user.username }}"  required="required">
             <input name="reply[commenterEmail]"  value="{{ app.user.email }}" type="hidden" required="required">
+            {% endif %}
             <input type="hidden" name="token" value="{{ csrf_token(comment.id) }}">
             <textarea name="reply[content]" class="comment_text" placeholder="{{ localLang.yourComment }}" required="required"></textarea>
             <button type="submit" class="comment_button">{{ localLang.reply }}</button>

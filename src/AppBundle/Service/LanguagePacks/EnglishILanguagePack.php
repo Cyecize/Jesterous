@@ -63,6 +63,8 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const LOGIN_TO_LIKE = "login to like";
 
+    public const MORE = "more";
+
     public function usernameAlreadyTaken(): string
     {
         return "Username already taken!";
@@ -231,5 +233,10 @@ class EnglishILanguagePack implements ILanguagePack
     function categoryWithNameDoesNotExist(string $catName)
     {
         return sprintf("Category with name %s does not exist.",  $catName);
+    }
+
+    function more(): string
+    {
+        return self::MORE;
     }
 }

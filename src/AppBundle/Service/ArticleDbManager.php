@@ -87,7 +87,7 @@ class ArticleDbManager implements IArticleDbManager
     public function findSimilarArticles(Article $article): array
     {
         $similar = $this->entityManager->getRepository(Article::class)
-            ->findBy(array('category' => $article->getCategory()), array(), 3);
+            ->findBy(array('category' => $article->getCategory(), 'isVisible'=>true), array(), 3);
         //TODO filter articles to not show the current one, and get rid of that magic LIMIT = 3
         return $similar;
     }
@@ -129,7 +129,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesByCategory(ArticleCategory $articleCategory): array
     {
-        return $this->articleRepo->findBy(array('category' => $articleCategory));
+        return $this->articleRepo->findBy(array('category' => $articleCategory, 'isVisible'=>true));
     }
 
     /**
@@ -138,7 +138,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesByCategories(array $articleCategories): array
     {
-        return $this->articleRepo->findBy(array('category' => $articleCategories));
+        return $this->articleRepo->findBy(array('category' => $articleCategories, 'isVisible'=>true));
     }
 
     /**
@@ -148,7 +148,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesForLatestPosts(int $offset): array
     {
-        return $this->articleRepo->findBy(array(), array('dateAdded' => "DESC"), 3, $offset);
+        return $this->articleRepo->findBy(array('isVisible'=>true), array('dateAdded' => "DESC"), 3, $offset);
         //TODO change limit from 3 to something
     }
 

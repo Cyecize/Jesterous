@@ -254,4 +254,9 @@ class LocalLanguage implements ILanguagePack
     {
         return $this->languagePack->categoryWithNameDoesNotExist($catName);
     }
+
+    function more(): string
+    {
+        return $this->languagePack->more();
+    }
 }

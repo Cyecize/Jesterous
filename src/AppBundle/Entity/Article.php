@@ -73,6 +73,12 @@ class Article
     private $views;
 
     /**
+     * @var int
+     * @ORM\Column(name="daily_views", type="integer",  options={"default":0})
+     */
+    private $dailyViews;
+
+    /**
      * @var User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", fetch="EAGER")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
@@ -98,6 +104,8 @@ class Article
     public function __construct()
     {
         $this->dateAdded = new \DateTime('now', new \DateTimeZone(Config::DEFAULT_TIMEZONE));
+        $this->views = 0;
+        $this->dailyViews = 0;
     }
 
     /**
@@ -277,6 +285,24 @@ class Article
     {
         return $this->views;
     }
+
+    /**
+     * @return int
+     */
+    public function getDailyViews(): int
+    {
+        return $this->dailyViews;
+    }
+
+    /**
+     * @param int $dailyViews
+     */
+    public function setDailyViews(int $dailyViews): void
+    {
+        $this->dailyViews = $dailyViews;
+    }
+
+
 
     /**
      * @return User

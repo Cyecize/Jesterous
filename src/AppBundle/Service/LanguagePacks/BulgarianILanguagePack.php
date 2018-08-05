@@ -63,6 +63,8 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const LOGIN_TO_LIKE = "влезте в профила си, за да харесате";
 
+    public const MORE = "още";
+
     public function usernameAlreadyTaken(): string
     {
         return "Потребителското име е заето!";
@@ -231,5 +233,9 @@ class BulgarianILanguagePack implements ILanguagePack
     function categoryWithNameDoesNotExist(string $catName)
     {
         return sprintf("Категория с име %s не съществува.",  $catName);
+    }
+    function more(): string
+    {
+        return self::MORE;
     }
 }
