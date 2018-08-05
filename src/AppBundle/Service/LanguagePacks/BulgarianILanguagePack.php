@@ -65,6 +65,10 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const MORE = "още";
 
+    public const SIMILAR = "Подобни";
+
+    public const ABOUT = "За автора";
+
     public function usernameAlreadyTaken(): string
     {
         return "Потребителското име е заето!";
@@ -232,10 +236,20 @@ class BulgarianILanguagePack implements ILanguagePack
 
     function categoryWithNameDoesNotExist(string $catName)
     {
-        return sprintf("Категория с име %s не съществува.",  $catName);
+        return sprintf("Категория с име %s не съществува.", $catName);
     }
+
     function more(): string
     {
         return self::MORE;
+    }
+
+    function similar(): string
+    {
+        return self::SIMILAR;
+    }
+
+    function about() : string {
+        return self::ABOUT;
     }
 }

@@ -19,6 +19,9 @@ use Symfony\Component\Debug\Exception\UndefinedMethodException;
 
 class LocalLanguage implements ILanguagePack
 {
+
+    private const COOKIE_EXPIRE = 7200; //2HR
+
     /**
      * @var ILanguagePack
      */
@@ -40,9 +43,10 @@ class LocalLanguage implements ILanguagePack
         $this->initLang();
     }
 
-    public function findCurrentLangs() : array {
+    public function findCurrentLangs(): array
+    {
         return $this->entityManager->getRepository(Language::class)
-            ->findBy(array('localeName'=>array(Config::COOKIE_NEUTRAL_LANG, $this->currentLang)));
+            ->findBy(array('localeName' => array(Config::COOKIE_NEUTRAL_LANG, $this->currentLang)));
     }
 
     public function getLocalLang(): string
@@ -62,7 +66,7 @@ class LocalLanguage implements ILanguagePack
         if (!isset($_COOKIE[Config::COOKIE_LANG_NAME])) {
             $this->languagePack = new BulgarianILanguagePack();
             $this->currentLang = Config::COOKIE_BG_LANG;
-            setcookie(Config::COOKIE_LANG_NAME, $this->currentLang);
+            setcookie(Config::COOKIE_LANG_NAME, $this->currentLang, time() + self::COOKIE_EXPIRE, '/');
             return;
         }
         $langType = $_COOKIE[Config::COOKIE_LANG_NAME];
@@ -242,7 +246,7 @@ class LocalLanguage implements ILanguagePack
 
     function likes(): string
     {
-         return $this->languagePack->likes();
+        return $this->languagePack->likes();
     }
 
     function loginToLike(): string
@@ -258,5 +262,15 @@ class LocalLanguage implements ILanguagePack
     function more(): string
     {
         return $this->languagePack->more();
+    }
+
+    function similar(): string
+    {
+        return $this->languagePack->similar();
+    }
+
+    function about(): string
+    {
+        return $this->languagePack->about();
     }
 }

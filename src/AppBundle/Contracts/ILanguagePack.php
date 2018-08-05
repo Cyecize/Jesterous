@@ -81,4 +81,8 @@ interface ILanguagePack
 
     function more(): string;
 
+    function similar() : string ;
+
+    function about() :string ;
+
 }

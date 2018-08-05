@@ -12,7 +12,7 @@ $(function () {
 
     inputs.on('click', function (e) {
         var lng = e.target.value;
-        document.cookie = "lang=" + lng;
+        document.cookie = "lang=" + lng + ';path=/;';
         location.reload();
     });
 

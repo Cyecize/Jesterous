@@ -29,6 +29,8 @@ class ArticleDbManager implements IArticleDbManager
 
     private const INVALID_COMMENT_CONTENT = "Comment fields were not filled properly!";
 
+    private const MAX_ARTICLES_PER_PAGE = 2;
+
 
     /**
      * @var EntityManagerInterface
@@ -82,13 +84,17 @@ class ArticleDbManager implements IArticleDbManager
 
     /**
      * @param Article $article
+     * @param int $limit
      * @return Article[]
      */
-    public function findSimilarArticles(Article $article): array
+    public function findSimilarArticles(Article $article, int $limit = 3): array
     {
         $similar = $this->entityManager->getRepository(Article::class)
-            ->findBy(array('category' => $article->getCategory(), 'isVisible'=>true), array(), 3);
-        //TODO filter articles to not show the current one, and get rid of that magic LIMIT = 3
+            ->findBy(array('category' => $article->getCategory(), 'isVisible' => true), array(), $limit);
+
+        $similar = array_filter($similar, function (Article $e) use ($article) {
+            return $e->getId() != $article->getId();
+        });
         return $similar;
     }
 
@@ -129,7 +135,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesByCategory(ArticleCategory $articleCategory): array
     {
-        return $this->articleRepo->findBy(array('category' => $articleCategory, 'isVisible'=>true));
+        return $this->articleRepo->findBy(array('category' => $articleCategory, 'isVisible' => true), array('dailyViews' => 'DESC'));
     }
 
     /**
@@ -138,7 +144,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesByCategories(array $articleCategories): array
     {
-        return $this->articleRepo->findBy(array('category' => $articleCategories, 'isVisible'=>true));
+        return $this->articleRepo->findBy(array('category' => $articleCategories, 'isVisible' => true), array('dailyViews' => 'DESC'));
     }
 
     /**
@@ -148,7 +154,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesForLatestPosts(int $offset): array
     {
-        return $this->articleRepo->findBy(array('isVisible'=>true), array('dateAdded' => "DESC"), 3, $offset);
+        return $this->articleRepo->findBy(array('isVisible' => true), array('dateAdded' => "DESC"), 3, $offset);
         //TODO change limit from 3 to something
     }
 
@@ -160,9 +166,9 @@ class ArticleDbManager implements IArticleDbManager
     function leaveComment(CommentBindingModel $bindingModel, User $user = null)
     {
         $article = $this->findOneById($bindingModel->getArticleId());
-        if($article == null)
+        if ($article == null)
             throw new CommentException(self::INVALID_ARTICLE);
-        if(!$this->isEmpty($bindingModel->getCommenterName())|| !$this->isEmpty($bindingModel->getCommenterEmail())  || !$this->isEmpty($bindingModel->getContent()))
+        if (!$this->isEmpty($bindingModel->getCommenterName()) || !$this->isEmpty($bindingModel->getCommenterEmail()) || !$this->isEmpty($bindingModel->getContent()))
             throw new CommentException(self::INVALID_COMMENT_CONTENT);
         $comment = $this->modelMapper->map($bindingModel, Comment::class);
         $comment->setArticle($article);
@@ -181,24 +187,24 @@ class ArticleDbManager implements IArticleDbManager
     function leaveReply(CommentBindingModel $bindingModel, User $user)
     {
         $parentComment = $this->findCommentById($bindingModel->getParentCommentId());
-        if($parentComment == null || !$this->isEmpty($bindingModel->getCommenterName())|| !$this->isEmpty($bindingModel->getCommenterEmail())  || !$this->isEmpty($bindingModel->getContent()))
+        if ($parentComment == null || !$this->isEmpty($bindingModel->getCommenterName()) || !$this->isEmpty($bindingModel->getCommenterEmail()) || !$this->isEmpty($bindingModel->getContent()))
             throw new CommentException(self::INVALID_COMMENT_CONTENT);
 
         $reply = $this->modelMapper->map($bindingModel, Comment::class);
         $reply->setUser($user);
         $reply->setParentComment($parentComment);
 
-
         $this->entityManager->persist($reply);
         $this->entityManager->flush();
     }
 
-    private function isEmpty(?string $str) : bool {
-        return $str != null &&  trim($str) != null;
+    private function isEmpty(?string $str): bool
+    {
+        return $str != null && trim($str) != null;
     }
 
     function findCommentById(int $id): ?Comment
     {
-        return $this->commentRepo->findOneBy(array('id'=>$id));
+        return $this->commentRepo->findOneBy(array('id' => $id));
     }
 }

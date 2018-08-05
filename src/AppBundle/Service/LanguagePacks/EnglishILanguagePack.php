@@ -65,6 +65,10 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const MORE = "more";
 
+    public const SIMILAR = "Similar";
+
+    public const ABOUT = "About me";
+
     public function usernameAlreadyTaken(): string
     {
         return "Username already taken!";
@@ -238,5 +242,14 @@ class EnglishILanguagePack implements ILanguagePack
     function more(): string
     {
         return self::MORE;
+    }
+
+    function similar(): string
+    {
+        return self::SIMILAR;
+    }
+
+    function about() : string {
+        return self::ABOUT;
     }
 }

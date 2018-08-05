@@ -34,10 +34,16 @@ class ArticleController extends BaseController
      */
     private $articleService;
 
-    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager)
+    /**
+     * @var ICategoryDbManager
+     */
+    private $categoryService;
+
+    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager)
     {
         parent::__construct($language);
         $this->articleService = $articleDbManager;
+        $this->categoryService = $categoryDbManager;
     }
 
     /**
@@ -45,8 +51,8 @@ class ArticleController extends BaseController
      * @param ICategoryDbManager $categoryDbManager
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function categoriesAction(ICategoryDbManager $categoryDbManager){
-        $categories = $categoryDbManager->findAllLocalCategories();
+    public function categoriesAction(){
+        $categories = $this->categoryService->findAllLocalCategories();
         $viewModel = new CategoriesViewModel(array_shift($categories), $categories);
 
         return $this->render("default/categories.html.twig", array(
@@ -60,9 +66,9 @@ class ArticleController extends BaseController
      * @param ICategoryDbManager $categoryDbManager
      * @return Response
      */
-    public function showCategoriesAction($catName, ICategoryDbManager $categoryDbManager){
-        $categories = $categoryDbManager->findAllLocalCategories();
-        $viewModel = new CategoriesViewModel($categoryDbManager->findOneByName($catName), $categories);
+    public function showCategoriesAction($catName){
+        $categories = $this->categoryService->findAllLocalCategories();
+        $viewModel = new CategoriesViewModel($this->categoryService->findOneByName($catName), $categories);
 
         return $this->render("default/categories.html.twig", array(
             'viewModel'=>$viewModel,
@@ -70,20 +76,16 @@ class ArticleController extends BaseController
     }
 
     /**
+     * @Route("/articles/load-more", name="load_more_articles")
      * @param Request $request
      * @param IArticleDbManager $articleDbManager
      * @return Response
-     * @Route("/articles/load-more", name="load_more_articles")
      */
-    public function loadMoreArticlesAction(Request $request, IArticleDbManager $articleDbManager)
+    public function loadMoreArticlesAction(Request $request)
     {
         $offset = $request->get("offset");
-        if ($offset == null)
-            $offset = 0;
-        if ($offset < 0)
-            $offset = 0;
-
-        $articles = $articleDbManager->findArticlesForLatestPosts($offset);
+        if ($offset == null || $offset < 0) $offset = 0;
+        $articles = $this->articleService->findArticlesForLatestPosts($offset);
 
         return $this->render("queries/load-more-articles-index-query.html.twig", [
             'articles' => $articles,

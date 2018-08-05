@@ -1,0 +1,10 @@
+<div class="sidebar_section">
+    <div class="sidebar_title_container">
+        <div class="sidebar_title">{{ localLang.similar }}</div>
+    </div>
+    <div class="sidebar_section_content">
+        {% for article in similarArticles %}
+            {% embed 'partials/articles/sidebar-post.html.twig' with{'article':article} %} {% endembed %}
+        {% endfor %}
+    </div>
+</div>

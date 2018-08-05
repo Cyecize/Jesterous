@@ -30,9 +30,8 @@ class DefaultController extends BaseController
         $latestPosts = $articleDbManager->findArticlesForLatestPosts(0);
         $sliderArticles = $articleDbManager->forgeSliderViewModel($articleDbManager->findArticlesByCategories($articleCategoryDbManager->findLocaleCategories()));
 
-
         return $this->render('default/index.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
+//            'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
             'categories'=>$categories,
             'latestPosts'=>$latestPosts,
             'sliderArticles'=>$sliderArticles,

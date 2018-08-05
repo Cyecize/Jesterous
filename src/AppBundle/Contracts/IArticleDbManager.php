@@ -23,12 +23,12 @@ interface IArticleDbManager
 
     function findAll(bool $hidden = false) : array ;
 
-
     /**
      * @param Article $article
+     * @param int $limit
      * @return Article[]
      */
-    function findSimilarArticles(Article $article): array;
+    function findSimilarArticles(Article $article, int $limit = 3): array;
 
     /**
      * @param Article[] $articles

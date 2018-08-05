@@ -1,32 +1,66 @@
 <footer class="footer">
     <div class="container">
         <div class="row row-lg-eq-height">
-            <div class="col-lg-9 order-lg-1 order-2">
+
+            <div class="col-lg-9 order-2">
                 <div class="footer_content">
-                    <div class="footer_logo"><a href="#"><span class="font-kirang-hearang"> {{ twigInformer.websiteName }}</span></a></div>
-                    <div class="footer_social">
-                        <ul>
-                            <li class="footer_social_facebook"><a target="_blank" href="https://www.facebook.com/jesterousblog/"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                            <li class="footer_social_twitter"><a  target="_blank" href="https://twitter.com/Jesterous1"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-                            <li class="footer_social_pinterest"><a target="_blank" href="https://www.pinterest.com/jesterousblog/pins/"><i class="fa fa-pinterest" aria-hidden="true"></i></a></li>
-                            <li class="footer_social_instagram"><a  target="_blank" href="https://www.instagram.com/jesterous_blog/"><i class="fa fa-instagram" aria-hidden="true"></i></a></li>
-                            <li class="footer_social_instagram"><a  target="_blank" href="https://www.youtube.com/channel/UCgsQve_pkdcaph7yPvq14Kg"><i class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
-                            <li class="footer_social_google"><a href="{{ path('contacts_page') }}"><i class="fa fa-google" aria-hidden="true"></i></a>
-                            </li>
-                        </ul>
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="footer_logo">
+                                <a href="/">
+                                    <span class="font-kirang-hearang">{{ localLang.about }}</span>
+                                </a>
+                            </div>
+                            {% embed 'partials/lang/' ~  localLang.getLocalLang  ~ '/about-us-footer.html.twig' %} {% endembed %}
+                        </div>
+                        <div class="col-md-6">
+                            <div class="footer_logo">
+                                <a href="/">
+                                <span class="font-kirang-hearang">
+                                    {{ twigInformer.websiteName }}
+                                </span>
+                                </a>
+                            </div>
+                            <div class="footer_social">
+                                <ul>
+                                    <li class="footer_social_facebook"><a target="_blank"
+                                                                          href="https://www.facebook.com/jesterousblog/"><i
+                                                    class="fa fa-facebook" aria-hidden="true"></i></a></li>
+                                    <li class="footer_social_twitter"><a target="_blank"
+                                                                         href="https://twitter.com/Jesterous1"><i
+                                                    class="fa fa-twitter" aria-hidden="true"></i></a></li>
+                                    <li class="footer_social_pinterest"><a target="_blank"
+                                                                           href="https://www.pinterest.com/jesterousblog/pins/"><i
+                                                    class="fa fa-pinterest" aria-hidden="true"></i></a></li>
+                                    <li class="footer_social_instagram"><a target="_blank"
+                                                                           href="https://www.instagram.com/jesterous_blog/"><i
+                                                    class="fa fa-instagram" aria-hidden="true"></i></a></li>
+                                    <li class="footer_social_instagram"><a target="_blank"
+                                                                           href="https://www.youtube.com/channel/UCgsQve_pkdcaph7yPvq14Kg"><i
+                                                    class="fa fa-youtube-play" aria-hidden="true"></i></a></li>
+                                    <li class="footer_social_google"><a href="{{ path('contacts_page') }}"><i
+                                                    class="fa fa-google" aria-hidden="true"></i></a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="copyright">
+                                Copyright &copy;<script>document.write(new Date().getFullYear());</script>
+                                All rights reserved | Avision by <a href="https://colorlib.com"
+                                                                    target="_blank">Colorlib</a>
+                            </div>
+                        </div>
                     </div>
-                    <div class="copyright">
-                        Copyright &copy;<script>document.write(new Date().getFullYear());</script>
-                        All rights reserved | Avision by  <a href="https://colorlib.com" target="_blank">Colorlib</a></div>
                 </div>
+
             </div>
-            <div class="col-lg-3 order-lg-2 order-1">
+            <div class="col-lg-3  order-3">
                 <div class="subscribe">
                     <div class="subscribe_background"></div>
                     <div class="subscribe_content">
                         <div class="subscribe_title">{{ localLang.subscribe }}</div>
                         <form action="#">
-                            <input type="email" class="sub_input" placeholder="{{ localLang.yourEmail }}" required="required">
+                            <input type="email" class="sub_input" placeholder="{{ localLang.yourEmail }}"
+                                   required="required">
                             <button class="sub_button">
                                 <i class="fa fa-long-arrow-right text-light" aria-hidden="true"></i>
                             </button>
