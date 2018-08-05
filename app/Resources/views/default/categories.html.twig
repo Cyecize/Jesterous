@@ -43,25 +43,7 @@
                         <div class="section_content">
                             <h3 class="font-kirang-hearang text-info">{{ viewModel.selectedCategory.categoryName }} <small>({{ viewModel.articles|length }})</small></h3>
                             <div class="grid clearfix">
-                                {% for article in viewModel.articles %}
-                                    {% set rand = random(3) %}
-
-                                    {% if rand == 0 %}
-                                        {% embed 'partials/articles/small-card-with-background.html.twig' with {'article': article} %} {% endembed %}
-                                    {% endif %}
-                                    {% if rand == 1 %}
-                                        {% embed 'partials/articles/small-card-with-image.html.twig' with {'article': article} %} {% endembed %}
-                                    {% endif %}
-
-                                    {% if rand == 2 %}
-                                        {% embed 'partials/articles/small-card-without-image.html.twig' with {'article': article} %} {% endembed %}
-                                    {% endif %}
-
-                                    {% if rand == 3 %}
-                                        {% embed 'partials/articles/default-card-with-background.html.twig' with {'article': article} %} {% endembed %}
-                                    {% endif %}
-
-                                {% endfor %}
+                                {% embed 'partials/articles/articles-cards-renderer.html.twig' with {'articles':viewModel.articles} %} {% endembed %}
                             </div>
                         </div>
                     </div>

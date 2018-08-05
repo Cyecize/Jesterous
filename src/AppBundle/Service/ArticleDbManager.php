@@ -29,7 +29,7 @@ class ArticleDbManager implements IArticleDbManager
 
     private const INVALID_COMMENT_CONTENT = "Comment fields were not filled properly!";
 
-    private const MAX_ARTICLES_PER_PAGE = 2;
+    private const MAX_ARTICLES_PER_PAGE = 3;
 
 
     /**
@@ -131,31 +131,32 @@ class ArticleDbManager implements IArticleDbManager
 
     /**
      * @param ArticleCategory $articleCategory
+     * @param int|null $limit
      * @return Article[]
      */
-    function findArticlesByCategory(ArticleCategory $articleCategory): array
+    function findArticlesByCategory(ArticleCategory $articleCategory, int $limit = null): array
     {
-        return $this->articleRepo->findBy(array('category' => $articleCategory, 'isVisible' => true), array('dailyViews' => 'DESC'));
+        return $this->articleRepo->findBy(array('category' => $articleCategory, 'isVisible' => true), array('dailyViews' => 'DESC'), $limit);
     }
 
     /**
      * @param ArticleCategory[] $articleCategories
+     * @param int|null $limit
      * @return Article[]
      */
-    function findArticlesByCategories(array $articleCategories): array
+    function findArticlesByCategories(array $articleCategories, int $limit = null): array
     {
-        return $this->articleRepo->findBy(array('category' => $articleCategories, 'isVisible' => true), array('dailyViews' => 'DESC'));
+        return $this->articleRepo->findBy(array('category' => $articleCategories, 'isVisible' => true), array('dailyViews' => 'DESC'), $limit);
     }
 
     /**
-     *
      * @param int $offset
+     * @param ArticleCategory[] $categories
      * @return Article[]
      */
-    function findArticlesForLatestPosts(int $offset): array
+    function findArticlesForLatestPosts(int $offset, array $categories): array
     {
-        return $this->articleRepo->findBy(array('isVisible' => true), array('dateAdded' => "DESC"), 3, $offset);
-        //TODO change limit from 3 to something
+        return $this->articleRepo->findBy(array('isVisible' => true, 'category'=>$categories), array('dateAdded' => "DESC"), self::MAX_ARTICLES_PER_PAGE, $offset);
     }
 
     /**

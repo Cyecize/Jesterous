@@ -10,6 +10,7 @@ use AppBundle\Entity\Comment;
 use AppBundle\Form\CommentType;
 use AppBundle\Service\ArticleCategoryDbManager;
 use AppBundle\Service\ArticleDbManager;
+use AppBundle\Service\LocalLanguage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,21 +18,29 @@ use Symfony\Component\HttpFoundation\Response;
 
 class DefaultController extends BaseController
 {
+
+    private $articleService;
+
+    private $categoryService;
+
+    public function __construct(LocalLanguage $language, IArticleCategoryDbManager $categoryDbManager, IArticleDbManager $articleDb)
+    {
+        parent::__construct($language);
+        $this->articleService =$articleDb;
+        $this->categoryService = $categoryDbManager;
+    }
+
     /**
      * @Route("/", name="homepage")
-     * @param Request $request
-     * @param IArticleDbManager $articleDbManager
-     * @param IArticleCategoryDbManager $articleCategoryDbManager
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request, IArticleDbManager $articleDbManager, IArticleCategoryDbManager $articleCategoryDbManager)
+    public function indexAction()
     {
-        $categories = $articleCategoryDbManager->findLocaleCategories();
-        $latestPosts = $articleDbManager->findArticlesForLatestPosts(0);
-        $sliderArticles = $articleDbManager->forgeSliderViewModel($articleDbManager->findArticlesByCategories($articleCategoryDbManager->findLocaleCategories()));
+        $categories = $this->categoryService->findLocaleCategories();
+        $latestPosts = $this->articleService->findArticlesForLatestPosts(0, $categories);
+        $sliderArticles = $this->articleService->forgeSliderViewModel($this->articleService->findArticlesByCategories($categories));
 
         return $this->render('default/index.html.twig', [
-//            'base_dir' => realpath($this->getParameter('kernel.project_dir')) . DIRECTORY_SEPARATOR,
             'categories'=>$categories,
             'latestPosts'=>$latestPosts,
             'sliderArticles'=>$sliderArticles,

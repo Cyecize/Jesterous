@@ -15,6 +15,7 @@ use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Comment;
 use AppBundle\Exception\CommentException;
+use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Form\CommentType;
 use AppBundle\Form\ReplyType;
 use AppBundle\Service\ArticleCategoryDbManager;
@@ -23,6 +24,7 @@ use AppBundle\Service\LocalLanguage;
 use AppBundle\ViewModel\CategoriesViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -63,7 +65,6 @@ class ArticleController extends BaseController
     /**
      * @Route("/categories/{catName}", name="category_details", defaults={"catName":null})
      * @param $catName
-     * @param ICategoryDbManager $categoryDbManager
      * @return Response
      */
     public function showCategoriesAction($catName){
@@ -76,20 +77,34 @@ class ArticleController extends BaseController
     }
 
     /**
-     * @Route("/articles/load-more", name="load_more_articles")
+     * @Route("/articles/latest/load-more", name="latest_articles_load_more")
      * @param Request $request
-     * @param IArticleDbManager $articleDbManager
      * @return Response
      */
     public function loadMoreArticlesAction(Request $request)
     {
         $offset = $request->get("offset");
         if ($offset == null || $offset < 0) $offset = 0;
-        $articles = $this->articleService->findArticlesForLatestPosts($offset);
+        $articles = $this->articleService->findArticlesForLatestPosts($offset, $this->categoryService->findAllLocalCategories());
 
         return $this->render("queries/load-more-articles-index-query.html.twig", [
             'articles' => $articles,
         ]);
+    }
+
+    /**
+     * @Route("/articles/{id}/view", name="article_add_view", defaults={"id":null}, methods={"POST"})
+     * @param Request $request
+     * @param $id
+     * @return JsonResponse
+     * @throws RestFriendlyExceptionImpl
+     */
+    public function viewArticle(Request $request, $id){
+        $token = $request->get('token');
+        if($id == null || !$this->isCsrfTokenValid($id, $token))
+            throw new RestFriendlyExceptionImpl("Invalid article to view", 200);
+        //TODO increment view and remove counting view from, show_article
+        return new JsonResponse(['message'=>"OK"]);
     }
 
     /**

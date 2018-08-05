@@ -1,0 +1,19 @@
+{% for article in articles %}
+    {% set rand = random(3) %}
+
+    {% if rand == 0 %}
+        {% embed 'partials/articles/small-card-with-background.html.twig' with {'article': article} %} {% endembed %}
+    {% endif %}
+    {% if rand == 1 %}
+        {% embed 'partials/articles/small-card-with-image.html.twig' with {'article': article} %} {% endembed %}
+    {% endif %}
+
+    {% if rand == 2 %}
+        {% embed 'partials/articles/small-card-without-image.html.twig' with {'article': article} %} {% endembed %}
+    {% endif %}
+
+    {% if rand == 3 %}
+        {% embed 'partials/articles/default-card-with-background.html.twig' with {'article': article} %} {% endembed %}
+    {% endif %}
+
+{% endfor %}

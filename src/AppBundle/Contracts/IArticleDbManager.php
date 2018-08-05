@@ -38,22 +38,25 @@ interface IArticleDbManager
 
     /**
      * @param ArticleCategory $articleCategory
+     * @param int|null $limit
      * @return Article[]
      */
-    function findArticlesByCategory(ArticleCategory $articleCategory): array;
+    function findArticlesByCategory(ArticleCategory $articleCategory, int $limit = null): array;
 
     /**
      * @param ArticleCategory[] $articleCategories
+     * @param int|null $limit
      * @return Article[]
      */
-    function findArticlesByCategories(array $articleCategories): array;
+    function findArticlesByCategories(array $articleCategories, int $limit = null): array;
 
     /**
      *
      * @param int $offset
+     * @param ArticleCategory[] $categories
      * @return Article[]
      */
-    function findArticlesForLatestPosts(int $offset): array;
+    function findArticlesForLatestPosts(int $offset, array $categories): array;
 
     function leaveComment(CommentBindingModel $bindingModel, User $user = null);
 

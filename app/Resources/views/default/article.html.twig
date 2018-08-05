@@ -79,4 +79,25 @@
 
 {% block javascripts %}
     <script src="{{ asset('styles/js/post.js') }}"></script>
+    <script>
+        $(function () {
+            viewArticle();
+
+            function viewArticle() {
+                document.onreadystatechange = function () {
+                    setTimeout(function () {
+                        $.ajax({
+                            type:"POST",
+                            url:'{{ path('article_add_view', {'id':article.id}) }}',
+                            data:{token:'{{ csrf_token(article.id) }}'},
+                            success:function (data) {
+                                console.log(data);
+                            },
+                            error:console.error
+                        });
+                    }, 3000);
+                };
+            }
+        })
+    </script>
 {% endblock %}

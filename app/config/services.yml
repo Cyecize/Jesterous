@@ -9,11 +9,14 @@ services:
         class: AppBundle\EventListener\ExceptionsListener
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
-
     not_found_exception.listener:
         class: AppBundle\EventListener\ExceptionsListener
         tags:
            - { name: kernel.event_listener, event: kernel.exception, method: onNotFoundException }
+    rest_exception.listener:
+        class: AppBundle\EventListener\ExceptionsListener
+        tags:
+           - { name: kernel.event_listener, event: kernel.exception, method: onRestException }
     #end exceptions
 
     # default configuration for services in *this* file
