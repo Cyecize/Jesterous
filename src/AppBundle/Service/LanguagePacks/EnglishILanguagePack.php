@@ -227,4 +227,9 @@ class EnglishILanguagePack implements ILanguagePack
     {
         return self::LOGIN_TO_LIKE;
     }
+
+    function categoryWithNameDoesNotExist(string $catName)
+    {
+        return sprintf("Category with name %s does not exist.",  $catName);
+    }
 }

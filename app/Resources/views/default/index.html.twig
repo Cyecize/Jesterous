@@ -20,7 +20,7 @@
                                     <div class="col">
                                         <div class="home_slider_content"
                                              style="background:rgba(0,0,0,0.4); padding: 10px; -webkit-border-radius: 10px;-moz-border-radius: 10px;border-radius: 10px;">
-                                            <div class="home_slider_item_category trans_200"><a href="category.html"
+                                            <div class="home_slider_item_category trans_200"><a href="{{ path('category_details', {'catName':sliderItem.article.category.categoryName}) }}"
                                                                                                 class="trans_200">{{ sliderItem.article.category.categoryName }}</a>
                                             </div>
                                             <div class="home_slider_item_title">
@@ -445,8 +445,10 @@
 
         $(function () {
             var latestPostsHolder = $('#latestPostsHolder');
+            var btn  = $('#load_more');
 
-            $('#load_more').on('click', function () {
+            btn.on('click', function () {
+                btn.hide();
                 $.ajax({
                     method: "GET",
                     url: "{{ path('load_more_articles') }}?offset=" + numberOfLatestArticles,
@@ -454,6 +456,7 @@
                         latestPostsHolder.append(data).imagesLoaded(function () {
                             latestPostsHolder.masonry('reloadItems');
                             latestPostsHolder.masonry();
+                            btn.show();
                         });
                     },
                     error: console.error

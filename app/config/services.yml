@@ -6,10 +6,14 @@ parameters:
 services:
     #exceptions
     published_message.listener:
-        class: AppBundle\EventListener\PublishedMessageExceptionListener
+        class: AppBundle\EventListener\ExceptionsListener
         tags:
             - { name: kernel.event_listener, event: kernel.exception, method: onKernelException }
 
+    not_found_exception.listener:
+        class: AppBundle\EventListener\ExceptionsListener
+        tags:
+           - { name: kernel.event_listener, event: kernel.exception, method: onNotFoundException }
     #end exceptions
 
     # default configuration for services in *this* file

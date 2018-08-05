@@ -50,7 +50,7 @@ class CategoryDbManager implements ICategoryDbManager
     {
         $cat = $this->catRepo->findOneBy(array('categoryName'=>$name));
         if($cat == null)
-            throw new CategoryNotFoundException("Category with name ". $name . "was not found!");
+            throw new CategoryNotFoundException($this->localLanguage->categoryWithNameDoesNotExist($name));
         return $cat;
     }
 

@@ -25,6 +25,8 @@ class ReplyType extends AbstractType
         $builder
             ->add('content', TextType::class)
             ->add('redirect', TextType::class)
+            ->add('commenterName', TextType::class)
+            ->add('commenterEmail', TextType::class)
             ->add('parentCommentId', IntegerType::class);
     }
 

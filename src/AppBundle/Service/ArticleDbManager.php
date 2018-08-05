@@ -9,9 +9,15 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\Contracts\IArticleDbManager;
+use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
+use AppBundle\Entity\Comment;
+use AppBundle\Entity\User;
+use AppBundle\Exception\CommentException;
+use AppBundle\Util\ModelMapper;
 use AppBundle\ViewModel\SliderArticlesViewModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,6 +25,11 @@ use function PHPSTORM_META\elementType;
 
 class ArticleDbManager implements IArticleDbManager
 {
+    private const INVALID_ARTICLE = "Invalid article";
+
+    private const INVALID_COMMENT_CONTENT = "Comment fields were not filled properly!";
+
+
     /**
      * @var EntityManagerInterface
      */
@@ -29,10 +40,44 @@ class ArticleDbManager implements IArticleDbManager
      */
     private $articleRepo;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * @var \AppBundle\Repository\CommentRepository|\Doctrine\Common\Persistence\ObjectRepository
+     */
+    private $commentRepo;
+
+    /**
+     * @var IUserDbManager
+     */
+    private $userDbManager;
+
+    /**
+     * @var ModelMapper
+     */
+    private $modelMapper;
+
+    public function __construct(EntityManagerInterface $em, IUserDbManager $userDbManager, ModelMapper $modelMapper)
     {
         $this->entityManager = $em;
         $this->articleRepo = $em->getRepository(Article::class);
+        $this->userDbManager = $userDbManager;
+        $this->modelMapper = $modelMapper;
+        $this->commentRepo = $em->getRepository(Comment::class);
+    }
+
+    function findOneById(int $id, bool $hidden = false): ?Article
+    {
+        if ($hidden)
+            return $this->articleRepo->findOneBy(array('id' => $id));
+        else
+            return $this->articleRepo->findOneBy(array('id' => $id, 'isVisible' => true));
+    }
+
+    function findAll(bool $hidden = false): array
+    {
+        if ($hidden)
+            return $this->articleRepo->findAll();
+        else
+            return $this->articleRepo->findBy(array('isVisible' => true));
     }
 
     /**
@@ -84,7 +129,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesByCategory(ArticleCategory $articleCategory): array
     {
-        return $this->articleRepo->findBy(array('category'=>$articleCategory));
+        return $this->articleRepo->findBy(array('category' => $articleCategory));
     }
 
     /**
@@ -93,7 +138,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesByCategories(array $articleCategories): array
     {
-        return $this->articleRepo->findBy(array('category'=>$articleCategories));
+        return $this->articleRepo->findBy(array('category' => $articleCategories));
     }
 
     /**
@@ -103,7 +148,57 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesForLatestPosts(int $offset): array
     {
-        return $this->articleRepo->findBy(array(), array('dateAdded'=>"DESC"), 3, $offset);
+        return $this->articleRepo->findBy(array(), array('dateAdded' => "DESC"), 3, $offset);
         //TODO change limit from 3 to something
+    }
+
+    /**
+     * @param CommentBindingModel $bindingModel
+     * @param User|null $user
+     * @throws CommentException
+     */
+    function leaveComment(CommentBindingModel $bindingModel, User $user = null)
+    {
+        $article = $this->findOneById($bindingModel->getArticleId());
+        if($article == null)
+            throw new CommentException(self::INVALID_ARTICLE);
+        if(!$this->isEmpty($bindingModel->getCommenterName())|| !$this->isEmpty($bindingModel->getCommenterEmail())  || !$this->isEmpty($bindingModel->getContent()))
+            throw new CommentException(self::INVALID_COMMENT_CONTENT);
+        $comment = $this->modelMapper->map($bindingModel, Comment::class);
+        $comment->setArticle($article);
+        if ($user != null)
+            $comment->setUser($user);
+
+        $this->entityManager->persist($comment);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * @param CommentBindingModel $bindingModel
+     * @param User $user
+     * @throws CommentException
+     */
+    function leaveReply(CommentBindingModel $bindingModel, User $user)
+    {
+        $parentComment = $this->findCommentById($bindingModel->getParentCommentId());
+        if($parentComment == null || !$this->isEmpty($bindingModel->getCommenterName())|| !$this->isEmpty($bindingModel->getCommenterEmail())  || !$this->isEmpty($bindingModel->getContent()))
+            throw new CommentException(self::INVALID_COMMENT_CONTENT);
+
+        $reply = $this->modelMapper->map($bindingModel, Comment::class);
+        $reply->setUser($user);
+        $reply->setParentComment($parentComment);
+
+
+        $this->entityManager->persist($reply);
+        $this->entityManager->flush();
+    }
+
+    private function isEmpty(?string $str) : bool {
+        return $str != null &&  trim($str) != null;
+    }
+
+    function findCommentById(int $id): ?Comment
+    {
+        return $this->commentRepo->findOneBy(array('id'=>$id));
     }
 }

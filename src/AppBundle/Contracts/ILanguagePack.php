@@ -77,4 +77,6 @@ interface ILanguagePack
 
     function loginToLike(): string;
 
+    function categoryWithNameDoesNotExist(string  $catName);
+
 }

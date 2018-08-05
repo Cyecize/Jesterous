@@ -9,12 +9,21 @@
 namespace AppBundle\Contracts;
 
 
+use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
+use AppBundle\Entity\Comment;
+use AppBundle\Entity\User;
 use AppBundle\ViewModel\SliderArticlesViewModel;
 
 interface IArticleDbManager
 {
+
+    function findOneById(int  $id, bool $hidden = false) : ?Article;
+
+    function findAll(bool $hidden = false) : array ;
+
+
     /**
      * @param Article $article
      * @return Article[]
@@ -45,4 +54,10 @@ interface IArticleDbManager
      * @return Article[]
      */
     function findArticlesForLatestPosts(int $offset): array;
+
+    function leaveComment(CommentBindingModel $bindingModel, User $user = null);
+
+    function leaveReply(CommentBindingModel $bindingModel, User $user);
+
+    function findCommentById(int  $id) : ?Comment;
 }

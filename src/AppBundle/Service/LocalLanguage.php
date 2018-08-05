@@ -249,4 +249,9 @@ class LocalLanguage implements ILanguagePack
     {
         return $this->languagePack->loginToLike();
     }
+
+    function categoryWithNameDoesNotExist(string $catName)
+    {
+        return $this->languagePack->categoryWithNameDoesNotExist($catName);
+    }
 }

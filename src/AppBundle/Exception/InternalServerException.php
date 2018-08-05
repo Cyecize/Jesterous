@@ -9,7 +9,7 @@
 namespace AppBundle\Exception;
 
 
-interface PublishedMessageException
+interface InternalServerException
 {
     public function getMessage();
 }

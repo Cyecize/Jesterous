@@ -12,15 +12,7 @@
 
 {% block body %}
 
-    <div class="home">
-        <div class="home_background parallax-window" data-parallax="scroll"
-             data-image-src="{{ article.backgroundImageLink }}" data-speed="0.8"></div>
-        <div class="home_content">
-            <div class="post_category trans_200"><a href="{{ path('category_details', {'catName':article.category.categoryName}) }}"
-                                                    class="trans_200">{{ article.category.categoryName }}</a></div>
-            <div class="post_title">{{ article.title }}</div>
-        </div>
-    </div>
+    {% embed 'partials/banner.html.twig' with {'bannerTitle':article.title, 'catName':article.category.categoryName, 'background':article.backgroundImageLink} %} {% endembed %}
 
     <div class="page_content">
         <div class="container">
@@ -70,18 +62,19 @@
 
                                 {% for article in similarArticles %}
                                     <!-- Small Card With Image -->
-                                    <div class="card card_small_with_image grid-item">
-                                        <img class="card-img-top" src="{{ article.backgroundImageLink }}"
-                                             alt="https://unsplash.com/@jakobowens1">
-                                        <div class="card-body">
-                                            <div class="card-title card-title-small"><a
-                                                        href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a>
-                                            </div>
-                                            <small class="post_meta"><a
-                                                        href="#">{{ article.author.username }}</a><span>{{ article.dateAdded.format("D M, Y -  H:m a") }}</span>
-                                            </small>
-                                        </div>
-                                    </div>
+                                    {#<div class="card card_small_with_image grid-item">#}
+                                        {#<img class="card-img-top" src="{{ article.backgroundImageLink }}"#}
+                                             {#alt="https://unsplash.com/@jakobowens1">#}
+                                        {#<div class="card-body">#}
+                                            {#<div class="card-title card-title-small"><a#}
+                                                        {#href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a>#}
+                                            {#</div>#}
+                                            {#<small class="post_meta"><a#}
+                                                        {#href="#">{{ article.author.username }}</a><span>{{ article.dateAdded.format("D M, Y -  H:m a") }}</span>#}
+                                            {#</small>#}
+                                        {#</div>#}
+                                    {#</div>#}
+                                    {% embed 'partials/articles/small-card-with-image.html.twig' with {'article':article} %} {% endembed %}
                                 {% endfor %}
 
 

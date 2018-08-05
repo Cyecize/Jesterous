@@ -1,0 +1,16 @@
+<div class="home">
+    <div class="home_background parallax-window"
+         data-parallax="scroll"
+         data-image-src="{% if background is defined %}{{ background }}{% else %}/images/category.jpg{% endif %}"
+         data-speed="0.8">
+
+        <div class="home_content">
+            {% if catName is defined %}
+                <div class="post_category trans_200"><a href="{{ path('category_details', {'catName':catName}) }}" class="trans_200">{{ catName }}</a></div>
+            {% endif %}
+            {% if bannerTitle is defined %}
+                <div class="post_title">{{ bannerTitle }}</div>
+            {% endif %}
+        </div>
+    </div>
+</div>

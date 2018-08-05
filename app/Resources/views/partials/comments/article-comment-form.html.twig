@@ -13,7 +13,7 @@
                         <input name="comment[commenterEmail]" type="email" class="comment_input comment_input_email" placeholder="{{ localLang.yourEmail }}" required="required">
                     {% endif %}
 
-                    {{ form_row(form._token) }}
+                    <input type="hidden" name="token" value="{{ csrf_token(article.id) }}">
                     <input type="hidden" value="{{ article.id }}" name="comment[articleId]">
                     <textarea name="comment[content]" class="comment_text" placeholder="{{ localLang.yourComment }}" required="required"></textarea>
                     <button type="submit" class="comment_button">{{ localLang.postComment }}</button>

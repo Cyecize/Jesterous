@@ -7,10 +7,11 @@
  */
 
 namespace AppBundle\BindingModel;
-
+use Symfony\Component\Validator\Constraints as Assert;
 
 class CommentBindingModel
 {
+
 
     private $redirect;
 
@@ -21,6 +22,8 @@ class CommentBindingModel
     private $content;
 
     private $articleId;
+
+    private $parentCommentId;
 
     public function __construct()
     {
@@ -106,6 +109,24 @@ class CommentBindingModel
     {
         $this->articleId = $articleId;
     }
+
+    /**
+     * @return mixed
+     */
+    public function getParentCommentId()
+    {
+        return $this->parentCommentId;
+    }
+
+    /**
+     * @param mixed $parentCommentId
+     */
+    public function setParentCommentId($parentCommentId): void
+    {
+        $this->parentCommentId = $parentCommentId;
+    }
+
+
 
 
 

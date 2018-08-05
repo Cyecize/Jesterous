@@ -227,4 +227,9 @@ class BulgarianILanguagePack implements ILanguagePack
     {
         return self::LOGIN_TO_LIKE;
     }
+
+    function categoryWithNameDoesNotExist(string $catName)
+    {
+        return sprintf("Категория с име %s не съществува.",  $catName);
+    }
 }

@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% embed 'partials/banner.html.twig' with {'bannerTitle':"Internal server error"} %} {% endembed %}
+
+    <!-- Page Content -->
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+
+                <!-- Main Content -->
+
+                <div class="col-lg-9">
+                    <div class="main_content mt-2">
+                        <h2 class="alert alert-danger">Oops... Something went wrong! </h2>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <img src="{{ asset('images/500.png') }}" width="100%">
+                            </div>
+                            <div class="col-md-4">
+                                <h3 class="text-info">Status code: {{ exception.code }}</h3>
+                                <h3 class="text-info">Message: </h3>
+                                <p class="text-danger">{{ exception.message }}</p>
+                            </div>
+                        </div>
+                        <h3>You can submit your problem <a href="{{ path('contacts_page') }}">here</a> </h3>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
+{% endblock %}
