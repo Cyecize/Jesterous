@@ -19,9 +19,11 @@ use AppBundle\ViewModel\SliderArticlesViewModel;
 interface IArticleDbManager
 {
 
-    function findOneById(int  $id, bool $hidden = false) : ?Article;
+    function findOneById(int $id, bool $hidden = false): ?Article;
 
-    function findAll(bool $hidden = false) : array ;
+    function findAll(bool $hidden = false): array;
+
+    function viewArticle(Article $article = null): void;
 
     /**
      * @param Article $article
@@ -62,5 +64,6 @@ interface IArticleDbManager
 
     function leaveReply(CommentBindingModel $bindingModel, User $user);
 
-    function findCommentById(int  $id) : ?Comment;
+    function findCommentById(int $id): ?Comment;
+
 }

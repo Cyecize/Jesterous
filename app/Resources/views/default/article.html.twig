@@ -2,7 +2,7 @@
 
 {% block ogType %}article{% endblock %}
 {% block ogUrl %}{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}{% endblock %}
-{% block title %}{{ article.title }}{% endblock %}
+{% block ogTitle %}{{ article.title }}{% endblock %}
 {% block ogDescription %}{{ article.summary }}{% endblock %}
 {% block ogImage %}{{ article.backgroundImageLink }}{% endblock %}
 {% block facebookMetas %}

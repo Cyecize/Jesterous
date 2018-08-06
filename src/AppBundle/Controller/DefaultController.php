@@ -55,33 +55,6 @@ class DefaultController extends BaseController
         return $this->render("default/contacts.html.twig", array());
     }
 
-    /**
-     * @Route("/articles/{id}", name="show_article", defaults={"id"=null})
-     * @param Request $request
-     * @param $id
-     * @param IArticleDbManager $articleDbManager
-     * @return Response
-     */
-    public function viewArticleAction(Request $request, $id, IArticleDbManager $articleDbManager){
-        $article = $this->getDoctrine()->getRepository(Article::class)->findOneBy(array('id'=>$id));
-        //TODO no checks for invalid id keep in mind!
-        $similarArticles = $articleDbManager->findSimilarArticles($article);
-
-        //TODO ajax call increment view
-        $article->setViews($article->getViews() + 1);
-        $this->getDoctrine()->getManager()->merge($article);
-        $this->getDoctrine()->getManager()->flush();
-
-        foreach ($article->getComments() as $comment){
-            $a =  $comment->getId();
-        }
-
-        return $this->render('default/article.html.twig', [
-            'article'=>$article,
-            'similarArticles'=>$similarArticles,
-            'form'=>$this->createForm(CommentType::class)->createView(),
-        ]);
-    }
 
 
     /**

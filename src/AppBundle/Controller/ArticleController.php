@@ -14,6 +14,7 @@ use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Comment;
+use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Exception\CommentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Form\CommentType;
@@ -49,8 +50,24 @@ class ArticleController extends BaseController
     }
 
     /**
+     * @Route("/articles/{id}", name="show_article", defaults={"id"=null})
+     * @param $id
+     * @return Response
+     * @throws ArticleNotFoundException
+     */
+    public function viewArticleAction($id){
+        $article = $this->getDoctrine()->getRepository(Article::class)->findOneBy(array('id'=>$id));
+        if($article == null)
+            throw new ArticleNotFoundException(sprintf("Article with id %s was not found", $id));
+
+        return $this->render('default/article.html.twig', [
+            'article'=>$article,
+            'similarArticles'=>$this->articleService->findSimilarArticles($article),
+        ]);
+    }
+
+    /**
      * @Route("/categories", name="categories_page")
-     * @param ICategoryDbManager $categoryDbManager
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function categoriesAction(){
@@ -103,7 +120,7 @@ class ArticleController extends BaseController
         $token = $request->get('token');
         if($id == null || !$this->isCsrfTokenValid($id, $token))
             throw new RestFriendlyExceptionImpl("Invalid article to view", 200);
-        //TODO increment view and remove counting view from, show_article
+        $this->articleService->viewArticle($this->articleService->findOneById($id));
         return new JsonResponse(['message'=>"OK"]);
     }
 

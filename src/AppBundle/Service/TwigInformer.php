@@ -53,7 +53,7 @@ class TwigInformer
     }
 
     public function findPopularArticlesForSidebar() : array {
-        return $this->articleDbManager->findArticlesByCategories($this->categoryDbManager->findAllLocalCategories());
+        return $this->articleDbManager->findArticlesByCategories($this->categoryDbManager->findAllLocalCategories(), 15);
     }
 
 }

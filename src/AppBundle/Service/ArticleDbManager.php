@@ -16,7 +16,9 @@ use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\User;
+use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Exception\CommentException;
+use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Util\ModelMapper;
 use AppBundle\ViewModel\SliderArticlesViewModel;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -80,6 +82,19 @@ class ArticleDbManager implements IArticleDbManager
             return $this->articleRepo->findAll();
         else
             return $this->articleRepo->findBy(array('isVisible' => true));
+    }
+
+    /**
+     * @param Article|null $article
+     * @throws RestFriendlyExceptionImpl
+     */
+    function viewArticle(Article $article = null): void
+    {
+        if($article == null)
+            throw new RestFriendlyExceptionImpl(sprintf("Article does not exist"), 404);
+        $article->setViews($article->getViews() + 1);
+        $this->entityManager->merge($article);
+        $this->entityManager->flush();
     }
 
     /**
@@ -208,4 +223,6 @@ class ArticleDbManager implements IArticleDbManager
     {
         return $this->commentRepo->findOneBy(array('id' => $id));
     }
+
+
 }
