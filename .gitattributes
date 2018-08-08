@@ -1,0 +1,4 @@
+web/images/* linguist-vendored
+web/styles/plugins* linguist-vendored
+web/styles/styles* linguist-vendored
+
