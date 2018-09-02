@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Constants\Config;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\PersistentCollection;
 
 /**
  * Article
@@ -106,6 +107,7 @@ class Article
         $this->dateAdded = new \DateTime('now', new \DateTimeZone(Config::DEFAULT_TIMEZONE));
         $this->views = 0;
         $this->dailyViews = 0;
+        $this->comments = new ArrayCollection();
     }
 
     /**
@@ -337,7 +339,7 @@ class Article
     }
 
     /**
-     * @return Comment[]
+     * @return ArrayCollection
      */
     public function getComments()
     {

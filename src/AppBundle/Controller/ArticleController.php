@@ -23,6 +23,7 @@ use AppBundle\Service\ArticleCategoryDbManager;
 use AppBundle\Service\ArticleDbManager;
 use AppBundle\Service\LocalLanguage;
 use AppBundle\ViewModel\CategoriesViewModel;
+use Doctrine\ORM\PersistentCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,6 +32,8 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ArticleController extends BaseController
 {
+    private const INVALID_ARTICLE_TO_VIEW = "Invalid article to view";
+    private const ARTICLE_WITH_ID_WAS_NOT_FOUND = "Article with id %s was not found";
 
     /**
      * @var IArticleDbManager
@@ -55,42 +58,16 @@ class ArticleController extends BaseController
      * @return Response
      * @throws ArticleNotFoundException
      */
-    public function viewArticleAction($id){
+    public function articleDetailsAction($id){
         $article = $this->getDoctrine()->getRepository(Article::class)->findOneBy(array('id'=>$id));
         if($article == null)
-            throw new ArticleNotFoundException(sprintf("Article with id %s was not found", $id));
+            throw new ArticleNotFoundException(sprintf(self::ARTICLE_WITH_ID_WAS_NOT_FOUND, $id));
 
+        $article->setComments(array_reverse($article->getComments()->toArray()));
         return $this->render('default/article.html.twig', [
             'article'=>$article,
             'similarArticles'=>$this->articleService->findSimilarArticles($article),
         ]);
-    }
-
-    /**
-     * @Route("/categories", name="categories_page")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function categoriesAction(){
-        $categories = $this->categoryService->findAllLocalCategories();
-        $viewModel = new CategoriesViewModel(array_shift($categories), $categories);
-
-        return $this->render("default/categories.html.twig", array(
-            'viewModel'=>$viewModel,
-        ));
-    }
-
-    /**
-     * @Route("/categories/{catName}", name="category_details", defaults={"catName":null})
-     * @param $catName
-     * @return Response
-     */
-    public function showCategoriesAction($catName){
-        $categories = $this->categoryService->findAllLocalCategories();
-        $viewModel = new CategoriesViewModel($this->categoryService->findOneByName($catName), $categories);
-
-        return $this->render("default/categories.html.twig", array(
-            'viewModel'=>$viewModel,
-        ));
     }
 
     /**
@@ -119,52 +96,8 @@ class ArticleController extends BaseController
     public function viewArticle(Request $request, $id){
         $token = $request->get('token');
         if($id == null || !$this->isCsrfTokenValid($id, $token))
-            throw new RestFriendlyExceptionImpl("Invalid article to view", 200);
+            throw new RestFriendlyExceptionImpl(self::INVALID_ARTICLE_TO_VIEW, 200);
         $this->articleService->viewArticle($this->articleService->findOneById($id));
         return new JsonResponse(['message'=>"OK"]);
-    }
-
-    /**
-     * @Route("/articles/comments/leave", name="leave_comment_post", methods={"POST"})
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws CommentException
-     */
-    public function leaveCommentAction(Request $request)
-    {
-        $commentBindingModel = new CommentBindingModel();
-        $form = $this->createForm(CommentType::class, $commentBindingModel);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted()) {
-            $token = $request->get('token');
-            if(!$this->isCsrfTokenValid($commentBindingModel->getArticleId(), $token))
-                throw new CommentException("Error while posting comment!");
-            $this->articleService->leaveComment($commentBindingModel, $this->getUser());
-            return $this->redirect(trim($commentBindingModel->getRedirect()));
-        }
-        return $this->redirect('/');
-    }
-
-    /**
-     * @Route("/articles/comments/reply", name="leave_reply_post", methods={"POST"})
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws CommentException
-     */
-    public function leaveReplyAction(Request $request)
-    {
-        $bindingModel = new CommentBindingModel();
-        $form = $this->createForm(ReplyType::class, $bindingModel);
-        $form->handleRequest($request);
-        if($form->isSubmitted()){
-            $token = $request->get('token');
-            if(!$this->isCsrfTokenValid($bindingModel->getParentCommentId(), $token))
-                throw new CommentException("Error while posting reply!");
-            $this->articleService->leaveReply($bindingModel, $this->getUser());
-            return $this->redirect(trim($bindingModel->getRedirect()));
-        }
-        return $this->redirect("/");
     }
 }

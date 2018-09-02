@@ -60,10 +60,4 @@ interface IArticleDbManager
      */
     function findArticlesForLatestPosts(int $offset, array $categories): array;
 
-    function leaveComment(CommentBindingModel $bindingModel, User $user = null);
-
-    function leaveReply(CommentBindingModel $bindingModel, User $user);
-
-    function findCommentById(int $id): ?Comment;
-
 }

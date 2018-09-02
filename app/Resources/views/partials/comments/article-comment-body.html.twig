@@ -20,6 +20,9 @@
             {{ localLang.reply }}
         </button>
         {% endif %}
+        {% if (app.user and article.author.id == app.user.id) or (app.user and comment.user  and comment.user.id == app.user.id) %}
+            <button target_article_id="{{ article.id }}" target_comment_id="{{ comment.id }}" token="{{ csrf_token(comment.id) }}" class="btn btn-sm btn-danger ml-auto remove-comment-btn" >X</button>
+        {% endif %}
     </div>
     <div class="comment_content">
         <p>{{ comment.content }}</p>

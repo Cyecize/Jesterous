@@ -2,12 +2,14 @@
 * Table of content
 *  1-> like a quote
 *
+*  2-> removing comment
 *
  */
 
 $(function () {
 
     likeAQuote();
+    initRemoveComment();
 
     /**
      * like a quote
@@ -39,7 +41,30 @@ $(function () {
             });
         });
     }
+
     /* !like a quote */
+
+    /* removing comment */
+    function initRemoveComment() {
+        $('.remove-comment-btn').on('click', function (e) {
+            e.preventDefault();
+            var token = $(this).attr('token');
+            var commentId = $(this).attr('target_comment_id');
+            var articleId = $(this).attr('target_article_id');
+
+            $.ajax({
+                type: "POST",
+                url: "/comments/remove/" + commentId,
+                data: {token:token, articleId:articleId},
+                success:function (data) {
+                    console.log(data);
+                    location.reload();
+                },
+                error:console.error
+            });
+        });
+    }
+    /* !removing comment */
 
 
 });
