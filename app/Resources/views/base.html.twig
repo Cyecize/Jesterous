@@ -51,19 +51,16 @@
 
 {% embed 'partials/footer.html.twig' %} {% endembed %}
 
-
 <!-- scripts -->
 {% embed 'partials/scripts.html.twig' %} {% endembed %}
 {% block javascripts %}{% endblock %}
 
 <!-- to be removed -->
 <script>
-
     $(function () {
         var activeNav = '.route{{ app.request.pathinfo }}'.replace(/\//g, "-");
         $(activeNav).addClass('active');
     });
-
 </script>
 
 </body>

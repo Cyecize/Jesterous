@@ -53,7 +53,12 @@ class TwigInformer
     }
 
     public function findPopularArticlesForSidebar() : array {
-        return $this->articleDbManager->findArticlesByCategories($this->categoryDbManager->findAllLocalCategories(), 15);
+        $cats = $this->categoryDbManager->findAllLocalCategories();
+        return $this->articleDbManager->findArticlesByCategories($cats, 15);
+    }
+
+    public function simpleDateFormat(){
+        return Config::SIMPLE_DATE_FORMAT;
     }
 
 }

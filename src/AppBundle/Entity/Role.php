@@ -8,10 +8,10 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Role
  *
- * @ORM\Table(name="role")
+ * @ORM\Table(name="roles")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\RoleRepository")
  */
-class Role
+class Role  extends \Symfony\Component\Security\Core\Role\Role
 {
     /**
      * @var int
@@ -29,12 +29,11 @@ class Role
      */
     private $role;
 
-    /**
-     * @var User[]
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\User", mappedBy="role", fetch="EAGER")
-     */
-    private $users;
-
+    public function __construct(string $role)
+    {
+        parent::__construct($role);
+        $this->setRole($role);
+    }
 
     /**
      * Get id
@@ -69,23 +68,6 @@ class Role
     {
         return $this->role;
     }
-
-    /**
-     * @return User[]
-     */
-    public function getUsers(): array
-    {
-        return $this->users;
-    }
-
-    /**
-     * @param User[] $users
-     */
-    public function setUsers(array $users): void
-    {
-        $this->users = $users;
-    }
-
 
 }
 

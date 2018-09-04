@@ -3,9 +3,8 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Constants\Config;
-use AppBundle\Constants\Roles;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use function MongoDB\BSON\toJSON;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
@@ -67,16 +66,18 @@ class User implements UserInterface
      */
     private $profileImage;
 
+
     /**
-     * @var Role
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Role", inversedBy="users", fetch="EAGER")
-     * @ORM\JoinColumn(name="role_id", referencedColumnName="id")
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Role", fetch="EAGER")
+     * @ORM\JoinTable(name="roles_users", joinColumns={@ORM\JoinColumn(name="user_id", onDelete="CASCADE")}, inverseJoinColumns={@ORM\JoinColumn(name="role_id", onDelete="CASCADE")})
      */
-    private $role;
+    private $roles;
 
     public function __construct()
     {
         $this->dateRegistered = new \DateTime('now', new \DateTimeZone(Config::DEFAULT_TIMEZONE));
+        $this->roles = new ArrayCollection();
     }
 
     /**
@@ -162,7 +163,6 @@ class User implements UserInterface
     }
 
 
-
     /**
      * Set dateRegistered
      *
@@ -236,19 +236,11 @@ class User implements UserInterface
     }
 
     /**
-     * @return Role
+     * @param ArrayCollection $roles
      */
-    public function getRole(): Role
+    public function setRoles(ArrayCollection $roles): void
     {
-        return $this->role;
-    }
-
-    /**
-     * @param Role $role
-     */
-    public function setRole(Role $role): void
-    {
-        $this->role = $role;
+        $this->roles = $roles;
     }
 
 
@@ -270,11 +262,7 @@ class User implements UserInterface
      */
     public function getRoles()
     {
-        $res = array(Roles::ROLE_USER);
-        if($this->role != null)
-            $res[] = $this->getRole()->getRole();
-        $res = array_unique($res);
-        return $res;
+        return $this->roles->toArray();
     }
 
     /**
@@ -299,5 +287,10 @@ class User implements UserInterface
     {
         // TODO: Implement eraseCredentials() method.
     }
+
+    public function addRole(Role $role){
+        $this->roles->add($role);
+    }
+
 }
 

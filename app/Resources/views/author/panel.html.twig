@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Author Panel {% endblock %}
+
+{% block body %}
+    <div class="home">
+        <div class="home_background parallax-window" data-parallax="scroll" data-image-src="/images/category.jpg"
+             data-speed="0.8"></div>
+    </div>
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-9">
+                    {% if info is defined and info %}
+                        <h3 class="alert response-text alert-success">{{ info }}</h3>
+                    {% endif %}
+                    {% if error is defined and error %}
+                        <h3 class="alert response-text info alert-danger">{{ error }}</h3>
+                    {% endif %}
+                    <div class="main_content">
+                        {% block sectionBody %}
+                        <h3 class="text-dan">Select one of the options from the sidebar</h3>
+                        {% endblock %}
+                    </div>
+                </div>
+                {% embed 'partials/sidebar/sidebar.html.twig' %}
+                    {% block sections %}
+                        <div class="sidebar_section">
+                            <div class="sidebar_title_container">
+                                <div class="sidebar_title">Articles</div>
+                            </div>
+                            <div class="sidebar_section_content pt-0">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><a href="{{ path('create_article') }}">Create article</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="/brands/find-for-edit">Something else</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <hr>
+                        <div class="sidebar_section">
+                            <div class="sidebar_title_container">
+                                <div class="sidebar_title">Quotes</div>
+                            </div>
+                            <div class="sidebar_section_content pt-0">
+                                <ul class="list-group">
+                                    <li class="list-group-item"><a href="/brands/create">Add Quote</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="/brands/find-for-edit">Something else with quotes</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    {% endblock %}
+                {% endembed %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/category.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/contact_responsive.css') }}">
+    {% block  sectionStyles %}{% endblock %}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
+    <script>
+        $(function () {
+           setTimeout(function () {
+               $('.response-text').fadeOut(1000);
+           }, 3000);
+        });
+    </script>
+    {% block sectionScripts %} {% endblock %}
+{% endblock %}
+

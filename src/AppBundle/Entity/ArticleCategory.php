@@ -40,7 +40,7 @@ class ArticleCategory
 
     /**
      * @var ArticleCategory;
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ArticleCategory")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ArticleCategory", inversedBy="childrenCategories")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id")
      */
     private $parentCategory;
@@ -156,14 +156,16 @@ class ArticleCategory
     /**
      * @return Article[]
      */
-    public function getArticlesRecursive() : array {
+    public function getArticlesRecursive(): array
+    {
         $res = array();
 
         foreach ($this->articles as $article)
-            $res[] = $article;
+            if ($article->getIsVisible())
+                $res[] = $article;
 
         foreach ($this->childrenCategories as $childrenCategory) {
-         $res =  array_merge($res, $childrenCategory->getArticlesRecursive());
+            $res = array_merge($res, $childrenCategory->getArticlesRecursive());
         }
         return array_unique($res);
     }
@@ -175,7 +177,6 @@ class ArticleCategory
     {
         $this->articles = $articles;
     }
-
 
 
 }

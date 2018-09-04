@@ -114,12 +114,11 @@ class SecurityController extends BaseController
 
             $role = $this->getDoctrine()->getRepository(Role::class)->findOneBy(array("role" => Roles::ROLE_USER));
             if ($role == null) {
-                $role = new Role();
-                $role->setRole(Roles::ROLE_USER);
+                $role = new Role(Roles::ROLE_USER);
                 $entityManager->persist($role);
             }
 
-            $user->setRole($role);
+            $user->addRole($role);
 
             $entityManager->persist($user);
             $entityManager->flush();

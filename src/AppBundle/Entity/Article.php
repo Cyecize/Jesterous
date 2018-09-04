@@ -89,7 +89,7 @@ class Article
 
     /**
      * @var ArticleCategory
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ArticleCategory", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ArticleCategory", fetch="EAGER", inversedBy="articles")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
@@ -101,6 +101,14 @@ class Article
      */
     private $comments;
 
+    /**
+     * @var Tag[]
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", fetch="EAGER")
+     * @ORM\JoinTable(name="articles_tags", joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")})
+     */
+    private $tags;
+
 
     public function __construct()
     {
@@ -108,6 +116,8 @@ class Article
         $this->views = 0;
         $this->dailyViews = 0;
         $this->comments = new ArrayCollection();
+        $this->tags = new ArrayCollection();
+        $this->isVisible = false;
     }
 
     /**
@@ -305,7 +315,6 @@ class Article
     }
 
 
-
     /**
      * @return User
      */
@@ -360,6 +369,27 @@ class Article
     {
         return $this->id  . "";
     }
+
+    /**
+     * @return Tag[]
+     */
+    public function getTags()
+    {
+        return $this->tags;
+    }
+
+    /**
+     * @param Tag[] $tags
+     */
+    public function setTags( $tags): void
+    {
+        $this->tags = $tags;
+    }
+
+    public function addTag(Tag $tag){
+        $this->tags->add($tag);
+    }
+
 
 }
 

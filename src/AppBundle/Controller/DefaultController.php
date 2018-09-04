@@ -38,7 +38,7 @@ class DefaultController extends BaseController
     {
         $categories = $this->categoryService->findLocaleCategories();
         $latestPosts = $this->articleService->findArticlesForLatestPosts(0, $categories);
-        $sliderArticles = $this->articleService->forgeSliderViewModel($this->articleService->findArticlesByCategories($categories));
+        $sliderArticles = $this->articleService->forgeSliderViewModel($this->articleService->findArticlesByCategories($categories, 4));
 
         return $this->render('default/index.html.twig', [
             'categories'=>$categories,
@@ -54,8 +54,6 @@ class DefaultController extends BaseController
     public function contactsAction(){
         return $this->render("default/contacts.html.twig", array());
     }
-
-
 
     /**
      * @Route("/admin", name="admin_panel")

@@ -44,9 +44,13 @@
                                 </ul>
                             </div>
                             <div class="copyright">
+                                {% if is_granted('ROLE_AUTHOR') %}
+                                    <a href="{{ path('author_panel') }}">Author panel</a>
+                                {% else %}
                                 Copyright &copy;<script>document.write(new Date().getFullYear());</script>
                                  | Avision by <a href="https://colorlib.com"
                                                                     target="_blank">Colorlib</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>

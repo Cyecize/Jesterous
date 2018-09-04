@@ -5,7 +5,7 @@ Table of content
 
 
 2-> header
-
+    2.1 notifications
 
 3-> Back to Top Btn
  */
@@ -29,6 +29,18 @@ Table of content
     font-family: 'Kirang Haerang', cursive;
 }
 
+.ql-syntax{
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    color: white;
+    padding: 5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+    background: rgba(0,0,0,1);
+}
+
 /* !fonts */
 
 /*header */
@@ -46,6 +58,12 @@ header .logo a {
     -o-transition: all 0.3s;
     transition: all 0.3s;
 }
+
+    /*notifications*/
+    #notificationBtn{
+        cursor: pointer;
+    }
+    /*!notifications*/
 
 /*!header */
 

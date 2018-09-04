@@ -15,7 +15,7 @@
         </div>
         <div class="like-section mt-2">
             {% if app.user %}
-                <button token="{{ csrf_token(quote.id) }}" quote-id="{{ quote.id }}" class="btn btn-info btn-sm quote-like-btn {% if app.user and quote.hasUserLiked(app.user) %}active {% endif %}"><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{ localLang.like }}</button>
+                <button token="{{ csrf_token('quote') }}" quote-id="{{ quote.id }}" class="btn btn-info btn-sm quote-like-btn {% if app.user and quote.hasUserLiked(app.user) %}active {% endif %}"><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{ localLang.like }}</button>
             {% else %}
                 <a href="{{ path('security_login') }}" >{{ localLang.loginToLike }}</a>
             {% endif %}

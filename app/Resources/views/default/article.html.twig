@@ -25,15 +25,16 @@
                         {% embed 'partials/articles/article-author-info-panel.html.twig' with {'article':article} %} {% endembed %}
                         <!-- Post Body -->
 
-                        <div class="post_body">
-                            {{ article.mainContent|raw }}
+                        <div class="post_body ">
+                            <div class="ql-editor ql-snow">
+                                {{ article.mainContent|raw }}
+                            </div>
                             <!-- Post Tags -->
                             <div class="post_tags">
                                 <ul>
-                                    <li class="post_tag"><a href="#">Liberty</a></li>
-                                    <li class="post_tag"><a href="#">Manual</a></li>
-                                    <li class="post_tag"><a href="#">Interpretation</a></li>
-                                    <li class="post_tag"><a href="#">Recommendation</a></li>
+                                    {% for tag in article.tags %}
+                                    <li class="post_tag"><a href="#">{{ tag.tagName }}</a></li>
+                                    {% endfor %}
                                 </ul>
                             </div>
                             <small>Views: {{ article.views }}</small>
@@ -63,7 +64,7 @@
                 {% embed 'partials/sidebar/sidebar.html.twig' %}
                     {% block sections %}
                         {% embed 'partials/sidebar/top-stories-section.html.twig' %} {% endembed %}
-                        {% embed 'partials/sidebar/similar-articles.html.twig' with {'similarArticles':similarArticles} %} {% endembed %}
+                        {% embed 'partials/sidebar/similar-articles.html.twig' with {'similarArticles':similarArticlesSidebar} %} {% endembed %}
                     {% endblock %}
                 {% endembed %}
             </div>
@@ -75,6 +76,7 @@
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" type="text/css">
 {% endblock %}
 
 {% block javascripts %}
@@ -87,19 +89,17 @@
                 document.onreadystatechange = function () {
                     setTimeout(function () {
                         $.ajax({
-                            type:"POST",
-                            url:'{{ path('article_add_view', {'id':article.id}) }}',
-                            data:{token:'{{ csrf_token(article.id) }}'},
-                            success:function (data) {
+                            type: "POST",
+                            url: '{{ path('article_add_view', {'id':article.id}) }}',
+                            data: {token: '{{ csrf_token(article.id) }}'},
+                            success: function (data) {
                                 console.log(data);
                             },
-                            error:console.error
+                            error: console.error
                         });
                     }, 3000);
                 };
             }
-
-
         });
     </script>
 {% endblock %}

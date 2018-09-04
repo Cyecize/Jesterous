@@ -116,6 +116,4 @@ class UserRegisterBindingModel
         $user->setPassword($this->getPassword());
         return $user;
     }
-
-
 }

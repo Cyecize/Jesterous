@@ -51,7 +51,7 @@ class Comment
 
     /**
      * @var Comment
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Comment")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Comment", inversedBy="replies")
      * @ORM\JoinColumn(name="parent_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private $parentComment;
@@ -65,7 +65,7 @@ class Comment
 
     /**
      * @var Article
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Article")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Article", inversedBy="comments")
      * @ORM\JoinColumn(name="article_id", referencedColumnName="id", nullable=true, onDelete="CASCADE")
      */
     private $article;
@@ -74,7 +74,7 @@ class Comment
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", fetch="EAGER")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $user;
 

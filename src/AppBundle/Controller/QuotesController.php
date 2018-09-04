@@ -23,7 +23,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class LikesController extends BaseController
+class QuotesController extends BaseController
 {
     /**
      * @Route("/quotes/{id}/like", name="like_quote", defaults={"id":null}, methods={"POST"})
@@ -34,8 +34,9 @@ class LikesController extends BaseController
      */
     public function likeQuoteAction(Request $request, $id, IQuoteDbManager $quoteDbManager)
     {
+        $token = $request->get('token');
         $result =  ['success'=>true, 'disliked'=>false];
-        if (!$this->isUserLogged() || !$this->isCsrfTokenValid($id, $request->get('token')))
+        if (!$this->isCsrfTokenValid('quote', $token) || !$this->isUserLogged() )
             $result['success'] = false;
         else{
             if($quoteDbManager->hasLike($this->getUser(), $id)){
@@ -45,7 +46,6 @@ class LikesController extends BaseController
                 $quoteDbManager->like($this->getUser(), $id);
             }
         }
-
         escape:
         return new JsonResponse([
             $result

@@ -10,6 +10,7 @@ namespace AppBundle\Contracts;
 
 
 use AppBundle\BindingModel\CommentBindingModel;
+use AppBundle\BindingModel\CreateArticleBindingModel;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Comment;
@@ -19,11 +20,31 @@ use AppBundle\ViewModel\SliderArticlesViewModel;
 interface IArticleDbManager
 {
 
+    /**
+     * @param Article|null $article
+     */
+    function viewArticle(Article $article = null): void;
+
+    /**
+     * @param CreateArticleBindingModel $bindingModel
+     * @param User $author
+     * @return Article
+     */
+    function createArticle(CreateArticleBindingModel $bindingModel, User $author) : Article ;
+
+    /**
+     * @param int $id
+     * @param bool $hidden
+     * @return Article|null
+     */
     function findOneById(int $id, bool $hidden = false): ?Article;
 
+    /**
+     * @param bool $hidden
+     * @return Article[]
+     */
     function findAll(bool $hidden = false): array;
 
-    function viewArticle(Article $article = null): void;
 
     /**
      * @param Article $article

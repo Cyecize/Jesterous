@@ -4,6 +4,7 @@
 *
 *  2-> removing comment
 *
+*  3 -> image preview
  */
 
 $(function () {
@@ -18,10 +19,9 @@ $(function () {
         $('.quote-like-btn').on('click', function () {
             var id = $(this).attr('quote-id').trim();
             if (isNaN(id)) return;
+            var token = $(this).attr('token').trim();
 
             var btn = $(this);
-            var token = btn.attr('token');
-
             $.ajax({
                 type: "POST",
                 url: "/quotes/" + id + "/like",
@@ -66,5 +66,30 @@ $(function () {
     }
     /* !removing comment */
 
-
 });
+
+/* 3 image preview*/
+var ImagePreviewManager = (function () {
+
+    var imgPrev = null;
+
+    function attachEvent(inputId, imgSrcId) {
+        imgPrev = $(document.getElementById(imgSrcId));
+        document.getElementById(inputId).onchange = function (event) {
+            readUrl(this);
+        };
+    }
+
+    function readUrl(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function(e) {
+                imgPrev.attr('src', e.target['result']);
+            };
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    return {attachEvent: attachEvent};
+})();
+/* !3 image preview*/

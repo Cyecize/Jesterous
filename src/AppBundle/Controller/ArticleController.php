@@ -9,15 +9,18 @@
 namespace AppBundle\Controller;
 
 use AppBundle\BindingModel\CommentBindingModel;
+use AppBundle\BindingModel\CreateArticleBindingModel;
 use AppBundle\Contracts\IArticleCategoryDbManager;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
+use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Comment;
 use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Exception\CommentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Form\CommentType;
+use AppBundle\Form\CreateArticleType;
 use AppBundle\Form\ReplyType;
 use AppBundle\Service\ArticleCategoryDbManager;
 use AppBundle\Service\ArticleDbManager;
@@ -45,11 +48,48 @@ class ArticleController extends BaseController
      */
     private $categoryService;
 
-    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager)
+    /**
+     * @var IUserDbManager
+     */
+    private $userService;
+
+    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager, IUserDbManager $userDbManager)
     {
         parent::__construct($language);
         $this->articleService = $articleDbManager;
         $this->categoryService = $categoryDbManager;
+        $this->userService = $userDbManager;
+    }
+
+    /**
+     * @Route("/articles/create", name="create_article")
+     * @Security("has_role('ROLE_AUTHOR')")
+     * @param Request $request
+     * @return Response
+     */
+    public function createArticleRequest(Request $request){
+
+        $articleBindingModel = new CreateArticleBindingModel();
+        $form = $this->createForm(CreateArticleType::class, $articleBindingModel);
+        $form->handleRequest($request);
+
+        $errors = array();
+        if($form->isSubmitted()){
+            $validator = $this->get('validator');
+            $errors = $validator->validate($articleBindingModel);
+            if(count($errors) > 0)
+                goto escape;
+            $this->articleService->createArticle($articleBindingModel, $this->getUser());
+            return $this->redirectToRoute('author_panel', ['info'=>"Article was created!"]);
+        }
+
+        escape:
+        return $this->render('author/articles/create-article-html.twig',[
+            'categories'=>$this->categoryService->findAllLocalCategories(),
+            'form1'=>$form->createView(),
+            'model'=>$articleBindingModel,
+            'errors'=>$errors,
+        ]);
     }
 
     /**
@@ -67,6 +107,7 @@ class ArticleController extends BaseController
         return $this->render('default/article.html.twig', [
             'article'=>$article,
             'similarArticles'=>$this->articleService->findSimilarArticles($article),
+            'similarArticlesSidebar'=>$this->articleService->findSimilarArticles($article,10),
         ]);
     }
 

@@ -10,13 +10,17 @@ namespace AppBundle\Service;
 
 
 use AppBundle\BindingModel\CommentBindingModel;
+use AppBundle\BindingModel\CreateArticleBindingModel;
 use AppBundle\Contracts\IArticleDbManager;
+use AppBundle\Contracts\ICategoryDbManager;
+use AppBundle\Contracts\ITagDbManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\User;
 use AppBundle\Exception\ArticleNotFoundException;
+use AppBundle\Exception\CategoryNotFoundException;
 use AppBundle\Exception\CommentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Util\ModelMapper;
@@ -44,11 +48,49 @@ class ArticleDbManager implements IArticleDbManager
      */
     private $userDbManager;
 
-    public function __construct(EntityManagerInterface $em, IUserDbManager $userDbManager)
+    /**
+     * @var ITagDbManager
+     */
+    private $tagService;
+
+    /**
+     * @var ModelMapper
+     */
+    private $modelMapper;
+
+    /**
+     * @var ICategoryDbManager
+     */
+    private $categoryService;
+
+    /**
+     * @var LocalLanguage
+     */
+    private $localLanguage;
+
+    public function __construct(EntityManagerInterface $em, IUserDbManager $userDbManager, ITagDbManager $tagDbManager, ModelMapper $modelMapper, ICategoryDbManager $categoryDbManager, LocalLanguage $localLanguage)
     {
         $this->entityManager = $em;
         $this->articleRepo = $em->getRepository(Article::class);
         $this->userDbManager = $userDbManager;
+        $this->tagService = $tagDbManager;
+        $this->modelMapper = $modelMapper;
+        $this->categoryService = $categoryDbManager;
+        $this->localLanguage = $localLanguage;
+    }
+
+    /**
+     * @param Article|null $article
+     * @throws RestFriendlyExceptionImpl
+     */
+    function viewArticle(Article $article = null): void
+    {
+        if ($article == null)
+            throw new RestFriendlyExceptionImpl(sprintf("Article does not exist"), 404);
+        $article->setViews($article->getViews() + 1);
+        $article->setDailyViews($article->getDailyViews() +1);
+        $this->entityManager->merge($article);
+        $this->entityManager->flush();
     }
 
     function findOneById(int $id, bool $hidden = false): ?Article
@@ -57,6 +99,30 @@ class ArticleDbManager implements IArticleDbManager
             return $this->articleRepo->findOneBy(array('id' => $id));
         else
             return $this->articleRepo->findOneBy(array('id' => $id, 'isVisible' => true));
+    }
+
+    /**
+     * @param CreateArticleBindingModel $bindingModel
+     * @param User $author
+     * @return Article
+     * @throws CategoryNotFoundException
+     */
+    function createArticle(CreateArticleBindingModel $bindingModel, User $author): Article
+    {
+        $tags = $this->tagService->addTags($bindingModel->getTags());
+        $category = $this->categoryService->findOneById($bindingModel->getCategoryId());
+        if ($category == null) throw new CategoryNotFoundException($this->localLanguage->categoryWithNameDoesNotExist($bindingModel->getCategoryId()));
+
+        $article = $this->modelMapper->map($bindingModel, Article::class);
+        $article->setTags(new ArrayCollection());
+        foreach ($tags as $tag) $article->addTag($tag);
+        $article->setAuthor($this->userDbManager->findOneById($author->getId()));
+        $article->setCategory($category);
+        $article->setBackgroundImageLink("https://cdn.wccftech.com/wp-content/uploads/2018/07/eBay-740x463.jpg");
+
+        $this->entityManager->persist($article);
+        $this->entityManager->flush();
+        return $article;
     }
 
     function findAll(bool $hidden = false): array
@@ -68,19 +134,6 @@ class ArticleDbManager implements IArticleDbManager
     }
 
     /**
-     * @param Article|null $article
-     * @throws RestFriendlyExceptionImpl
-     */
-    function viewArticle(Article $article = null): void
-    {
-        if($article == null)
-            throw new RestFriendlyExceptionImpl(sprintf("Article does not exist"), 404);
-        $article->setViews($article->getViews() + 1);
-        $this->entityManager->merge($article);
-        $this->entityManager->flush();
-    }
-
-    /**
      * @param Article $article
      * @param int $limit
      * @return Article[]
@@ -88,7 +141,7 @@ class ArticleDbManager implements IArticleDbManager
     public function findSimilarArticles(Article $article, int $limit = 3): array
     {
         $similar = $this->entityManager->getRepository(Article::class)
-            ->findBy(array('category' => $article->getCategory(), 'isVisible' => true), array(), $limit);
+            ->findBy(array('category' => $article->getCategory(), 'isVisible' => true), array('dailyViews'=>'DESC'), $limit);
 
         $similar = array_filter($similar, function (Article $e) use ($article) {
             return $e->getId() != $article->getId();
@@ -144,7 +197,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesByCategories(array $articleCategories, int $limit = null): array
     {
-        return $this->articleRepo->findBy(array('category' => $articleCategories, 'isVisible' => true), array('dailyViews' => 'DESC'), $limit);
+        return $this->articleRepo->findBy(array('category' => $articleCategories, 'isVisible' => true), array('dailyViews' => 'DESC', 'id'=>'DESC'), $limit);
     }
 
     /**
@@ -154,7 +207,6 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesForLatestPosts(int $offset, array $categories): array
     {
-        return $this->articleRepo->findBy(array('isVisible' => true, 'category'=>$categories), array('dateAdded' => "DESC"), self::MAX_ARTICLES_PER_PAGE, $offset);
+        return $this->articleRepo->findBy(array('isVisible' => true, 'category' => $categories), array('dateAdded' => "DESC"), self::MAX_ARTICLES_PER_PAGE, $offset);
     }
-
 }

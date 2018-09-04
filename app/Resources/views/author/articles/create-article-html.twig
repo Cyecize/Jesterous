@@ -1,0 +1,127 @@
+{% extends 'author/panel.html.twig' %}
+{% block sectionBody %}
+    <h2 class="text-dark">New Article</h2>
+    <hr>
+    <div id="form-container" class="container">
+        {% if errors %}
+            {% for err in errors %}
+                <h5 class="alert alert-danger">{{ localLang.forName(err.message) }}</h5>
+            {% endfor %}
+        {% endif %}
+        <form id="createArticleForm" class="text-dark" method="post" enctype="multipart/form-data">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="tags">Tags</label>
+                        <input type="text" name="create_article[tags]" id="tags" placeholder="tag1 tag2 tag3" value="{{ model.tags }}"
+                               class="form-control">
+                        <div class="text-danger">{{ form_errors(form1.tags) }}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="category">Select Category</label>
+                        <select name="create_article[categoryId]" id="category" class="form-control" required>
+                            <option disabled selected value="">Choose one</option>
+                            {% for cat in categories %}
+                                <option {% if cat.id == model.categoryId %}selected{% endif %}
+                                        value="{{ cat.id }}">{{ cat.categoryName }}</option>
+                            {% endfor %}
+                        </select>
+                        <div class="text-danger">{{ form_errors(form1.categoryId) }}</div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="image">Image</label>
+                        <input type="file" name="create_article[file]" id="image" class="form-control">
+                        <div class="alert-danger">{{ form_errors(form1.file) }}</div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <p class="text-muted">Preview</p>
+                    <img src="" id="imgPrev" width="100%">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="title">Title</label>
+                <input type="text" name="create_article[title]" id="title" placeholder="Title (up to 100 characters)"
+                       maxlength="100" value="{{ model.title }}" required class="form-control">
+                <div class="alert-danger">{{ form_errors(form1.title) }}</div>
+            </div>
+            <div class="form-group">
+                <label for="visible">Is Article visible</label>
+                <input type="checkbox" {% if model.isVisible %}checked{% endif %} name="create_article[isVisible]" id="visible">
+            </div>
+            <div class="form-group">
+                <label for="summary">Summary</label>
+                <input type="text" maxlength="255" name="create_article[summary]" id="summary" placeholder="Summary"
+                       value="{{ model.summary }}" class="form-control">
+                <p class="text-danger"></p>
+            </div>
+            {#<div class="form-group">#}
+            {#<label for=""></label>#}
+            {#<input type="" name="" id="" placeholder="" value="" class="form-control">#}
+            {#<p class="text-danger"></p>#}
+            {#</div>#}
+            {{ form_widget(form1._token) }}
+            <label for="editor-container">Content</label>
+            <div id="editor-container" style="min-height: 500px">{{ model.mainContent|raw }}</div>
+            <textarea name="create_article[mainContent]" style="display: none;" id="articleContent"></textarea>
+            <div class="mt-2 mb-2 text-right">
+                <button type="submit" id="createArticleBtn" class="btn btn-outline-dark">Create Article</button>
+            </div>
+        </form>
+
+    </div>
+
+{% endblock %}
+
+{% block sectionStyles %}
+    <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" type="text/css">
+{% endblock %}
+
+{% block sectionScripts %}
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script src="{{ asset('node_modules/quill-image-resize-module/image-resize.min.js') }}"></script>
+    <script src="{{ asset('styles/js/quill-manager.js') }}"></script>
+    <script>
+        ImagePreviewManager.attachEvent("image", "imgPrev");
+        $(function () {
+            Quill.register('modules/ImageResize', ImageResize);
+            var quillManager = new QuillManager();
+            quillManager.initQuill("#editor-container");
+
+            var form = $('#createArticleForm');
+            var btnSubmit = $('#createArticleBtn');
+            var mainContentField = $('#articleContent');
+
+            btnSubmit.on('click', function (e) {
+                var tagsFieldVal = $('#tags').val();
+                if(!tagsFieldVal.match(/^[a-zA-Z\s\d-_]*$/)){
+                    alert("Invalid tag format use tag1 tag2 tag3!");
+                    e.preventDefault();
+                    return;
+                }
+                var lenExceeding = false;
+                tagsFieldVal.split(/\s+/).forEach(e => {
+                    if(e.length > 50)
+                        lenExceeding = true;
+                });
+                if(lenExceeding){
+                    e.preventDefault();
+                    alert("Tag too long (50 max)")
+                    return;
+                }
+            });
+            form.on('submit', function (e) {
+                var mainContent = quillManager.getQuillContent();
+                mainContentField.text(mainContent);
+                //e.preventDefault();
+                // form.trigger('submit');
+            });
+        });
+    </script>
+{% endblock %}

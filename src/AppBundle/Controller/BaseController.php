@@ -25,7 +25,7 @@ abstract class BaseController extends Controller
     }
 
     protected function isUserLogged(): bool{
-        return $this->get('security.authorization_checker')->isGranted(Roles::ROLE_USER, 'ROLES');  //when user is logged
+        return  $this->get('security.authorization_checker')->isGranted(Roles::ROLE_USER);  //when user is logged
     }
 
     protected function isAdminLogged(): bool{
