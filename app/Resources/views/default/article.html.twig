@@ -4,7 +4,7 @@
 {% block ogUrl %}{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}{% endblock %}
 {% block ogTitle %}{{ article.title }}{% endblock %}
 {% block ogDescription %}{{ article.summary }}{% endblock %}
-{% block ogImage %}{{ article.backgroundImageLink }}{% endblock %}
+{% block ogImage %}{{ url('homepage')|trim('/', 'right') }}{{ article.backgroundImageLink }}{% endblock %}
 {% block facebookMetas %}
     <meta property="article:section" content="{{ article.category.categoryName }}">
     <meta property="article:tag" content="lifestyle">
