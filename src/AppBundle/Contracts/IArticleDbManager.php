@@ -11,11 +11,13 @@ namespace AppBundle\Contracts;
 
 use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\BindingModel\CreateArticleBindingModel;
+use AppBundle\BindingModel\EditArticleBindingModel;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\User;
 use AppBundle\ViewModel\SliderArticlesViewModel;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 interface IArticleDbManager
 {
@@ -31,6 +33,14 @@ interface IArticleDbManager
      * @return Article
      */
     function createArticle(CreateArticleBindingModel $bindingModel, User $author) : Article ;
+
+    /**
+     * @param Article $article
+     * @param EditArticleBindingModel $bindingModel
+     * @param UploadedFile|null $file
+     * @return Article
+     */
+    function editArticle(Article $article, EditArticleBindingModel $bindingModel, UploadedFile $file = null) : Article;
 
     /**
      * @param int $id

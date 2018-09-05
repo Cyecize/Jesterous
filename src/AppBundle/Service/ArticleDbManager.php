@@ -11,8 +11,11 @@ namespace AppBundle\Service;
 
 use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\BindingModel\CreateArticleBindingModel;
+use AppBundle\BindingModel\EditArticleBindingModel;
+use AppBundle\Constants\Config;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
+use AppBundle\Contracts\IFileManager;
 use AppBundle\Contracts\ITagDbManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
@@ -28,6 +31,7 @@ use AppBundle\ViewModel\SliderArticlesViewModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use function PHPSTORM_META\elementType;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ArticleDbManager implements IArticleDbManager
 {
@@ -68,7 +72,12 @@ class ArticleDbManager implements IArticleDbManager
      */
     private $localLanguage;
 
-    public function __construct(EntityManagerInterface $em, IUserDbManager $userDbManager, ITagDbManager $tagDbManager, ModelMapper $modelMapper, ICategoryDbManager $categoryDbManager, LocalLanguage $localLanguage)
+    /**
+     * @var IFileManager
+     */
+    private $fileService;
+
+    public function __construct(EntityManagerInterface $em, IUserDbManager $userDbManager, ITagDbManager $tagDbManager, ModelMapper $modelMapper, ICategoryDbManager $categoryDbManager, LocalLanguage $localLanguage, IFileManager $fileManager)
     {
         $this->entityManager = $em;
         $this->articleRepo = $em->getRepository(Article::class);
@@ -77,6 +86,7 @@ class ArticleDbManager implements IArticleDbManager
         $this->modelMapper = $modelMapper;
         $this->categoryService = $categoryDbManager;
         $this->localLanguage = $localLanguage;
+        $this->fileService = $fileManager;
     }
 
     /**
@@ -118,9 +128,36 @@ class ArticleDbManager implements IArticleDbManager
         foreach ($tags as $tag) $article->addTag($tag);
         $article->setAuthor($this->userDbManager->findOneById($author->getId()));
         $article->setCategory($category);
-        $article->setBackgroundImageLink("https://cdn.wccftech.com/wp-content/uploads/2018/07/eBay-740x463.jpg");
-
+        $article->setBackgroundImageLink($this->uploadFileToUser($bindingModel->getFile(), $author));
         $this->entityManager->persist($article);
+        $this->entityManager->flush();
+        return $article;
+    }
+
+    /**
+     * @param Article $article
+     * @param EditArticleBindingModel $bindingModel
+     * @param UploadedFile|null $file
+     * @return Article
+     * @throws CategoryNotFoundException
+     */
+    function editArticle(Article $article, EditArticleBindingModel $bindingModel, UploadedFile $file = null): Article
+    {
+        $tags = $this->tagService->addTags($bindingModel->getStringOfTags());
+        $category = $this->categoryService->findOneById($bindingModel->getCategoryId());
+        if ($category == null) throw new CategoryNotFoundException($this->localLanguage->categoryWithNameDoesNotExist($bindingModel->getCategoryId()));
+
+        $article = $this->modelMapper->merge($bindingModel, $article);
+        $article->setTags(new ArrayCollection());
+        foreach ($tags as $tag) $article->addTag($tag);
+        $article->setCategory($category);
+        $article->setIsVisible($bindingModel->isVisible());
+        if($file != null){
+            $this->fileService->removeFile(substr($article->getBackgroundImageLink(), 1));
+            $article->setBackgroundImageLink($this->uploadFileToUser($bindingModel->getFile(), $article->getAuthor()));
+        }
+
+        $this->entityManager->merge($article);
         $this->entityManager->flush();
         return $article;
     }
@@ -208,5 +245,11 @@ class ArticleDbManager implements IArticleDbManager
     function findArticlesForLatestPosts(int $offset, array $categories): array
     {
         return $this->articleRepo->findBy(array('isVisible' => true, 'category' => $categories), array('dateAdded' => "DESC"), self::MAX_ARTICLES_PER_PAGE, $offset);
+    }
+
+    private function uploadFileToUser(UploadedFile $file, User $user) : string {
+        $pathToUser = sprintf(Config::USER_FILES_PATH_FORMAT, $user->getUsername());
+        $imageName = $this->fileService->uploadFile($file, $pathToUser);
+        return "/" . $pathToUser . $imageName;
     }
 }

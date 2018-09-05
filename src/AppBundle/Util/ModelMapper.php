@@ -12,13 +12,15 @@ namespace AppBundle\Util;
 class ModelMapper
 {
 
-    public function map($sourceInstnce, $destinationClass)
+    public function map($sourceInstance, $destinationClass)
     {
-        $destinationInstance = new $destinationClass;
+        return $this->merge($sourceInstance, new $destinationClass);
+    }
+
+    public function merge($sourceInstance, $destinationInstance){
         $reflOfDestination = new \ReflectionObject($destinationInstance);
+        $reflOfSource = new \ReflectionObject($sourceInstance);
 
-
-        $reflOfSource = new \ReflectionObject($sourceInstnce);
         foreach ($reflOfSource->getProperties() as $sourceProperty) {
             $sourceProperty->setAccessible(true);
             if (!$reflOfDestination->hasProperty($sourceProperty->getName()))
@@ -26,7 +28,7 @@ class ModelMapper
             $destProperty = $reflOfDestination->getProperty($sourceProperty->getName());
             $destProperty->setAccessible(true);
 
-            $sourceValue = $sourceProperty->getValue($sourceInstnce);
+            $sourceValue = $sourceProperty->getValue($sourceInstance);
             if ($sourceValue != null)
                 $destProperty->setValue($destinationInstance,$sourceValue);
         }

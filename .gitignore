@@ -17,4 +17,6 @@
 /web/bundles/
 /web/node_modules/
 /web/node_modules/*
+/web/files/
+/web/files/*
 **/.idea/

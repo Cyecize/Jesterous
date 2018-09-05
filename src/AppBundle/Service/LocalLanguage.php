@@ -89,6 +89,11 @@ class LocalLanguage implements ILanguagePack
 
     //IMPLEMENTATIONS
 
+    public function trendingArticles(): string
+    {
+        return $this->languagePack->trendingArticles();
+    }
+
     public function usernameAlreadyTaken(): string
     {
         return $this->languagePack->usernameAlreadyTaken();

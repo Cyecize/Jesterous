@@ -10,6 +10,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\BindingModel\CreateArticleBindingModel;
+use AppBundle\BindingModel\EditArticleBindingModel;
+use AppBundle\BindingModel\ImageBindingModel;
 use AppBundle\Contracts\IArticleCategoryDbManager;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
@@ -21,6 +23,7 @@ use AppBundle\Exception\CommentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Form\CommentType;
 use AppBundle\Form\CreateArticleType;
+use AppBundle\Form\EditArticleType;
 use AppBundle\Form\ReplyType;
 use AppBundle\Service\ArticleCategoryDbManager;
 use AppBundle\Service\ArticleDbManager;
@@ -32,11 +35,14 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ArticleController extends BaseController
 {
     private const INVALID_ARTICLE_TO_VIEW = "Invalid article to view";
     private const ARTICLE_WITH_ID_WAS_NOT_FOUND = "Article with id %s was not found";
+    private const CANNOT_EDIT_ARTICLE_MSG = "This article does not belong to you!";
+    private const ARTICLE_WAS_EDITED_FORMAT = 'Article with id %s was edited';
 
     /**
      * @var IArticleDbManager
@@ -67,29 +73,73 @@ class ArticleController extends BaseController
      * @param Request $request
      * @return Response
      */
-    public function createArticleRequest(Request $request){
+    public function createArticleRequest(Request $request)
+    {
 
         $articleBindingModel = new CreateArticleBindingModel();
         $form = $this->createForm(CreateArticleType::class, $articleBindingModel);
         $form->handleRequest($request);
 
         $errors = array();
-        if($form->isSubmitted()){
-            $validator = $this->get('validator');
-            $errors = $validator->validate($articleBindingModel);
-            if(count($errors) > 0)
+        if ($form->isSubmitted()) {
+            $errors = $this->get('validator')->validate($articleBindingModel);
+            if (count($errors) > 0)
                 goto escape;
             $this->articleService->createArticle($articleBindingModel, $this->getUser());
-            return $this->redirectToRoute('author_panel', ['info'=>"Article was created!"]);
+            return $this->redirectToRoute('author_panel', ['info' => "Article was created!"]);
         }
 
         escape:
-        return $this->render('author/articles/create-article-html.twig',[
-            'categories'=>$this->categoryService->findAllLocalCategories(),
-            'form1'=>$form->createView(),
-            'model'=>$articleBindingModel,
-            'errors'=>$errors,
+        return $this->render('author/articles/create-article-html.twig', [
+            'categories' => $this->categoryService->findAllLocalCategories(),
+            'form1' => $form->createView(),
+            'model' => $articleBindingModel,
+            'errors' => $errors,
         ]);
+    }
+
+    /**
+     * @Route("/articles/edit/{id}", name="edit_article", defaults={"id":null})
+     * @Security("has_role('ROLE_AUTHOR')")
+     * @param Request $request
+     * @param $id
+     * @return Response
+     * @throws ArticleNotFoundException
+     */
+    public function editArticleAction(Request $request, $id)
+    {
+        $article = $this->articleService->findOneById($id, true);
+        if ($article == null)
+            throw new ArticleNotFoundException(sprintf(self::ARTICLE_WITH_ID_WAS_NOT_FOUND, $id));
+        $user = $this->getUser();
+        if ($user->getId() != $article->getAuthor()->getId()) {
+            throw new AccessDeniedException(self::CANNOT_EDIT_ARTICLE_MSG);
+        }
+        $bindingModel = new EditArticleBindingModel();
+        $form = $this->createForm(EditArticleType::class, $bindingModel);
+        $form->handleRequest($request);
+        $errors = array();
+        if ($form->isSubmitted()) {
+            $errors = $this->get('validator')->validate($bindingModel);
+            if (count($errors) > 0)
+                goto escape;
+            if($bindingModel->getFile() != null){
+                $errors = $this->get('validator')->validate(ImageBindingModel::imageOverload($bindingModel->getFile()));
+                if(count($errors) > 0)
+                    goto escape;
+            }
+            $this->articleService->editArticle($article, $bindingModel, $bindingModel->getFile());
+            return $this->redirectToRoute('author_panel', ['info'=>sprintf(self::ARTICLE_WAS_EDITED_FORMAT, $id)]);
+        }
+
+        escape:
+        return $this->render('author/articles/edit-article-html.twig',
+            [
+                'article' => $article,
+                'form1' => $form->createView(),
+                'errors'=>$errors,
+                'categories' => $this->categoryService->findAllLocalCategories(),
+            ]);
     }
 
     /**
@@ -98,16 +148,17 @@ class ArticleController extends BaseController
      * @return Response
      * @throws ArticleNotFoundException
      */
-    public function articleDetailsAction($id){
-        $article = $this->getDoctrine()->getRepository(Article::class)->findOneBy(array('id'=>$id));
-        if($article == null)
+    public function articleDetailsAction($id)
+    {
+        $article = $this->getDoctrine()->getRepository(Article::class)->findOneBy(array('id' => $id));
+        if ($article == null)
             throw new ArticleNotFoundException(sprintf(self::ARTICLE_WITH_ID_WAS_NOT_FOUND, $id));
 
         $article->setComments(array_reverse($article->getComments()->toArray()));
         return $this->render('default/article.html.twig', [
-            'article'=>$article,
-            'similarArticles'=>$this->articleService->findSimilarArticles($article),
-            'similarArticlesSidebar'=>$this->articleService->findSimilarArticles($article,10),
+            'article' => $article,
+            'similarArticles' => $this->articleService->findSimilarArticles($article),
+            'similarArticlesSidebar' => $this->articleService->findSimilarArticles($article, 10),
         ]);
     }
 
@@ -134,11 +185,12 @@ class ArticleController extends BaseController
      * @return JsonResponse
      * @throws RestFriendlyExceptionImpl
      */
-    public function viewArticle(Request $request, $id){
+    public function viewArticle(Request $request, $id)
+    {
         $token = $request->get('token');
-        if($id == null || !$this->isCsrfTokenValid($id, $token))
+        if ($id == null || !$this->isCsrfTokenValid($id, $token))
             throw new RestFriendlyExceptionImpl(self::INVALID_ARTICLE_TO_VIEW, 200);
         $this->articleService->viewArticle($this->articleService->findOneById($id));
-        return new JsonResponse(['message'=>"OK"]);
+        return new JsonResponse(['message' => "OK"]);
     }
 }

@@ -130,7 +130,7 @@ class ArticleCategory
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArticleCategory[]
      */
     public function getChildrenCategories()
     {

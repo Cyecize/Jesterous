@@ -69,6 +69,13 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const ABOUT = "За автора";
 
+    public const TRENDING_ARTICLES = "Нашумелите";
+
+    public function trendingArticles() : string
+    {
+        return self::TRENDING_ARTICLES;
+    }
+
     public function usernameAlreadyTaken(): string
     {
         return "Потребителското име е заето!";

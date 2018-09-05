@@ -7,7 +7,8 @@
     </div>
 
     <div class="page_content">
-        <div class="container " style="	background: linear-gradient(to right,rgba(249, 249, 232,0.5), rgba(221, 232, 255,0.5));">
+        <div class="container "
+             style="	background: linear-gradient(to right,rgba(249, 249, 232,0.5), rgba(221, 232, 255,0.5));">
 
             <div class="row row-lg-eq-height">
 
@@ -15,10 +16,9 @@
                 <div class="col-lg-9">
                     <div class="main_content">
                         <!-- Blog Section - What's Trending -->
-
                         <div class="blog_section">
                             <div class="section_panel d-flex flex-row align-items-center justify-content-start">
-                                <div class="section_title">What's Trending</div>
+                                <div class="section_title">{{ localLang.trendingArticles }}</div>
                                 <div class="section_tags ml-auto">
                                     <ul>
                                         {#<li class="active"><a href="category.html">all</a></li>#}
@@ -32,7 +32,9 @@
                                         <li>{{ localLang.more }}
                                             <ul>
                                                 {% for cat in categories %}
-                                                    <li><a href="{{ path('categories_page') }}">{{ cat.categoryName }}</a></li>
+                                                    <li>
+                                                        <a href="{{ path('categories_page') }}">{{ cat.categoryName }}</a>
+                                                    </li>
                                                 {% endfor %}
                                             </ul>
                                         </li>
@@ -41,88 +43,24 @@
                             </div>
                             <div class="section_content">
                                 <div class="grid clearfix">
-
-                                    <!-- Large Card With Background -->
-                                    <div class="card card_large_with_background grid-item">
-                                        <div class="card_background"
-                                             style="background-image:url(images/post_8.jpg)"></div>
-                                        <div class="card-body">
-                                            <div class="card-title"><a href="post.html">How Did van Gogh’s Turbulent
-                                                    Mind Depict One of the Most Complex Concepts in Physics?</a></div>
-                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span>
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <!-- Large Card With Image -->
-                                    <div class="card grid-item card_large_with_image">
-                                        <img class="card-img-top" src="images/post_9.jpg" alt="">
-                                        <div class="card-body">
-                                            <div class="card-title"><a href="post.html">How Did van Gogh’s Turbulent
-                                                    Mind Depict One of the Most Complex Concepts in Physics?</a></div>
-                                            <p class="card-text">Pick the yellow peach that looks like a sunset with its
-                                                red, orange, and pink coat skin, peel it off with your teeth. Sink them
-                                                into unripened...</p>
-                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span>
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <!-- Default Card With Image -->
-                                    <div class="card card_small_with_image grid-item">
-                                        <img class="card-img-top" src="images/post_5.jpg" alt="">
-                                        <div class="card-body">
-                                            <div class="card-title card-title-small"><a href="post.html">How Did van
-                                                    Gogh’s Turbulent Mind Depict One of the Most Complex Concepts in
-                                                    Physics?</a></div>
-                                            <small class="post_meta"><a href="#">Katy Liu</a><span>Sep 29, 2017 at 9:48 am</span>
-                                            </small>
-                                        </div>
-                                    </div>
-
-                                    <!-- Default Card With Background -->
-
-                                    <div class="card card_default card_default_with_background grid-item">
-                                        <div class="card_background"
-                                             style="background-image:url(images/post_6.jpg)"></div>
-                                        <div class="card-body">
-                                            <div class="card-title card-title-small"><a href="post.html">How Did van
-                                                    Gogh’s Turbulent Mind Depict One of the Most</a></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Default Card No Image -->
-                                    <div class="card card_default card_default_no_image grid-item">
-                                        <div class="card-body">
-                                            <div class="card-title card-title-small"><a href="post.html">How Did van
-                                                    Gogh’s Turbulent Mind Depict One of the Most</a></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Default Card No Image -->
-                                    <div class="card card_default card_default_no_image grid-item">
-                                        <div class="card-body">
-                                            <div class="card-title card-title-small"><a href="post.html">How Did van
-                                                    Gogh’s Turbulent Mind Depict One of the Most</a></div>
-                                        </div>
-                                    </div>
-
-                                    <!-- Default Card With Background -->
-
-                                    <div class="card card_default card_default_with_background grid-item">
-                                        <div class="card_background"
-                                             style="background-image:url(images/post_7.jpg)"></div>
-                                        <div class="card-body">
-                                            <div class="card-title card-title-small"><a href="post.html">How Did van
-                                                    Gogh’s Turbulent Mind Depict One of the Most</a></div>
-                                        </div>
-                                    </div>
-
+                                    {% set trendArtCount = 0 %}
+                                    {% for article in trendingArticles %}
+                                        {% set modulus = trendArtCount % 4 %}
+                                        {% if modulus == 0  %}
+                                            {% embed 'partials/articles/large-card-with-image.html.twig' with {'article':article} %} {% endembed %}
+                                        {% else %}
+                                            {% if modulus == 1 %}
+                                                {% embed 'partials/articles/small-card-without-image.html.twig' with {'article':article} %} {% endembed %}
+                                            {% else %}
+                                                {% embed 'partials/articles/small-card-with-background.html.twig' with {'article':article} %} {% endembed %}
+                                            {% endif %}
+                                        {% endif %}
+                                        {% set trendArtCount = trendArtCount + 1 %}
+                                    {% endfor %}
                                 </div>
 
                             </div>
                         </div>
-
                         <!-- sub section -->
                         <div class="blog_section">
                             <div class="section_panel d-flex flex-row align-items-center justify-content-start">
@@ -131,10 +69,9 @@
                             {% embed 'partials/lang/' ~  localLang.localLang ~'/subscribe-form.html.twig' %}{% endembed %}
                         </div>
 
-                        {% embed 'partials/quotes/main-content-quote.html.twig'%} {% endembed %}
+                        {% embed 'partials/quotes/main-content-quote.html.twig' %} {% endembed %}
 
                         <!-- Blog Section - Latest -->
-
                         <div class="blog_section">
                             <div class="section_panel d-flex flex-row align-items-center justify-content-start">
                                 <div class="section_title">{{ localLang.latestArticles }}</div>
@@ -143,14 +80,13 @@
                                 <div class="grid clearfix" id="latestPostsHolder">
                                     {% embed 'partials/articles/articles-cards-renderer.html.twig' with {'articles':latestPosts} %} {% endembed %}
                                 </div>
-
                             </div>
                         </div>
 
                     </div>
                     <div class="load_more">
-                        <div id="load_more"
-                             class="load_more_button text-center trans_200">{{ localLang.loadMore }}</div>
+                        <div id="load_more" class="load_more_button text-center trans_200">{{ localLang.loadMore }}
+                        </div>
                     </div>
                 </div>
 
@@ -159,10 +95,10 @@
                         {% embed 'partials/sidebar/top-stories-section.html.twig' %} {% endembed %}
                     {% endblock %}
                 {% endembed %}
-                </div>
-
             </div>
+
         </div>
+    </div>
 
 {% endblock %}
 
@@ -181,7 +117,7 @@
 
         $(function () {
             var latestPostsHolder = $('#latestPostsHolder');
-            var btn  = $('#load_more');
+            var btn = $('#load_more');
 
             btn.on('click', function () {
                 btn.hide();
@@ -189,7 +125,7 @@
                     method: "GET",
                     url: "{{ path('latest_articles_load_more') }}?offset=" + numberOfLatestArticles,
                     success: function (data) {
-                        if(data.indexOf('Number(\'0\')') !== -1){
+                        if (data.indexOf('Number(\'0\')') !== -1) {
                             return;
                         }
                         latestPostsHolder.append(data).imagesLoaded(function () {

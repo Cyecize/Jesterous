@@ -69,6 +69,13 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const ABOUT = "About me";
 
+    public const TRENDING_ARTICLES = "What's Trending";
+
+    public function trendingArticles() : string
+    {
+        return self::TRENDING_ARTICLES;
+    }
+
     public function usernameAlreadyTaken(): string
     {
         return "Username already taken!";

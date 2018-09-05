@@ -85,4 +85,5 @@ interface ILanguagePack
 
     function about() :string ;
 
+    function trendingArticles() : string ;
 }

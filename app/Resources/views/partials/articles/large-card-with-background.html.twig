@@ -1,0 +1,15 @@
+<!-- Large Card With Background -->
+<div class="card card_large_with_background grid-item">
+    <a href="{{ path('show_article', {'id': article.id}) }}">
+        <div class="card_background"
+             style="background:linear-gradient(to right,rgba(0,0,0,0.5), rgba(0,0,0,0.6)),url('{{ article.backgroundImageLink }}'); -webkit-background-size: cover;background-size: cover;"></div>
+    </a>
+    <div class="card-body">
+        <div class="card-title"><a href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a></div>
+
+        <small class="post_meta">
+            <a href="#">{{ article.author.username }}</a><span>{{ article.dateAdded.format(twigInformer.simpleDateFormat) }}</span>
+        </small>
+
+    </div>
+</div>

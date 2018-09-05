@@ -24,4 +24,6 @@ class Config
     public const COOKIE_NEUTRAL_LANG = "neutral";
 
     public const COOKIE_LANG_NAME = "lang";
+
+    public const USER_FILES_PATH_FORMAT = "files/" . "users/" . "%s/";
 }
