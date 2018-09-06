@@ -9,7 +9,6 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -18,7 +17,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotNull;
 
-class EditArticleType extends AbstractType
+class CreateCategoryType extends AbstractType
 {
     /**
      * {@inheritdoc}
@@ -26,16 +25,10 @@ class EditArticleType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('title', TextType::class, array('constraints' => [
+            ->add('categoryName', TextType::class , array('constraints'=>[
                 new NotBlank()
             ]))
-            ->add('summary', TextType::class)
-            ->add('mainContent', TextType::class)
-            ->add("isVisible", CheckboxType::class)
-            ->add('categoryId', IntegerType::class)
-            ->add('stringOfTags', TextType::class)
-            ->add('file', FileType::class)
-            ->add('dailyViews', IntegerType::class);
+            ->add('locale', TextType::class);
     }
 
     /**

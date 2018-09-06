@@ -29,13 +29,13 @@
                 <!-- Top Stories Slider Item -->
                 {#lets hope that indexes are in order and not shuffled like 1 3 4 5 #}
                 {% set globalIndexCount = 0 %}
-
                 <div class="owl-item">
                     {% for article in twigInformer.findPopularArticlesForSidebar %}
                     {% set globalIndexCount = globalIndexCount + 1 %}
-                    {% if globalIndexCount % 5 == 0 %}
+                    {% if globalIndexCount % 6 == 0 %}
+                    {% set globalIndexCount = globalIndexCount + 1 %}
                 </div> <!-- close and reopen tag to achieve multiple divs effect -->
-                <div class="owl-item">
+                <div class="owl-item owl-lel">
                     {% endif %}
                     {% embed 'partials/articles/sidebar-post.html.twig' with{'article':article} %}{% endembed %}
                     {% endfor %}

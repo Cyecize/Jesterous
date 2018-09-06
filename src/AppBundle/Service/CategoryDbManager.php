@@ -9,14 +9,20 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\BindingModel\CreateCategoryBindingModel;
+use AppBundle\Constants\Config;
 use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Entity\ArticleCategory;
+use AppBundle\Entity\Language;
 use AppBundle\Exception\CategoryNotFoundException;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\CssSelector\Exception\InternalErrorException;
 
 class CategoryDbManager implements ICategoryDbManager
 {
+    private const PARENT_CATEGORY_NAME = "All";
+    private const LANG_NOT_FOUND = "Language was not found!";
 
     /**
      * @var EntityManagerInterface
@@ -42,21 +48,42 @@ class CategoryDbManager implements ICategoryDbManager
     }
 
     /**
+     * @param CreateCategoryBindingModel $bindingModel
+     * @return ArticleCategory
+     * @throws CategoryNotFoundException
+     * @throws InternalErrorException
+     */
+    public function createCategory(CreateCategoryBindingModel $bindingModel): ArticleCategory
+    {
+        $this->createParentCategory();
+        $category = new ArticleCategory();
+        $category->setCategoryName($bindingModel->getCategoryName());
+        $lang = $this->localLanguage->findLanguageByName($bindingModel->getLocale());
+        if ($lang == null)
+            throw new InternalErrorException(self::LANG_NOT_FOUND);
+        $category->setParentCategory($this->findOneByName(self::PARENT_CATEGORY_NAME));
+        $category->setLanguage($lang);
+        $this->entityManager->persist($category);
+        $this->entityManager->flush();
+        return $category;
+    }
+
+    /**
      * @param string $name
      * @return ArticleCategory|null|object
      * @throws CategoryNotFoundException
      */
-    function findOneByName(string $name)
+    function findOneByName(string $name): ?ArticleCategory
     {
-        $cat = $this->catRepo->findOneBy(array('categoryName'=>$name));
-        if($cat == null)
+        $cat = $this->catRepo->findOneBy(array('categoryName' => $name));
+        if ($cat == null)
             throw new CategoryNotFoundException($this->localLanguage->categoryWithNameDoesNotExist($name));
         return $cat;
     }
 
-    function findOneById(int $id)
+    function findOneById(int $id): ?ArticleCategory
     {
-        return $this->catRepo->findOneBy(array('id'=>$id));
+        return $this->catRepo->findOneBy(array('id' => $id));
     }
 
     function findAll(): array
@@ -66,6 +93,21 @@ class CategoryDbManager implements ICategoryDbManager
 
     function findAllLocalCategories(): array
     {
-        return $this->catRepo->findBy(array('language'=>$this->localLanguage->findCurrentLangs()));
+        return $this->catRepo->findBy(array('language' => $this->localLanguage->findCurrentLangs()));
+    }
+
+    private function createParentCategory()
+    {
+        try {
+            $this->findOneByName(self::PARENT_CATEGORY_NAME);
+            return;
+        } catch (CategoryNotFoundException $e) {
+
+        }
+        $cat = new ArticleCategory();
+        $cat->setCategoryName(self::PARENT_CATEGORY_NAME);
+        $cat->setLanguage($this->entityManager->getRepository(Language::class)->findOneBy(array('localeName' => Config::COOKIE_NEUTRAL_LANG)));
+        $this->entityManager->persist($cat);
+        $this->entityManager->flush();
     }
 }

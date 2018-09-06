@@ -17,11 +17,20 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class BaseController extends Controller
 {
+    /**
+     * @var string
+     */
     protected $currentLang;
+
+    /**
+     * @var LocalLanguage
+     */
+    protected $language;
 
     public function __construct(LocalLanguage $language)
     {
         $this->currentLang = $language->getLocalLang();
+        $this->language = $language;
     }
 
     protected function isUserLogged(): bool{

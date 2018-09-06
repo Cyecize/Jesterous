@@ -1,0 +1,15 @@
+{% extends 'author/panel.html.twig' %}
+{% block sectionBody %}
+    <h2 class="text-dark">My Articles</h2>
+    <hr>
+    <div class="row justify-content-center">
+        {% for article in articles %}
+            <div class="col-md-3 text-dark p-2 rounded bg-info m-2">
+                <h4><a href="{{ path('edit_article', {'id':article.id}) }}" class="text-dark">{{ article.id }}: {{ article.title }}</a> </h4>
+                <small>{{ article.dateAdded.format(twigInformer.simpleDateFormat) }}</small><br/>
+                <small>Comments: {{ article.comments|length }}</small><br/>
+                <small>Views: {{ article.views }}</small><br/>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

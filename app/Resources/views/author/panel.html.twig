@@ -35,7 +35,7 @@
                                     <li class="list-group-item"><a href="{{ path('create_article') }}">Create article</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <a href="/brands/find-for-edit">Something else</a>
+                                        <a href="{{ path('my_articles') }}">My articles</a>
                                     </li>
                                 </ul>
                             </div>
@@ -43,15 +43,16 @@
                         <hr>
                         <div class="sidebar_section">
                             <div class="sidebar_title_container">
-                                <div class="sidebar_title">Quotes</div>
+                                <div class="sidebar_title">Categories</div>
                             </div>
                             <div class="sidebar_section_content pt-0">
                                 <ul class="list-group">
-                                    <li class="list-group-item"><a href="/brands/create">Add Quote</a>
-                                    </li>
                                     <li class="list-group-item">
-                                        <a href="/brands/find-for-edit">Something else with quotes</a>
+                                        <a href="{{ path('create_category') }}">Add Category</a>
                                     </li>
+                                    {#<li class="list-group-item">#}
+                                        {#<a href="/brands/find-for-edit">Something else with quotes</a>#}
+                                    {#</li>#}
                                 </ul>
                             </div>
                         </div>

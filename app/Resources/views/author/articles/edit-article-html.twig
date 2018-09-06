@@ -2,6 +2,7 @@
 {% block sectionBackground %}{{ article.backgroundImageLink }}{% endblock %}
 {% block sectionBody %}
     <h2 class="text-dark">Edit Article {{ article.id }}</h2>
+    <a href="{{ path('show_article', {'id':article.id}) }}" class="btn btn-info">View Article</a>
     <hr>
     <div id="form-container" class="container">
         {% if errors %}

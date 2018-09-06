@@ -9,15 +9,37 @@
 namespace AppBundle\Contracts;
 
 
+use AppBundle\BindingModel\CreateCategoryBindingModel;
+use AppBundle\Entity\ArticleCategory;
 use Doctrine\Common\Collections\ArrayCollection;
 
 interface ICategoryDbManager
 {
-    function findOneByName(string $name);
+    /**
+     * @param CreateCategoryBindingModel $bindingModel
+     * @return ArticleCategory
+     */
+    function createCategory(CreateCategoryBindingModel $bindingModel) : ArticleCategory;
 
-    function findOneById(int $id);
+    /**
+     * @param string $name
+     * @return ArticleCategory|null
+     */
+    function findOneByName(string $name) : ?ArticleCategory;
 
+    /**
+     * @param int $id
+     * @return ArticleCategory|null
+     */
+    function findOneById(int $id) : ?ArticleCategory;
+
+    /**
+     * @return ArticleCategory[]
+     */
     function findAll(): array;
 
+    /**
+     * @return ArticleCategory[]
+     */
     function findAllLocalCategories(): array;
 }

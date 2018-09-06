@@ -97,9 +97,9 @@ class EditArticleBindingModel
     /**
      * @return bool
      */
-    public function isVisible()
+    public function isVisible() : bool
     {
-        return $this->isVisible == null ? false : $this->isVisible;
+        return $this->isVisible == null ? false : true;
     }
 
     /**

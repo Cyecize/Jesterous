@@ -55,6 +55,11 @@ interface IArticleDbManager
      */
     function findAll(bool $hidden = false): array;
 
+    /**
+     * @param User $user
+     * @return Article[]
+     */
+    function findMyArticles(User $user): array ;
 
     /**
      * @param Article $article

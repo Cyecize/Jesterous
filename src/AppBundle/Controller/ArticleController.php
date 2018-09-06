@@ -138,7 +138,19 @@ class ArticleController extends BaseController
                 'article' => $article,
                 'form1' => $form->createView(),
                 'errors'=>$errors,
-                'categories' => $this->categoryService->findAllLocalCategories(),
+                'categories' => $this->categoryService->findAll(),
+            ]);
+    }
+
+    /**
+     * @Route("/articles/my", name="my_articles")
+     * @Security("has_role('ROLE_AUTHOR')")
+     */
+    public function myArticles(){
+
+        return $this->render('author/articles/my-articles.html.twig',
+            [
+               'articles'=>$this->articleService->findMyArticles($this->getUser()),
             ]);
     }
 
@@ -150,7 +162,7 @@ class ArticleController extends BaseController
      */
     public function articleDetailsAction($id)
     {
-        $article = $this->getDoctrine()->getRepository(Article::class)->findOneBy(array('id' => $id));
+        $article = $this->articleService->findOneById($id);
         if ($article == null)
             throw new ArticleNotFoundException(sprintf(self::ARTICLE_WITH_ID_WAS_NOT_FOUND, $id));
 

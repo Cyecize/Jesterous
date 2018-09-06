@@ -42,7 +42,7 @@
                                 </div>
                             </div>
                             <div class="section_content">
-                                <div class="grid clearfix">
+                                <div class="grid clearfix" id="popularGrid">
                                     {% set trendArtCount = 0 %}
                                     {% for article in trendingArticles %}
                                         {% set modulus = trendArtCount % 4 %}
@@ -57,6 +57,13 @@
                                         {% endif %}
                                         {% set trendArtCount = trendArtCount + 1 %}
                                     {% endfor %}
+                                    <script>
+                                        $(function () {
+                                            setTimeout(function () {
+                                                $('#popularGrid').css('min-height', '750px');
+                                            }, 600)
+                                        })
+                                    </script>
                                 </div>
 
                             </div>

@@ -54,6 +54,10 @@ class LocalLanguage implements ILanguagePack
         return strtolower($this->currentLang);
     }
 
+    public function findLanguageByName(string  $langName) : ?Language{
+        return $this->entityManager->getRepository(Language::class)->findOneBy(array('localeName'=>$langName));
+    }
+
     public function forName(string $funcName): string
     {
         if (method_exists($this->languagePack, $funcName))

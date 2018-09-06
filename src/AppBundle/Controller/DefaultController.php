@@ -39,7 +39,7 @@ class DefaultController extends BaseController
         $categories = $this->categoryService->findLocaleCategories();
         $latestPosts = $this->articleService->findArticlesForLatestPosts(0, $categories);
         $sliderArticles = $this->articleService->forgeSliderViewModel($this->articleService->findArticlesByCategories($categories, 4));
-        $trendingArticles = $this->articleService->findArticlesByCategories( $categories, 20);
+        $trendingArticles = $this->articleService->findArticlesByCategories( $categories, 7);
 
         return $this->render('default/index.html.twig', [
             'categories'=>$categories,
