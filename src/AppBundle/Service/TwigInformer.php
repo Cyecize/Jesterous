@@ -61,4 +61,9 @@ class TwigInformer
         return Config::SIMPLE_DATE_FORMAT;
     }
 
+    public function randomNumber(int $min, int $max, int $exclude) : int {
+        $num = rand($min, $max);
+        while ($num == $exclude) $num = rand($min, $max);
+        return $num;
+    }
 }

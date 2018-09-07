@@ -16,6 +16,8 @@ use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\User;
+use AppBundle\Util\Page;
+use AppBundle\Util\Pageable;
 use AppBundle\ViewModel\SliderArticlesViewModel;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -96,4 +98,10 @@ interface IArticleDbManager
      */
     function findArticlesForLatestPosts(int $offset, array $categories): array;
 
+    /**
+     * @param string $searchText
+     * @param Pageable $pageable
+     * @return Page
+     */
+    function search(string $searchText, Pageable $pageable) : Page ;
 }

@@ -86,4 +86,10 @@ interface ILanguagePack
     function about() :string ;
 
     function trendingArticles() : string ;
+
+    function previous() : string ;
+
+    function next() : string ;
+
+    function sectionIsEmpty() : string ;
 }

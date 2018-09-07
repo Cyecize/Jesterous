@@ -27,9 +27,12 @@ use AppBundle\Exception\CategoryNotFoundException;
 use AppBundle\Exception\CommentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Util\ModelMapper;
+use AppBundle\Util\Page;
+use AppBundle\Util\Pageable;
 use AppBundle\ViewModel\SliderArticlesViewModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Tools\Pagination\Paginator;
 use function PHPSTORM_META\elementType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -98,7 +101,7 @@ class ArticleDbManager implements IArticleDbManager
         if ($article == null)
             throw new RestFriendlyExceptionImpl(sprintf("Article does not exist"), 404);
         $article->setViews($article->getViews() + 1);
-        $article->setDailyViews($article->getDailyViews() +1);
+        $article->setDailyViews($article->getDailyViews() + 1);
         $this->entityManager->merge($article);
         $this->entityManager->flush();
     }
@@ -152,7 +155,7 @@ class ArticleDbManager implements IArticleDbManager
         foreach ($tags as $tag) $article->addTag($tag);
         $article->setCategory($category);
         $article->setIsVisible($bindingModel->isVisible());
-        if($file != null){
+        if ($file != null) {
             $this->fileService->removeFile(substr($article->getBackgroundImageLink(), 1));
             $article->setBackgroundImageLink($this->uploadFileToUser($bindingModel->getFile(), $article->getAuthor()));
         }
@@ -176,7 +179,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     public function findMyArticles(User $user): array
     {
-        return $this->articleRepo->findBy(array('author'=>$user), array('id'=>'DESC'));
+        return $this->articleRepo->findBy(array('author' => $user), array('id' => 'DESC'));
     }
 
     /**
@@ -187,7 +190,7 @@ class ArticleDbManager implements IArticleDbManager
     public function findSimilarArticles(Article $article, int $limit = 3): array
     {
         $similar = $this->entityManager->getRepository(Article::class)
-            ->findBy(array('category' => $article->getCategory(), 'isVisible' => true), array('dailyViews'=>'DESC'), $limit);
+            ->findBy(array('category' => $article->getCategory(), 'isVisible' => true), array('dailyViews' => 'DESC'), $limit);
 
         $similar = array_filter($similar, function (Article $e) use ($article) {
             return $e->getId() != $article->getId();
@@ -243,7 +246,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findArticlesByCategories(array $articleCategories, int $limit = null): array
     {
-        return $this->articleRepo->findBy(array('category' => $articleCategories, 'isVisible' => true), array('dailyViews' => 'DESC', 'id'=>'DESC'), $limit);
+        return $this->articleRepo->findBy(array('category' => $articleCategories, 'isVisible' => true), array('dailyViews' => 'DESC', 'id' => 'DESC'), $limit);
     }
 
     /**
@@ -256,9 +259,30 @@ class ArticleDbManager implements IArticleDbManager
         return $this->articleRepo->findBy(array('isVisible' => true, 'category' => $categories), array('dateAdded' => "DESC"), self::MAX_ARTICLES_PER_PAGE, $offset);
     }
 
-    private function uploadFileToUser(UploadedFile $file, User $user) : string {
+    private function uploadFileToUser(UploadedFile $file, User $user): string
+    {
         $pathToUser = sprintf(Config::USER_FILES_PATH_FORMAT, $user->getUsername());
         $imageName = $this->fileService->uploadFile($file, $pathToUser);
         return "/" . $pathToUser . $imageName;
+    }
+
+    /**
+     * @param string $searchText
+     * @param Pageable $pageable
+     * @return Page
+     */
+    function search(string $searchText, Pageable $pageable): Page
+    {
+        $searchText = preg_replace('/\s+/', '%', $searchText);
+        $qb = $this->articleRepo->createQueryBuilder('a');
+
+        $query = $qb
+            ->where($qb->expr()->like('a.title', ':pattern'))
+            ->orWhere($qb->expr()->like('a.summary', ':pattern'))
+            ->andWhere('a.isVisible = TRUE')
+            ->setParameter('pattern', "%$searchText%")
+            ->orderBy('a.id', 'DESC');
+
+        return new Page($query, $pageable);
     }
 }

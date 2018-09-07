@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+{% block title %}{{ searchText }}{% endblock %}
+
+{% block body %}
+    {% embed 'partials/banner.html.twig' with {'bannerTitle':searchText } %} {% endembed %}
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+                <div class="col-lg-9">
+                    <div class="grid clearfix" style="min-height: 350px;">
+                        {% if page.elements|length < 1 %}
+                            <h3 class="alert alert-info">{{ localLang.sectionIsEmpty }}</h3>
+                        {% endif %}
+                        {% embed 'partials/articles/articles-cards-renderer.html.twig' with {'articles':page.elements} %} {% endembed %}
+                    </div>
+                    {% embed 'partials/articles/pagination.html.twig' with {'queryParam':'&q=' ~ searchText} %} {% endembed %}
+                </div>
+                {% embed 'partials/sidebar/sidebar.html.twig' %}
+                    {% block sections %}
+                        {% embed 'partials/sidebar/top-stories-section.html.twig' %} {% endembed %}
+                    {% endblock %}
+                {% endembed %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
+{% endblock %}
+

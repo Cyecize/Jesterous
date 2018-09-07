@@ -71,6 +71,27 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const TRENDING_ARTICLES = "What's Trending";
 
+    public const NEXT = "Next";
+
+    public const PREVIOUS = "Previous";
+
+    public const SECTION_IS_EMPTY = "Section is empty";
+
+    public function sectionIsEmpty(): string
+    {
+        return self::SECTION_IS_EMPTY;
+    }
+
+    public function next(): string
+    {
+        return self::NEXT;
+    }
+
+    public function previous(): string
+    {
+        return self::PREVIOUS;
+    }
+
     public function trendingArticles() : string
     {
         return self::TRENDING_ARTICLES;

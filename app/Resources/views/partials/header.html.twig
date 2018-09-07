@@ -37,9 +37,9 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="#">
+                        <form action="{{ path('search_everyone') }}" method="GET">
                             <input type="search" class="header_search_input" required="required"
-                                   placeholder="{{ localLang.typeToSearch }}">
+                                   placeholder="{{ localLang.typeToSearch }}" name="q" {% if searchText is defined %}value="{{ searchText }}" {% endif %}>
                             {#<img class="header_search_icon" src="images/search.png" alt="">#}
                             <i class="fa fa-search header_search_icon" aria-hidden="true"></i>
                         </form>

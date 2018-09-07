@@ -93,6 +93,21 @@ class LocalLanguage implements ILanguagePack
 
     //IMPLEMENTATIONS
 
+    public function sectionIsEmpty(): string
+    {
+        return $this->languagePack->sectionIsEmpty();
+    }
+
+    public function next(): string
+    {
+        return $this->languagePack->next();
+    }
+
+    public function previous(): string
+    {
+        return $this->languagePack->previous();
+    }
+
     public function trendingArticles(): string
     {
         return $this->languagePack->trendingArticles();

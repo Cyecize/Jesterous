@@ -1,19 +1,25 @@
+{% set prevRand = -1 %}
 {% for article in articles %}
-    {% set rand = random(3) %}
+    {% set rand = twigInformer.randomNumber(0,3, prevRand) %}
 
     {% if rand == 0 %}
         {% embed 'partials/articles/small-card-with-background.html.twig' with {'article': article} %} {% endembed %}
+        {% set prevRand = 0 %}
     {% endif %}
+
     {% if rand == 1 %}
         {% embed 'partials/articles/small-card-with-image.html.twig' with {'article': article} %} {% endembed %}
+        {% set prevRand = 1 %}
     {% endif %}
 
     {% if rand == 2 %}
         {% embed 'partials/articles/small-card-without-image.html.twig' with {'article': article} %} {% endembed %}
+        {% set prevRand = 2 %}
     {% endif %}
 
     {% if rand == 3 %}
         {% embed 'partials/articles/default-card-with-background.html.twig' with {'article': article} %} {% endembed %}
+        {% set prevRand = 3 %}
     {% endif %}
 
 {% endfor %}

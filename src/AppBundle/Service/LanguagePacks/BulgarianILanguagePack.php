@@ -71,6 +71,27 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const TRENDING_ARTICLES = "Нашумелите";
 
+    public const NEXT = "Следваща";
+
+    public const PREVIOUS = "Предишна";
+
+    public const SECTION_IS_EMPTY = "Страницата е празна";
+
+    public function sectionIsEmpty(): string
+    {
+        return self::SECTION_IS_EMPTY;
+    }
+
+    public function next(): string
+    {
+        return self::NEXT;
+    }
+
+    public function previous(): string
+    {
+       return self::PREVIOUS;
+    }
+
     public function trendingArticles() : string
     {
         return self::TRENDING_ARTICLES;
