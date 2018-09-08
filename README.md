@@ -4,6 +4,7 @@ Jesterous - A Blog website
 Visit
 --------------
 https://jesterous.net/
+https://jesterous.net/?lang=en
 
 Features
 --------------
