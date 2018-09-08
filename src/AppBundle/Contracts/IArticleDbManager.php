@@ -15,6 +15,7 @@ use AppBundle\BindingModel\EditArticleBindingModel;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Comment;
+use AppBundle\Entity\Tag;
 use AppBundle\Entity\User;
 use AppBundle\Util\Page;
 use AppBundle\Util\Pageable;
@@ -104,4 +105,11 @@ interface IArticleDbManager
      * @return Page
      */
     function search(string $searchText, Pageable $pageable) : Page ;
+
+    /**
+     * @param Tag $tag
+     * @param Pageable $pageable
+     * @return Page
+     */
+    function findByTag(Tag $tag, Pageable $pageable) : Page ;
 }

@@ -93,6 +93,11 @@ class LocalLanguage implements ILanguagePack
 
     //IMPLEMENTATIONS
 
+    public function tagNotFound(): string
+    {
+        return $this->languagePack->tagNotFound();
+    }
+
     public function sectionIsEmpty(): string
     {
         return $this->languagePack->sectionIsEmpty();

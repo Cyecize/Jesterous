@@ -77,6 +77,13 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const SECTION_IS_EMPTY = "Section is empty";
 
+    public const TAG_NOT_FOUND = "Tag was not found!";
+
+    public function tagNotFound(): string
+    {
+        return self::TAG_NOT_FOUND;
+    }
+
     public function sectionIsEmpty(): string
     {
         return self::SECTION_IS_EMPTY;

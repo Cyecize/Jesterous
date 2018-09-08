@@ -21,6 +21,7 @@ use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Comment;
+use AppBundle\Entity\Tag;
 use AppBundle\Entity\User;
 use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Exception\CategoryNotFoundException;
@@ -284,5 +285,21 @@ class ArticleDbManager implements IArticleDbManager
             ->orderBy('a.id', 'DESC');
 
         return new Page($query, $pageable);
+    }
+
+    /**
+     * @param Tag $tag
+     * @param Pageable $pageable
+     * @return Page
+     */
+    function findByTag(Tag $tag, Pageable $pageable): Page
+    {
+       $qb = $this->articleRepo->createQueryBuilder('a');
+       $query = $qb
+           ->where('a.isVisible = TRUE')
+           ->andWhere(':tag MEMBER OF a.tags')
+           ->setParameter('tag', $tag)
+           ->orderBy('a.dailyViews', 'DESC');
+       return new Page($query, $pageable);
     }
 }

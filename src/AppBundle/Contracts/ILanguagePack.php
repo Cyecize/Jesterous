@@ -92,4 +92,6 @@ interface ILanguagePack
     function next() : string ;
 
     function sectionIsEmpty() : string ;
+
+    function tagNotFound() : string ;
 }

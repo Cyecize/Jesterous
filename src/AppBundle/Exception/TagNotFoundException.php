@@ -2,32 +2,28 @@
 /**
  * Created by PhpStorm.
  * User: cyecize
- * Date: 8/6/2018
- * Time: 5:10 PM
+ * Date: 9/8/2018
+ * Time: 8:41 AM
  */
 
 namespace AppBundle\Exception;
 
 
-use AppBundle\Entity\Article;
+use AppBundle\Entity\Tag;
+use AppBundle\Exception\NotFoundException;
 use Throwable;
 
-class ArticleNotFoundException extends \Exception implements NotFoundException
+class TagNotFoundException extends \Exception implements NotFoundException
 {
-
     public function __construct(string $message = "", int $code = 404, Throwable $previous = null)
     {
         parent::__construct($message, $code, $previous);
     }
 
-    /**
-     * @return string
-     * @throws \ReflectionException
-     */
+
     function getEntityName(): string
     {
-        $refl = new \ReflectionClass(Article::class);
+        $refl = new \ReflectionClass(Tag::class);
         return $refl->getShortName();
     }
-
 }

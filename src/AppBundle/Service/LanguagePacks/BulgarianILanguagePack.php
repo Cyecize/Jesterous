@@ -77,6 +77,13 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const SECTION_IS_EMPTY = "Страницата е празна";
 
+    public const TAG_NOT_FOUND = "Тагът не беше намерен!";
+
+    public function tagNotFound(): string
+    {
+        return self::TAG_NOT_FOUND;
+    }
+
     public function sectionIsEmpty(): string
     {
         return self::SECTION_IS_EMPTY;
