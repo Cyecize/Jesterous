@@ -32,10 +32,14 @@ class DefaultController extends BaseController
 
     /**
      * @Route("/", name="homepage")
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
+        $lang = $request->get('lang');
+        if($lang != null)
+            $this->language->setLang($lang);
         $categories = $this->categoryService->findLocaleCategories();
         $latestPosts = $this->articleService->findArticlesForLatestPosts(0, $categories);
         $sliderArticles = $this->articleService->forgeSliderViewModel($this->articleService->findArticlesByCategories($categories, 4));

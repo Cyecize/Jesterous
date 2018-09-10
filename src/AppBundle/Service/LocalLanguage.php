@@ -54,8 +54,9 @@ class LocalLanguage implements ILanguagePack
         return strtolower($this->currentLang);
     }
 
-    public function findLanguageByName(string  $langName) : ?Language{
-        return $this->entityManager->getRepository(Language::class)->findOneBy(array('localeName'=>$langName));
+    public function findLanguageByName(string $langName): ?Language
+    {
+        return $this->entityManager->getRepository(Language::class)->findOneBy(array('localeName' => $langName));
     }
 
     public function forName(string $funcName): string
@@ -65,15 +66,8 @@ class LocalLanguage implements ILanguagePack
         return $funcName;
     }
 
-    private function initLang(): void
+    public function setLang(string $langType): void
     {
-        if (!isset($_COOKIE[Config::COOKIE_LANG_NAME])) {
-            $this->languagePack = new BulgarianILanguagePack();
-            $this->currentLang = Config::COOKIE_BG_LANG;
-            setcookie(Config::COOKIE_LANG_NAME, $this->currentLang, time() + self::COOKIE_EXPIRE, '/');
-            return;
-        }
-        $langType = $_COOKIE[Config::COOKIE_LANG_NAME];
         switch (strtolower($langType)) {
             case Config::COOKIE_EN_LANG:
                 $this->languagePack = new EnglishILanguagePack();
@@ -83,13 +77,27 @@ class LocalLanguage implements ILanguagePack
                 break;
             default:
                 $this->languagePack = new BulgarianILanguagePack();
-                setcookie(Config::COOKIE_LANG_NAME, Config::COOKIE_BG_LANG);
                 $langType = Config::COOKIE_BG_LANG;
                 break;
         }
+        $this->setCookie($langType);
         $this->currentLang = $langType;
     }
 
+    private function initLang(): void
+    {
+        if (!isset($_COOKIE[Config::COOKIE_LANG_NAME])) {
+            $this->languagePack = new BulgarianILanguagePack();
+            $this->currentLang = Config::COOKIE_BG_LANG;
+            $this->setCookie($this->currentLang);
+            return;
+        }
+        $this->setLang($_COOKIE[Config::COOKIE_LANG_NAME]);
+    }
+
+    private function setCookie($lang){
+        setcookie(Config::COOKIE_LANG_NAME, $lang, time() + self::COOKIE_EXPIRE, '/');
+    }
 
     //IMPLEMENTATIONS
 
