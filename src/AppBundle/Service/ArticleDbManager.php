@@ -133,6 +133,7 @@ class ArticleDbManager implements IArticleDbManager
         $article->setAuthor($this->userDbManager->findOneById($author->getId()));
         $article->setCategory($category);
         $article->setBackgroundImageLink($this->uploadFileToUser($bindingModel->getFile(), $author));
+        $article->setIsVisible($bindingModel->getisVisible());
         $this->entityManager->persist($article);
         $this->entityManager->flush();
         return $article;
