@@ -99,7 +99,7 @@ class CreateArticleBindingModel
      */
     public function getisVisible()
     {
-        return $this->isVisible;
+        return $this->isVisible == null ? false : true;
     }
 
     /**
