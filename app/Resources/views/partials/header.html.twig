@@ -19,10 +19,12 @@
                         </ul>
                     </nav>
                     <div class="search_container ml-auto">
-                        <div class="weather position-relative">
-                            <i class="fa fa-bell" id="notificationsBtn"></i>
-                            <div id="hidden-noti-bar" class="notifications-section">Shiiiet</div>
-                        </div>
+                        {% if app.user %}
+                            <div class="weather position-relative">
+                                <i class="fa fa-bell" id="notificationsBtn"></i>
+                                <div id="hidden-noti-bar" class="notifications-section">Shiiiet</div>
+                            </div>
+                        {% endif %}
                         <div class="weather">
                             <div class="language-selection">
                                 <div>
@@ -76,11 +78,11 @@
             <li class="menu_mm"><a href="{{ path('contacts_page') }}">{{ localLang.contacts }}</a></li>
             {% if app.user %}
                 <li class="menu_mm"><a href="{{ path('security_logout') }}">{{ localLang.logout }}</a> </li>
+                <li class="menu_mm"><a href="#" id="mobileNotificationsBtn">{{ localLang.notifications }}</a></li>
             {% else %}
                 <li class="menu_mm"><a href="{{ path('security_login') }}">{{ localLang.login }}</a> </li>
                 <li class="menu_mm"><a href="{{ path('security_register') }}">{{ localLang.register }}</a> </li>
             {% endif %}
-            <li class="menu_mm"><a href="#" id="mobileNotificationsBtn">{{ localLang.notifications }}</a></li>
             <li class="menu_mm">
                 <div class="language-selection">
                     <div>
