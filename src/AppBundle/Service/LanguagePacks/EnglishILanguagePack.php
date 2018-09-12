@@ -79,6 +79,58 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const TAG_NOT_FOUND = "Tag was not found!";
 
+    public const FOLLOW = "Follow";
+
+    public const UNFOLLOW = "Unfollow";
+
+    public const FOLLOWING = "Following";
+
+    public const FOLLOWERS = "Followers";
+
+    public const VIEWS = "Views";
+
+    public const SHARE = "SHARE";
+
+    public function share(): string
+    {
+        return self::SHARE;
+    }
+
+    public function views(): string
+    {
+        return self::VIEWS;
+    }
+
+    public function following(): string
+    {
+       return self::FOLLOWING;
+    }
+
+    public function followers(): string
+    {
+        return self::FOLLOWERS;
+    }
+
+    public function aboutUser(string $user): string
+    {
+        return sprintf("About %s", $user);
+    }
+
+    public function userNotFound(string $username): string
+    {
+        return sprintf("Username %s was not found!", $username);
+    }
+
+    public function unfollow(): string
+    {
+        return self::UNFOLLOW;
+    }
+
+    public function follow(): string
+    {
+        return self::FOLLOW;
+    }
+
     public function tagNotFound(): string
     {
         return self::TAG_NOT_FOUND;

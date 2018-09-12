@@ -5,6 +5,8 @@
 *  2-> removing comment
 *
 *  3 -> image preview
+*
+*  4 -> follow and unfollow
  */
 
 $(function () {
@@ -55,15 +57,16 @@ $(function () {
             $.ajax({
                 type: "POST",
                 url: "/comments/remove/" + commentId,
-                data: {token:token, articleId:articleId},
-                success:function (data) {
+                data: {token: token, articleId: articleId},
+                success: function (data) {
                     console.log(data);
                     location.reload();
                 },
-                error:console.error
+                error: console.error
             });
         });
     }
+
     /* !removing comment */
 
 });
@@ -83,7 +86,7 @@ var ImagePreviewManager = (function () {
     function readUrl(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = function (e) {
                 imgPrev.attr('src', e.target['result']);
             };
             reader.readAsDataURL(input.files[0]);
@@ -93,3 +96,32 @@ var ImagePreviewManager = (function () {
     return {attachEvent: attachEvent};
 })();
 /* !3 image preview*/
+
+
+/*Follow unfollow */
+$(function () {
+
+    $('.btn-follow').on('click', function (e) {
+        followOrUnfollow(true, this);
+    });
+
+    $('.btn-unfollow').on('click', function (e) {
+        followOrUnfollow(false, this);
+    });
+
+    function followOrUnfollow(isFollow, btn) {
+        var celebId = $(btn).attr('celebId');
+        var url = isFollow ? "/unfollow/" + celebId : "/follow/" + celebId;
+        $.ajax({
+            type: "POST",
+            url: url,
+            success: function (data) {
+              location.reload();
+            },
+            error: function (data) {
+                alert(data['responseJSON']['message']);
+            }
+        });
+    }
+});
+/*!Follow unfollow */

@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+{% block title %}JEsterous: {{ user.username }}{% endblock %}
+{% block body %}
+    {% embed 'partials/banner.html.twig' with {'bannerTitle':user.username} %} {% endembed %}
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+                <!-- Main Content -->
+                <div class="col-lg-9">
+                    <div class="post_content">
+                        <div class="post_body">
+                            <div class="row align-items-center">
+                                <div class="col-sm-1">
+                                    <div class="author_image">
+                                        <div><img src="{{ user.profileImage }}" alt=""></div>
+                                    </div>
+                                </div>
+                                <div class="col">
+                                    <span class="text-muted">{{ user.dateRegistered.format(twigInformer.simpleDateFormat) }}</span>
+                                </div>
+                                <div class="col-sm-1">
+                                    {% embed 'partials/follow-and-sub/follow-btn.html.twig' with {'targetUser':user} %} {% endembed %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col">
+                                    <span class="text-muted">{{ localLang.following }}: <b>{{ user.following|length }}
+                                            , </b></span>
+                                    <span class="text-muted">{{ localLang.followers }}
+                                        : <b>{{ user.followers|length }}</b></span>
+                                </div>
+                            </div>
+                            <div>
+                                <hr>
+                                <h4 class="text-dark">{{ localLang.aboutUser(user.username) }}:</h4>
+                                <div class="text-muted raw-content">{% if user.userDescription %}{{ user.userDescription }}{% else %}N/A{% endif %}</div>
+                            </div>
+                        </div>
+                    </div>
+                    {% if articles|length > 0 %}
+                        <div class="mt-1 mb-1">
+                            <h4 class="text-dark">{{ localLang.blogPosts }}</h4>
+                            <div class="grid clearfix">
+                                {% embed 'partials/articles/articles-cards-renderer.html.twig' with {'articles':articles} %} {% endembed %}
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+                {% embed 'partials/sidebar/sidebar.html.twig' %} {% endembed %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
+{% endblock %}

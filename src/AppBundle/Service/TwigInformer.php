@@ -13,7 +13,9 @@ use AppBundle\Constants\Config;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Contracts\IQuoteDbManager;
+use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Quote;
+use AppBundle\Entity\User;
 
 class TwigInformer
 {
@@ -33,11 +35,17 @@ class TwigInformer
      */
     private $categoryDbManager;
 
-    public function __construct(IQuoteDbManager $quoteDb, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager)
+    /**
+     * @var IUserDbManager
+     */
+    private $userDbManager;
+
+    public function __construct(IQuoteDbManager $quoteDb, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager, IUserDbManager $userDbManager)
     {
         $this->quoteDbManager = $quoteDb;
         $this->articleDbManager = $articleDbManager;
         $this->categoryDbManager = $categoryDbManager;
+        $this->userDbManager = $userDbManager;
     }
 
     public function getWebsiteName() : string {
@@ -65,5 +73,9 @@ class TwigInformer
         $num = rand($min, $max);
         while ($num == $exclude) $num = rand($min, $max);
         return $num;
+    }
+
+    public function isUserFollowing(User $cand, User $celeb){
+        return $this->userDbManager->isUserFollowing($cand, $celeb);
     }
 }

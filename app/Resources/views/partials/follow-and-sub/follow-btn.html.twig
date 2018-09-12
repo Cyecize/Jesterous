@@ -1,0 +1,7 @@
+{% if twigInformer.isUserFollowing(app.user, targetUser) %}
+    <button celebId="{{ targetUser.id }}"
+            class="btn btn-sm btn-outline-success active btn-follow">{{ localLang.unfollow }}</button>
+{% else %}
+    <button celebId="{{ targetUser.id }}"
+            class="btn btn-sm btn-outline-success btn-unfollow">{{ localLang.follow }}</button>
+{% endif %}

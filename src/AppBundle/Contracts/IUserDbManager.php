@@ -14,10 +14,28 @@ use AppBundle\Entity\User;
 interface IUserDbManager
 {
     /**
+     * @param User $target
+     * @param User $celeb
+     */
+    function addFollower(User $target, User $celeb) : void ;
+
+    /**
+     * @param User $target
+     * @param User $celeb
+     */
+    function removeFollower(User $target, User $celeb) : void ;
+    /**
+     * @param User $candidate
+     * @param User $celebrity
+     * @return bool
+     */
+    function isUserFollowing(User $candidate, User $celebrity): bool;
+
+    /**
      * @param int $id
      * @return User
      */
-    function findOneById(int $id) : ?User;
+    function findOneById(int $id): ?User;
 
     /**
      * @param string $username
@@ -28,5 +46,5 @@ interface IUserDbManager
     /**
      * @return User[]
      */
-    function findAll() : array ;
+    function findAll(): array;
 }

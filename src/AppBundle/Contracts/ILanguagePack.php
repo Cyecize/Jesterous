@@ -81,17 +81,33 @@ interface ILanguagePack
 
     function more(): string;
 
-    function similar() : string ;
+    function similar(): string;
 
-    function about() :string ;
+    function about(): string;
 
-    function trendingArticles() : string ;
+    function trendingArticles(): string;
 
-    function previous() : string ;
+    function previous(): string;
 
-    function next() : string ;
+    function next(): string;
 
-    function sectionIsEmpty() : string ;
+    function sectionIsEmpty(): string;
 
-    function tagNotFound() : string ;
+    function tagNotFound(): string;
+
+    function follow(): string;
+
+    function unfollow(): string;
+
+    function userNotFound(string $username): string;
+
+    function aboutUser(string $user): string;
+
+    function followers(): string;
+
+    function following(): string;
+
+    function views() : string ;
+
+    function share() : string ;
 }

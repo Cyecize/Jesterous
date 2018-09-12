@@ -79,6 +79,58 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const TAG_NOT_FOUND = "Тагът не беше намерен!";
 
+    public const FOLLOW = "Последване";
+
+    public const UNFOLLOW = "Не следвам";
+
+    public const FOLLOWING = "Следва";
+
+    public const FOLLOWERS = "Последователи";
+
+    public const VIEWS = "Преглеждания";
+
+    public const SHARE = "Сподели";
+
+    public function share(): string
+    {
+       return self::SHARE;
+    }
+
+    public function views(): string
+    {
+        return self::VIEWS;
+    }
+
+    public function following(): string
+    {
+        return self::FOLLOWING;
+    }
+
+    public function followers(): string
+    {
+        return self::FOLLOWERS;
+    }
+
+    public function aboutUser(string $user): string
+    {
+        return sprintf("За %s", $user);
+    }
+
+    public function userNotFound(string $username): string
+    {
+        return sprintf("Потребител с име %s не беше намерен!", $username);
+    }
+
+    public function unfollow(): string
+    {
+        return self::UNFOLLOW;
+    }
+
+    public function follow(): string
+    {
+        return self::FOLLOW;
+    }
+
     public function tagNotFound(): string
     {
         return self::TAG_NOT_FOUND;

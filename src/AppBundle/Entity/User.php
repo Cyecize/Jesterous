@@ -74,10 +74,27 @@ class User implements UserInterface
      */
     private $roles;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="followers", fetch="EAGER")
+     * @ORM\JoinTable(name="users_followers",
+     *     joinColumns={@ORM\JoinColumn(name="following_user_id", referencedColumnName="id", onDelete="CASCADE")},
+     *     inverseJoinColumns={@ORM\JoinColumn(name="followed_user_id", referencedColumnName="id", onDelete="CASCADE")})
+     * @var User[]
+     */
+    private $following;
+
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="following")
+     * @var User[]
+     */
+    private $followers;
+
     public function __construct()
     {
         $this->dateRegistered = new \DateTime('now', new \DateTimeZone(Config::DEFAULT_TIMEZONE));
         $this->roles = new ArrayCollection();
+        $this->following = new ArrayCollection();
+        $this->followers = new ArrayCollection();
     }
 
     /**
@@ -288,8 +305,50 @@ class User implements UserInterface
         // TODO: Implement eraseCredentials() method.
     }
 
-    public function addRole(Role $role){
+    /**
+     * @return User[]
+     */
+    public function getFollowing()
+    {
+        return $this->following;
+    }
+
+    /**
+     * @param User[] $following
+     */
+    public function setFollowing(array $following): void
+    {
+        $this->following = $following;
+    }
+
+    /**
+     * @return User[]
+     */
+    public function getFollowers()
+    {
+        return $this->followers;
+    }
+
+    /**
+     * @param User[] $followers
+     */
+    public function setFollowers( $followers): void
+    {
+        $this->followers = $followers;
+    }
+
+
+    public function addRole(Role $role)
+    {
         $this->roles->add($role);
+    }
+
+    public function follow(User $user){
+        $this->following->add($user);
+    }
+
+    public function unfollow(User $celeb){
+        $this->following->removeElement($celeb);
     }
 
 }

@@ -101,6 +101,46 @@ class LocalLanguage implements ILanguagePack
 
     //IMPLEMENTATIONS
 
+    public function share(): string
+    {
+        return $this->languagePack->share();
+    }
+
+    public function views(): string
+    {
+        return $this->languagePack->views();
+    }
+
+    public function following(): string
+    {
+        return $this->languagePack->following();
+    }
+
+    public function followers(): string
+    {
+        return $this->languagePack->followers();
+    }
+
+    public function aboutUser(string $user): string
+    {
+        return $this->languagePack->aboutUser($user);
+    }
+
+    public function userNotFound(string $username): string
+    {
+        return $this->languagePack->userNotFound($username);
+    }
+
+    public function follow(): string
+    {
+        return $this->languagePack->follow();
+    }
+
+    public function unfollow(): string
+    {
+        return $this->languagePack->unfollow();
+    }
+
     public function tagNotFound(): string
     {
         return $this->languagePack->tagNotFound();

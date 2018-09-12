@@ -65,6 +65,12 @@ interface IArticleDbManager
     function findMyArticles(User $user): array ;
 
     /**
+     * @param User $user
+     * @return Article[]
+     */
+    function findUserArticles(User $user) : array ;
+
+    /**
      * @param Article $article
      * @param int $limit
      * @return Article[]

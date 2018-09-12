@@ -1,0 +1,33 @@
+{% extends 'author/panel.html.twig' %}
+{% block title %}My followers{% endblock %}
+{% block sectionBody %}
+<h2 class="text-dark">My Followers</h2>
+<hr>
+<div class="">
+    <table class="table">
+        <thead class="rounded bg-dark p-0 text-light">
+        <tr>
+            <th scope="row">
+                Username
+            </th>
+            <th scope="row">
+
+            </th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for follower in author.followers %}
+        {#<hr>#}
+        <tr>
+            <th>
+                <a href="{{ path('user_details', {'username': follower.username}) }}"> <p class="text-dark">{{ follower.username }}</p></a>
+            </th>
+            <th class="text-right">
+                <a class="btn btn-success btn-outline-success" href="/admin/users/enable/{{ follower.id }}">Message</a>
+            </th>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

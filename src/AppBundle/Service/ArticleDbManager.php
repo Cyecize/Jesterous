@@ -185,6 +185,15 @@ class ArticleDbManager implements IArticleDbManager
     }
 
     /**
+     * @param User $user
+     * @return array
+     */
+    public function findUserArticles(User $user): array
+    {
+        return $this->articleRepo->findBy(array('author'=>$user, 'isVisible'=>true), array('id'=>'DESC'));
+    }
+
+    /**
      * @param Article $article
      * @param int $limit
      * @return Article[]

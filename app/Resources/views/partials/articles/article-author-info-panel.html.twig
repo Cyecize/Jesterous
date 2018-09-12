@@ -3,15 +3,21 @@
         <div><img src="{{ article.author.profileImage }}" alt=""></div>
     </div>
     <div class="post_meta">
-        <a href="#">{{ article.author.username }}</a>
+        <a href="{{ path('user_details', {'username': article.author.username}) }}">{{ article.author.username }}</a>
         <span>{{ article.dateAdded.format(twigInformer.simpleDateFormat) }}</span>
-        {% if app.user and article.author.id == app.user.id %}
-            <span><a href="{{ path('edit_article',  {'id':article.id}) }}"
-                     class="btn btn-sm btn-outline-primary text-dark">Edit</a></span>
+        {% if app.user %}
+            {% if article.author.id == app.user.id %}
+                <span><a href="{{ path('edit_article',  {'id':article.id}) }}"
+                         class="btn btn-sm btn-outline-primary text-dark">Edit</a></span>
+            {% else %}
+                <span>
+                    {% embed 'partials/follow-and-sub/follow-btn.html.twig' with {'targetUser':article.author} %} {% endembed %}
+                </span>
+            {% endif %}
         {% endif %}
     </div>
     <div class="post_share ml-sm-auto">
-        <span>share</span>
+        <span>{{ localLang.share }}</span>
         <ul class="post_share_list">
             <li class="post_share_item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
             <li class="post_share_item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
