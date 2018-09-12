@@ -1,5 +1,5 @@
 <div style="display: none" class="scripts-holer">
-
+    <script > var CSRF_TOKEN = '{{ csrf_token('token') }}';</script>
     <script src="{{ asset('styles/styles/bootstrap4/popper.js') }}"></script>
     <script src="{{ asset('styles/styles/bootstrap4/bootstrap.min.js') }}"></script>
     <script src="{{ asset('styles/plugins/OwlCarousel2-2.2.1/owl.carousel.js') }}"></script>
@@ -14,4 +14,5 @@
     <script src="{{ asset('styles/js/lang-manager.js') }}"></script>
     <script src="{{ asset('styles/js/business_scripts.js') }}"></script>
     <script src="{{ asset('styles/js/additional-scripts.js') }}"></script>
+    <script src="{{ asset('styles/js/notifications.js') }}"></script>
 </div>

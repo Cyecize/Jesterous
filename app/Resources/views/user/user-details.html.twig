@@ -41,7 +41,7 @@
                     {% if articles|length > 0 %}
                         <div class="mt-1 mb-1">
                             <h4 class="text-dark">{{ localLang.blogPosts }}</h4>
-                            <div class="grid clearfix">
+                            <div class="grid clearfix" style="min-height: 450px;">
                                 {% embed 'partials/articles/articles-cards-renderer.html.twig' with {'articles':articles} %} {% endembed %}
                             </div>
                         </div>

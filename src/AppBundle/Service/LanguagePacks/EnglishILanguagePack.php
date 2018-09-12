@@ -89,7 +89,42 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const VIEWS = "Views";
 
-    public const SHARE = "SHARE";
+    public const SHARE = "Share";
+
+    public const REMOVE = "Remove";
+
+    public const NOTIFICATIONS = "Notifications";
+
+    public const NO_NOTIFICATIONS = "All Good";
+
+    public const VIEW_FULL_SCREEN = "View full screen";
+
+    public const REMOVE_ALL = "Remove all";
+
+    function noNotifications(): string
+    {
+        return self::NO_NOTIFICATIONS;
+    }
+
+    function viewFullScreen(): string
+    {
+        return self::VIEW_FULL_SCREEN;
+    }
+
+    function removeAll(): string
+    {
+        return self::REMOVE_ALL;
+    }
+
+    public function remove(): string
+    {
+        return self::REMOVE;
+    }
+
+    public function notifications(): string
+    {
+        return self::NOTIFICATIONS;
+    }
 
     public function share(): string
     {

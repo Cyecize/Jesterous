@@ -19,8 +19,9 @@
                         </ul>
                     </nav>
                     <div class="search_container ml-auto">
-                        <div class="weather">
-                            <i id="notificationBtn" class="fa fa-bell"></i>
+                        <div class="weather position-relative">
+                            <i class="fa fa-bell" id="notificationsBtn"></i>
+                            <div id="hidden-noti-bar" class="notifications-section">Shiiiet</div>
                         </div>
                         <div class="weather">
                             <div class="language-selection">
@@ -30,8 +31,7 @@
                                     </label>
                                 </div>
                                 <div>
-                                    <label class="m-0">
-                                        EN
+                                    <label class="m-0">EN
                                         <input  name="lang" type="radio" value="en">
                                     </label>
                                 </div>
@@ -80,6 +80,7 @@
                 <li class="menu_mm"><a href="{{ path('security_login') }}">{{ localLang.login }}</a> </li>
                 <li class="menu_mm"><a href="{{ path('security_register') }}">{{ localLang.register }}</a> </li>
             {% endif %}
+            <li class="menu_mm"><a href="#" id="mobileNotificationsBtn">{{ localLang.notifications }}</a></li>
             <li class="menu_mm">
                 <div class="language-selection">
                     <div>
@@ -88,8 +89,7 @@
                         </label>
                     </div>
                     <div>
-                        <label class="m-0">
-                            EN
+                        <label class="m-0">EN
                             <input  name="lang" type="checkbox" value="en">
                         </label>
                     </div>

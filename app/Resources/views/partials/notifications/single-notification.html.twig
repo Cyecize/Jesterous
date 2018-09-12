@@ -1,0 +1,25 @@
+<div class="notification-container">
+    <div class="m-0 mt-2 d-flex">
+        <div class="mr-auto">
+            <div class="notification-content">
+                <a href="{{ noti.href }}" class="notification-hyperlink "
+                   onclick="NotificationModalManager.viewNotification({{ noti.id }});">
+                    <p class="notification-text m-0 p-0 text-dark">{{ noti.content }}</p>
+                    <small class="text-muted">({{ noti.date.format(twigInformer.simpleDateFormat) }})</small>
+                </a>
+            </div>
+        </div>
+        <div class="ml-auto text-right">
+            <button onclick="NotificationModalManager.removeNotification({{ noti.id }});"
+                    class="btn btn-outline-{% if noti.isSeen %}info{% else %}primary{% endif %} notification-btn remove-noti-btn mr-auto"
+                    notificationId="{{ noti.id }}">
+                {{ localLang.remove }}
+            </button>
+        </div>
+    </div>
+</div>
+{% if not noti.isSeen %}
+    <script>
+        $('#notificationsBtn').addClass('text-danger');
+    </script>
+{% endif %}

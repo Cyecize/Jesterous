@@ -7,6 +7,7 @@ Table of content
 2-> header
     2.1 notifications
 
+
 3-> Back to Top Btn
 
  */
@@ -67,9 +68,33 @@ header .logo a {
 }
 
     /*notifications*/
-    #notificationBtn{
+    #notificationsBtn{
         cursor: pointer;
     }
+
+#hidden-noti-bar {
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    position: absolute;
+    top: 30px;
+    width: 500px;
+    max-height: 400px;
+    min-height: 70px;
+    right: 1%;
+    color: black;
+    background: #fff;
+    border: solid 1px #e6e6e6;
+    border-radius: 3px;
+    -webkit-box-shadow: 0 0 5px rgba(0, 0, 0, .0975);
+    box-shadow: 0 0 5px rgba(0, 0, 0, .0975);
+    display: none;
+    overflow: auto;
+    z-index: 1000000;
+    padding:5px;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;
+}
     /*!notifications*/
 
 /*!header */

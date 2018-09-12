@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}JEsterous: {{ localLang.notifications }}{% endblock %}
+
+{% block body %}
+    <main>
+        {% embed 'partials/banner.html.twig' with {'bannerTitle':localLang.notifications} %} {% endembed %}
+        <div class="page_content">
+            <div class="container">
+                <div class="row row-lg-eq-height">
+                    <!-- Main Content -->
+                    <div class="col-lg-9">
+                        {% for noti in notis %}
+                            {% embed 'partials/notifications/single-notification.html.twig' with {'noti':noti} %} {% endembed %}
+                        {% endfor %}
+                        {% if notis|length < 1 %}
+                            <h2 class="text-success">{{ localLang.noNotifications }}</h2>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/post.js') }}"></script>
+{% endblock %}

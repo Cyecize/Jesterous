@@ -100,6 +100,30 @@ class LocalLanguage implements ILanguagePack
     }
 
     //IMPLEMENTATIONS
+    function noNotifications(): string
+    {
+        return $this->languagePack->noNotifications();
+    }
+
+    function viewFullScreen(): string
+    {
+        return $this->languagePack->viewFullScreen();
+    }
+
+    function removeAll(): string
+    {
+        return $this->languagePack->removeAll();
+    }
+
+    public function remove(): string
+    {
+        return $this->languagePack->remove();
+    }
+
+    public function notifications(): string
+    {
+        return $this->languagePack->notifications();
+    }
 
     public function share(): string
     {

@@ -91,6 +91,41 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const SHARE = "Сподели";
 
+    public const REMOVE = "Премахване";
+
+    public const NOTIFICATIONS = "Известия";
+
+    public const NO_NOTIFICATIONS = "Няма нови известия";
+
+    public const VIEW_FULL_SCREEN = "Показване на цял екран";
+
+    public const REMOVE_ALL = "Премахване на всички";
+
+    function noNotifications(): string
+    {
+        return self::NO_NOTIFICATIONS;
+    }
+
+    function viewFullScreen(): string
+    {
+        return self::VIEW_FULL_SCREEN;
+    }
+
+    function removeAll(): string
+    {
+        return self::REMOVE_ALL;
+    }
+
+    public function remove(): string
+    {
+        return self::REMOVE;
+    }
+
+    public function notifications(): string
+    {
+        return self::NOTIFICATIONS;
+    }
+
     public function share(): string
     {
        return self::SHARE;

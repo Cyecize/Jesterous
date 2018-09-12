@@ -1,0 +1,28 @@
+{% if notis %}
+    <script>$('#notificationsBtn').removeClass('text-danger');</script>
+    <small class="text-primary" style="cursor: pointer;"
+           onclick="window.location.replace('/notifications/mobile');">{{ localLang.viewFullScreen }}</small>
+    <hr>
+    <!-- notifications  -->
+    {% for noti in notis %}{% embed 'partials/notifications/single-notification.html.twig' with {'noti':noti} %} {% endembed %}{% endfor %}
+    <!-- end notifications -->
+    <hr>
+    <small onclick="NotificationModalManager.removeAllNotifications()" class="text-primary" style="cursor: pointer;">
+        {{ localLang.removeAll }}
+    </small>
+
+
+{% else %}
+    <span class="alert alert-success fat-text"
+          style="position:absolute; top:0; left: 0; right: 0; bottom: 0; height: 100%; padding: 0px; margin: 0 auto; display: flex; align-items: center; justify-content: center; font-size: 1.3em;">
+        {{ localLang.noNotifications }}!
+    </span>
+    <style>
+        #hidden-noti-bar {
+            overflow: hidden;
+        }
+    </style>
+    <script>
+       $('#notificationsBtn').removeClass('text-danger');
+    </script>
+{% endif %}

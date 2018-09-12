@@ -107,7 +107,17 @@ interface ILanguagePack
 
     function following(): string;
 
-    function views() : string ;
+    function views(): string;
 
-    function share() : string ;
+    function share(): string;
+
+    function notifications(): string;
+
+    function remove(): string;
+
+    function noNotifications() : string ;
+
+    function viewFullScreen() : string ;
+
+    function removeAll() : string ;
 }
