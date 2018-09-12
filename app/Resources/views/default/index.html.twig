@@ -8,8 +8,10 @@
 
     <div class="page_content">
         <div class="container "
-             style="	background: linear-gradient(to right,rgba(249, 249, 232,0.5), rgba(221, 232, 255,0.5));">
-
+             style="background: linear-gradient(to right,rgba(249, 249, 232,0.5), rgba(221, 232, 255,0.5));">
+            {% if error is defined and error != null %}
+                <h2 class="alert alert-danger">{{ error }}</h2>
+            {% endif %}
             <div class="row row-lg-eq-height">
 
                 <!-- Main Content -->

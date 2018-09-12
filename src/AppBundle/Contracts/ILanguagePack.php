@@ -120,4 +120,5 @@ interface ILanguagePack
     function viewFullScreen() : string ;
 
     function removeAll() : string ;
+
 }

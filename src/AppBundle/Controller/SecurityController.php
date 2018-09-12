@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 use AppBundle\BindingModel\UserRegisterBindingModel;
 use AppBundle\Constants\Config;
 use AppBundle\Constants\Roles;
+use AppBundle\Contracts\IGlobalSubscriberDbManager;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserRegisterType;
@@ -26,6 +27,17 @@ use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends BaseController
 {
+    /**
+     * @var IGlobalSubscriberDbManager
+     */
+    private $subscriberDbService;
+
+    public function __construct(LocalLanguage $language, IGlobalSubscriberDbManager $globalSubscriberDb)
+    {
+        parent::__construct($language);
+        $this->subscriberDbService = $globalSubscriberDb;
+    }
+
     /**
      * @Route("/login", name="security_login")
      * @param AuthenticationUtils $authUtils
@@ -122,6 +134,7 @@ class SecurityController extends BaseController
 
             $entityManager->persist($user);
             $entityManager->flush();
+            $this->subscriberDbService->createSubscriberOnRegister($user->getEmail());
 
             return $this->redirectToRoute("security_login", []);
         }

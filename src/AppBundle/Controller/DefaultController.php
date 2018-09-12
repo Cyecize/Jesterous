@@ -50,6 +50,7 @@ class DefaultController extends BaseController
             'latestPosts'=>$latestPosts,
             'sliderArticles'=>$sliderArticles,
             'trendingArticles'=>$trendingArticles,
+            'error'=>$request->get('error')
         ]);
     }
 
