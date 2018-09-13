@@ -121,4 +121,5 @@ interface ILanguagePack
 
     function removeAll() : string ;
 
+    function newArticleFormat() : string ;
 }

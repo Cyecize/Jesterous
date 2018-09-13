@@ -67,6 +67,13 @@ class Article
     private $isVisible;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_notified", type="boolean", options={"default":false})
+     */
+    private $isNotified;
+
+    /**
      * @var int
      *
      * @ORM\Column(name="views", type="integer")
@@ -118,6 +125,7 @@ class Article
         $this->comments = new ArrayCollection();
         $this->tags = new ArrayCollection();
         $this->isVisible = false;
+        $this->isNotified = false;
     }
 
     /**
@@ -272,6 +280,22 @@ class Article
     public function getIsVisible()
     {
         return $this->isVisible;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotified(): bool
+    {
+        return $this->isNotified;
+    }
+
+    /**
+     * @param bool $isNotified
+     */
+    public function setIsNotified(bool $isNotified): void
+    {
+        $this->isNotified = $isNotified;
     }
 
     /**

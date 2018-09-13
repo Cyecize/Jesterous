@@ -12,12 +12,12 @@ use AppBundle\BindingModel\UserRegisterBindingModel;
 use AppBundle\Constants\Config;
 use AppBundle\Constants\Roles;
 use AppBundle\Contracts\IGlobalSubscriberDbManager;
+use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserRegisterType;
 use AppBundle\Repository\RoleRepository;
 use AppBundle\Service\LocalLanguage;
-use AppBundle\Service\UserValidator;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -32,10 +32,16 @@ class SecurityController extends BaseController
      */
     private $subscriberDbService;
 
-    public function __construct(LocalLanguage $language, IGlobalSubscriberDbManager $globalSubscriberDb)
+    /**
+     * @var INotificationSenderManager
+     */
+    private $notificationSenderService;
+
+    public function __construct(LocalLanguage $language, IGlobalSubscriberDbManager $globalSubscriberDb, INotificationSenderManager $notificationSender)
     {
         parent::__construct($language);
         $this->subscriberDbService = $globalSubscriberDb;
+        $this->notificationSenderService = $notificationSender;
     }
 
     /**
@@ -50,7 +56,7 @@ class SecurityController extends BaseController
     public function loginAction(AuthenticationUtils $authUtils, Request $request, LocalLanguage $language)
     {
         if ($this->isUserLogged()) //TODO override 403 page to avoid using this
-           return $this->redirectToRoute("homepage");
+            return $this->redirectToRoute("homepage");
 
         $lastUsername = null;
         $error = $authUtils->getLastAuthenticationError();
@@ -78,7 +84,6 @@ class SecurityController extends BaseController
             ));
     }
 
-
     /**
      * @Route("/register", name="security_register")
      * @param Request $request
@@ -87,7 +92,7 @@ class SecurityController extends BaseController
      */
     public function registerAction(Request $request, LocalLanguage $language)
     {
-        if($this->isUserLogged())
+        if ($this->isUserLogged())
             return $this->redirectToRoute("homepage");
 
         $userRepo = $this->getDoctrine()->getRepository(User::class);
@@ -102,7 +107,7 @@ class SecurityController extends BaseController
         if ($bindForm->isSubmitted()) {
             $validator = $this->get('validator');
             $errors = $validator->validate($userBindingModel);
-            if(count($errors) > 0)
+            if (count($errors) > 0)
                 goto escape;
 
             $userInDb = $userRepo->findOneBy(array('username' => $userBindingModel->getUsername()));
@@ -135,6 +140,7 @@ class SecurityController extends BaseController
             $entityManager->persist($user);
             $entityManager->flush();
             $this->subscriberDbService->createSubscriberOnRegister($user->getEmail());
+            $this->notificationSenderService->onUserRegister($user);
 
             return $this->redirectToRoute("security_login", []);
         }
@@ -143,8 +149,8 @@ class SecurityController extends BaseController
         return $this->render("security/register.html.twig", array(
             "userform" => $userBindingModel,
             'form' => $bindForm->createView(),
-            'errors'=>$errors,
-            'error'=>$error
+            'errors' => $errors,
+            'error' => $error
         ));
 
     }

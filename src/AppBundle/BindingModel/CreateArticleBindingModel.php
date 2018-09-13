@@ -32,6 +32,11 @@ class CreateArticleBindingModel
     private $tags;
 
     /**
+     * @var bool
+     */
+    private $notify;
+
+    /**
      * @Assert\NotNull(message="Select image")
      * @Assert\File(
      *     maxSize="2M", maxSizeMessage="File size more than 2M",
@@ -44,6 +49,7 @@ class CreateArticleBindingModel
     public function __construct()
     {
         $this->isVisible = false;
+        $this->notify = false;
     }
 
     /**
@@ -156,5 +162,21 @@ class CreateArticleBindingModel
     public function setFile($file): void
     {
         $this->file = $file;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isNotify(): bool
+    {
+        return $this->notify;
+    }
+
+    /**
+     * @param bool $notify
+     */
+    public function setNotify(bool $notify): void
+    {
+        $this->notify = $notify;
     }
 }

@@ -100,6 +100,12 @@ class LocalLanguage implements ILanguagePack
     }
 
     //IMPLEMENTATIONS
+
+    public function newArticleFormat(): string
+    {
+        return $this->languagePack->newArticleFormat();
+    }
+
     function noNotifications(): string
     {
         return $this->languagePack->noNotifications();

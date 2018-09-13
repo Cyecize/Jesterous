@@ -1,9 +1,13 @@
-<div class="custom-sub-form flex align-items-center">
-    <div class="parent-wrapper">
-        <div class="subscribe-wrapper">
-            <h4>Don't miss any new posts</h4>
-            <input type="email" name="email" class="subscribe-input" placeholder="{{ localLang.yourEmail }}">
-            <div class="submit-btn">Send</div>
-        </div>
+<div class="mt-2">
+    <h4 class="text-dark">Don't miss any new posts</h4>
+    <div class="well">
+        <form action="{{ path('subscribe_global') }}" method="post">
+            <div class="input-group">
+                <input class="btn btn-lg" name="email" id="email" type="email" placeholder="Your Email" required>
+                <input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                <button class="sub-btn btn btn-info btn-lg" type="submit">Subscribe</button>
+            </div>
+        </form>
+        <div class="promise">We won't spam!</div>
     </div>
 </div>

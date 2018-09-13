@@ -101,6 +101,13 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const REMOVE_ALL = "Премахване на всички";
 
+    public const NEW_ARTICLE_FORMAT = "%s добави: %s.";
+
+    public function newArticleFormat(): string
+    {
+        return self::NEW_ARTICLE_FORMAT;
+    }
+
     function noNotifications(): string
     {
         return self::NO_NOTIFICATIONS;

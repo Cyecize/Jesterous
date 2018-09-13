@@ -101,6 +101,13 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const REMOVE_ALL = "Remove all";
 
+    public const NEW_ARTICLE_FORMAT = "%s added: %s.";
+
+    public function newArticleFormat(): string
+    {
+       return self::NEW_ARTICLE_FORMAT;
+    }
+
     function noNotifications(): string
     {
         return self::NO_NOTIFICATIONS;

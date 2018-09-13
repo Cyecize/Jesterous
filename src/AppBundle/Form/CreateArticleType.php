@@ -9,6 +9,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -33,7 +34,8 @@ class CreateArticleType extends AbstractType
             ->add("isVisible")
             ->add('categoryId', IntegerType::class)
             ->add('tags', TextType::class)
-            ->add('file', FileType::class);
+            ->add('file', FileType::class)
+            ->add('notify', CheckboxType::class);
     }
 
     /**

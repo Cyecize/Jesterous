@@ -48,7 +48,7 @@
                                     <a href="{{ path('author_panel') }}">Author panel</a><br/>
                                 {% endif %}
                                 {% if is_granted('ROLE_ADMIN') %}
-                                    <a href="#">Admin panel</a><br/>
+                                    <a href="{{ path('admin_panel') }}">Admin panel</a><br/>
                                 {% endif %}
                                 Copyright &copy;<script>document.write(new Date().getFullYear());</script>
                                 | Avision by <a href="https://colorlib.com" target="_blank">Colorlib</a><br>

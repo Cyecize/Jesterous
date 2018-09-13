@@ -31,6 +31,11 @@ interface IArticleDbManager
     function viewArticle(Article $article = null): void;
 
     /**
+     * @param Article $article
+     */
+    function saveArticle(Article $article) : void ;
+
+    /**
      * @param CreateArticleBindingModel $bindingModel
      * @param User $author
      * @return Article

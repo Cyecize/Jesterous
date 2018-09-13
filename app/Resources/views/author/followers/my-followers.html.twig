@@ -1,33 +1,83 @@
 {% extends 'author/panel.html.twig' %}
 {% block title %}My followers{% endblock %}
 {% block sectionBody %}
-<h2 class="text-dark">My Followers</h2>
-<hr>
-<div class="">
-    <table class="table">
-        <thead class="rounded bg-dark p-0 text-light">
-        <tr>
-            <th scope="row">
-                Username
-            </th>
-            <th scope="row">
+    <h2 class="text-dark">My Followers</h2>
+    <hr>
+    <div class="">
+        <table class="table">
+            <thead class="rounded bg-dark p-0 text-light">
+            <tr>
+                <th scope="row">
+                    Username
+                </th>
+                <th scope="row">
 
-            </th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for follower in author.followers %}
-        {#<hr>#}
-        <tr>
-            <th>
-                <a href="{{ path('user_details', {'username': follower.username}) }}"> <p class="text-dark">{{ follower.username }}</p></a>
-            </th>
-            <th class="text-right">
-                <a class="btn btn-success btn-outline-success" href="/admin/users/enable/{{ follower.id }}">Message</a>
-            </th>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-</div>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for follower in author.followers %}
+                {#<hr>#}
+                <tr>
+                    <th>
+                        <a href="{{ path('user_details', {'username': follower.username}) }}"><p
+                                    class="text-dark">{{ follower.username }}</p></a>
+                    </th>
+                    <th class="text-right">
+                        <button type="button" class="btn btn-success btn-outline-success message-follower-btn"
+                                followerId="{{ follower.id }}">Message
+                        </button>
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <!-- MODAL -->
+        <div id="openModal" class="d-none">OPEN MODAL</div>
+        <div id="sendMessageModal" class="modal-container">
+            <!-- Modal content -->
+            <div class="modal-content">
+                <div class="text-right">
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div style="margin:0 auto;" class="col-md-6">
+                    <form method="post" action="{{ path('notify_follower') }}">
+                        <input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                        <input type="hidden" name="userId" id="userToNotify" required>
+                        <div class="form-group">
+                            <label for="message">Message</label>
+                            <input name="message" type="text" maxlength="255" minlength="1" required class="form-control" id="message">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-success">Send Notification</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <!-- !MODAL -->
+    </div>
+{% endblock %}
+
+{% block sectionStyles %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/modal.css') }}">
+{% endblock %}
+
+{% block sectionScripts %}
+    <script src="{{ asset('styles/js/modal.js') }}"></script>
+    <script>
+        $(function () {
+            var modal = $('#sendMessageModal');
+            var buttons = $('.message-follower-btn');
+            var modalManager = new ModalManager();
+            var userToNotifyField = $('#userToNotify');
+            modalManager.initModal("sendMessageModal", "openModal");
+
+            buttons.on('click', function () {
+                var userId = $(this).attr('followerId');
+                userToNotifyField.attr('value', userId);
+                modalManager.showModal();
+            });
+        });
+    </script>
 {% endblock %}

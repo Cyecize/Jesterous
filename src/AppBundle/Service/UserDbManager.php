@@ -101,4 +101,13 @@ class UserDbManager implements IUserDbManager
     {
         return $this->userRepo->findAll();
     }
+
+    /**
+     * @param string $role
+     * @return User[]
+     */
+    public function findByRole(string $role): array
+    {
+       return $this->userRepo->findByRoleName($role);
+    }
 }

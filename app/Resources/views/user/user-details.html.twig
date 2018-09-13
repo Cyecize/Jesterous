@@ -13,7 +13,7 @@
                             <div class="row align-items-center">
                                 <div class="col-sm-1">
                                     <div class="author_image">
-                                        <div><img src="{{ user.profileImage }}" alt=""></div>
+                                        <div><img src="{% if user.profileImage %}{{ user.profileImage }}{% else %}{{ asset('images/profile-default.png') }}{% endif %}" alt=""></div>
                                     </div>
                                 </div>
                                 <div class="col">

@@ -107,6 +107,15 @@ class ArticleDbManager implements IArticleDbManager
         $this->entityManager->flush();
     }
 
+    /**
+     * @param Article $article
+     */
+    public function saveArticle(Article $article): void
+    {
+        $this->entityManager->merge($article);
+        $this->entityManager->flush();
+    }
+
     function findOneById(int $id, bool $hidden = false): ?Article
     {
         if ($hidden)
@@ -161,9 +170,7 @@ class ArticleDbManager implements IArticleDbManager
             $this->fileService->removeFile(substr($article->getBackgroundImageLink(), 1));
             $article->setBackgroundImageLink($this->uploadFileToUser($bindingModel->getFile(), $article->getAuthor()));
         }
-
-        $this->entityManager->merge($article);
-        $this->entityManager->flush();
+        $this->saveArticle($article);
         return $article;
     }
 
@@ -190,7 +197,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     public function findUserArticles(User $user): array
     {
-        return $this->articleRepo->findBy(array('author'=>$user, 'isVisible'=>true), array('id'=>'DESC'));
+        return $this->articleRepo->findBy(array('author' => $user, 'isVisible' => true), array('id' => 'DESC'));
     }
 
     /**
@@ -304,12 +311,12 @@ class ArticleDbManager implements IArticleDbManager
      */
     function findByTag(Tag $tag, Pageable $pageable): Page
     {
-       $qb = $this->articleRepo->createQueryBuilder('a');
-       $query = $qb
-           ->where('a.isVisible = TRUE')
-           ->andWhere(':tag MEMBER OF a.tags')
-           ->setParameter('tag', $tag)
-           ->orderBy('a.dailyViews', 'DESC');
-       return new Page($query, $pageable);
+        $qb = $this->articleRepo->createQueryBuilder('a');
+        $query = $qb
+            ->where('a.isVisible = TRUE')
+            ->andWhere(':tag MEMBER OF a.tags')
+            ->setParameter('tag', $tag)
+            ->orderBy('a.dailyViews', 'DESC');
+        return new Page($query, $pageable);
     }
 }

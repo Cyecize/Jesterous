@@ -9,6 +9,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Constants\Roles;
+use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Service\LocalLanguage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -17,6 +18,8 @@ use Symfony\Component\HttpFoundation\Request;
 
 abstract class BaseController extends Controller
 {
+    private const INVALID_TOKEN =  "Invalid token";
+
     /**
      * @var string
      */
@@ -43,5 +46,15 @@ abstract class BaseController extends Controller
 
     protected function isAuthorLogged(): bool{
         return $this->get('security.authorization_checker')->isGranted(Roles::ROLE_AUTHOR, 'ROLES');
+    }
+
+    /**
+     * @param Request $request
+     * @throws RestFriendlyExceptionImpl
+     */
+    protected function validateToken(Request $request)  {
+        $token = $request->get('token');
+        if(!$this->isCsrfTokenValid('token', $token))
+            throw new RestFriendlyExceptionImpl(self::INVALID_TOKEN);
     }
 }

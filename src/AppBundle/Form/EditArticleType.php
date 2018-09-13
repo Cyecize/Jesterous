@@ -35,7 +35,8 @@ class EditArticleType extends AbstractType
             ->add('categoryId', IntegerType::class)
             ->add('stringOfTags', TextType::class)
             ->add('file', FileType::class)
-            ->add('dailyViews', IntegerType::class);
+            ->add('dailyViews', IntegerType::class)
+            ->add('notify', CheckboxType::class);
     }
 
     /**

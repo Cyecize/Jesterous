@@ -1,9 +1,13 @@
-<div class="custom-sub-form flex align-items-center">
-    <div class="parent-wrapper">
-        <div class="subscribe-wrapper">
-            <h4>Не пропускайте нови статии</h4>
-            <input type="email" name="email" class="subscribe-input" placeholder="{{ localLang.yourEmail }}">
-            <div class="submit-btn">Изпращане</div>
-        </div>
+<div class="mt-2">
+    <h4 class="text-dark">Не изпускайте нови публикации</h4>
+    <div class="well">
+        <form action="{{ path('subscribe_global') }}" method="post">
+            <div class="input-group">
+                <input class="btn btn-lg" name="email" id="email" type="email" placeholder="Вашия Email адрес" required>
+                <input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                <button class="sub-btn btn btn-info btn-lg" type="submit">Абониране</button>
+            </div>
+        </form>
+        <div class="promise">Няма да спамим!</div>
     </div>
 </div>

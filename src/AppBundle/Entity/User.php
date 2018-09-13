@@ -351,5 +351,9 @@ class User implements UserInterface
         $this->following->removeElement($celeb);
     }
 
+    public function isFollowing(User $celeb) : bool {
+        return $this->following->contains($celeb);
+    }
+
 }
 

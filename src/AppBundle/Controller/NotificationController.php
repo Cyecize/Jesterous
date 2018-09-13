@@ -23,7 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class NotificationController extends BaseController
 {
-    private const INVALID_TOKEN =  "Invalid token";
     private const USER_NOT_LOGGED_IN =  "User is not logged in!";
     private const INVALID_NOTIFICATION_MSG =  "Invalid Notification";
     /**
@@ -107,15 +106,7 @@ class NotificationController extends BaseController
     }
 
     //PRIVATE LOGIC
-    /**
-     * @param Request $request
-     * @throws RestFriendlyExceptionImpl
-     */
-    private function validateToken(Request $request)  {
-        $token = $request->get('token');
-        if(!$this->isCsrfTokenValid('token', $token))
-            throw new RestFriendlyExceptionImpl(self::INVALID_TOKEN);
-    }
+
 
     /**
      * @param Notification|null $noti

@@ -3,10 +3,12 @@
 namespace AppBundle\Controller;
 
 use AppBundle\BindingModel\CommentBindingModel;
+use AppBundle\Constants\Roles;
 use AppBundle\Contracts\IArticleCategoryDbManager;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Comment;
+use AppBundle\Entity\User;
 use AppBundle\Form\CommentType;
 use AppBundle\Service\ArticleCategoryDbManager;
 use AppBundle\Service\ArticleDbManager;
@@ -62,18 +64,18 @@ class DefaultController extends BaseController
         return $this->render("default/contacts.html.twig", array());
     }
 
-    /**
-     * @Route("/admin", name="admin_panel")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * add @ Security("has_role('ROLE_ADMIN')")
-     * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function hiddenAction(Request $request)
-    {
-        if(!$this->isAdminLogged())
-            return $this->redirectToRoute('homepage');
-
-        return $this->render("partials/haha.html.twig");
-    }
+//    /**
+//     * @Route("/admin", name="admin_panel")
+//     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+//     * add @ Security("has_role('ROLE_ADMIN')")
+//     * @param Request $request
+//     * @return \Symfony\Component\HttpFoundation\Response
+//     */
+//    public function hiddenAction(Request $request)
+//    {
+//        if(!$this->isAdminLogged())
+//            return $this->redirectToRoute('homepage');
+//
+//        return $this->render("partials/haha.html.twig");
+//    }
 }

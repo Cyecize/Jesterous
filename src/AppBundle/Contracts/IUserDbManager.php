@@ -47,4 +47,10 @@ interface IUserDbManager
      * @return User[]
      */
     function findAll(): array;
+
+    /**
+     * @param string $role
+     * @return User[]
+     */
+    function findByRole(string  $role) : array ;
 }

@@ -36,6 +36,8 @@ class EditArticleBindingModel
 
     private $file;
 
+    private $notify;
+
     /**
      * @Assert\NotNull(message="Daily views can't be null, mate ==)")
      */
@@ -44,6 +46,7 @@ class EditArticleBindingModel
     public function __construct()
     {
         $this->isVisible = false;
+        $this->notify = false;
     }
 
     /**
@@ -174,5 +177,21 @@ class EditArticleBindingModel
         $this->dailyViews = $dailyViews;
     }
 
+
+    /**
+     * @return bool
+     */
+    public function isNotify(): bool
+    {
+        return $this->notify;
+    }
+
+    /**
+     * @param bool $notify
+     */
+    public function setNotify(bool $notify): void
+    {
+        $this->notify = $notify;
+    }
 
 }

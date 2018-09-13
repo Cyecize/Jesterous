@@ -15,6 +15,7 @@ use AppBundle\BindingModel\ImageBindingModel;
 use AppBundle\Contracts\IArticleCategoryDbManager;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
+use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Comment;
@@ -59,12 +60,18 @@ class ArticleController extends BaseController
      */
     private $userService;
 
-    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager, IUserDbManager $userDbManager)
+    /**
+     * @var INotificationSenderManager
+     */
+    private $notificationSenderService;
+
+    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager, IUserDbManager $userDbManager, INotificationSenderManager $notificationSender)
     {
         parent::__construct($language);
         $this->articleService = $articleDbManager;
         $this->categoryService = $categoryDbManager;
         $this->userService = $userDbManager;
+        $this->notificationSenderService = $notificationSender;
     }
 
     /**
@@ -75,7 +82,6 @@ class ArticleController extends BaseController
      */
     public function createArticleRequest(Request $request)
     {
-
         $articleBindingModel = new CreateArticleBindingModel();
         $form = $this->createForm(CreateArticleType::class, $articleBindingModel);
         $form->handleRequest($request);
@@ -85,7 +91,9 @@ class ArticleController extends BaseController
             $errors = $this->get('validator')->validate($articleBindingModel);
             if (count($errors) > 0)
                 goto escape;
-            $this->articleService->createArticle($articleBindingModel, $this->getUser());
+            $article = $this->articleService->createArticle($articleBindingModel, $this->getUser());
+            if ($articleBindingModel->isNotify())
+                $this->notificationSenderService->onNewBlogPost($article);
             return $this->redirectToRoute('author_panel', ['info' => "Article was created!"]);
         }
 
@@ -123,13 +131,15 @@ class ArticleController extends BaseController
             $errors = $this->get('validator')->validate($bindingModel);
             if (count($errors) > 0)
                 goto escape;
-            if($bindingModel->getFile() != null){
+            if ($bindingModel->getFile() != null) {
                 $errors = $this->get('validator')->validate(ImageBindingModel::imageOverload($bindingModel->getFile()));
-                if(count($errors) > 0)
+                if (count($errors) > 0)
                     goto escape;
             }
-            $this->articleService->editArticle($article, $bindingModel, $bindingModel->getFile());
-            return $this->redirectToRoute('author_panel', ['info'=>sprintf(self::ARTICLE_WAS_EDITED_FORMAT, $id)]);
+            $article = $this->articleService->editArticle($article, $bindingModel, $bindingModel->getFile());
+            if ($bindingModel->isNotify())
+                $this->notificationSenderService->onNewBlogPost($article);
+            return $this->redirectToRoute('author_panel', ['info' => sprintf(self::ARTICLE_WAS_EDITED_FORMAT, $id)]);
         }
 
         escape:
@@ -137,7 +147,7 @@ class ArticleController extends BaseController
             [
                 'article' => $article,
                 'form1' => $form->createView(),
-                'errors'=>$errors,
+                'errors' => $errors,
                 'categories' => $this->categoryService->findAll(),
             ]);
     }
@@ -146,11 +156,12 @@ class ArticleController extends BaseController
      * @Route("/articles/my", name="my_articles")
      * @Security("has_role('ROLE_AUTHOR')")
      */
-    public function myArticles(){
+    public function myArticles()
+    {
 
         return $this->render('author/articles/my-articles.html.twig',
             [
-               'articles'=>$this->articleService->findMyArticles($this->getUser()),
+                'articles' => $this->articleService->findMyArticles($this->getUser()),
             ]);
     }
 
