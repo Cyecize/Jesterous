@@ -8,29 +8,18 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\BindingModel\CreateArticleBindingModel;
 use AppBundle\BindingModel\EditArticleBindingModel;
 use AppBundle\BindingModel\ImageBindingModel;
-use AppBundle\Contracts\IArticleCategoryDbManager;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Contracts\IUserDbManager;
-use AppBundle\Entity\Article;
-use AppBundle\Entity\Comment;
 use AppBundle\Exception\ArticleNotFoundException;
-use AppBundle\Exception\CommentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
-use AppBundle\Form\CommentType;
 use AppBundle\Form\CreateArticleType;
 use AppBundle\Form\EditArticleType;
-use AppBundle\Form\ReplyType;
-use AppBundle\Service\ArticleCategoryDbManager;
-use AppBundle\Service\ArticleDbManager;
 use AppBundle\Service\LocalLanguage;
-use AppBundle\ViewModel\CategoriesViewModel;
-use Doctrine\ORM\PersistentCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;

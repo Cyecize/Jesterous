@@ -26,4 +26,8 @@ class Config
     public const COOKIE_LANG_NAME = "lang";
 
     public const USER_FILES_PATH_FORMAT = "files/" . "users/" . "%s/";
+
+    public const MAILER_SENDER_EMAIL = "ceci_nfs9@abv.bg";
+
+    public const MAILER_SENDER_NAME = "Jesterous.net";
 }

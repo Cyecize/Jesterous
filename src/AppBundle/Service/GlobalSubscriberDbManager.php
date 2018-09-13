@@ -46,6 +46,7 @@ class GlobalSubscriberDbManager implements IGlobalSubscriberDbManager
      */
     public function createSubscriber(string $email): GlobalSubscriber
     {
+        //TODO if sub unsubbed, resub him, not throw exception
         if ($this->findOneByEmail($email) != null)
             throw new IllegalArgumentException($this->lang->emailAlreadyInUse());
         $sub = new GlobalSubscriber();
@@ -79,7 +80,7 @@ class GlobalSubscriberDbManager implements IGlobalSubscriberDbManager
      */
     public function findOneById(int $id): ?GlobalSubscriber
     {
-        return $this->subscriberRepo->findOneBy(array('id' => $id));
+        return $this->subscriberRepo->findOneBy(array('id' => $id, 'isSubscribed' => true));
     }
 
     /**
@@ -88,7 +89,7 @@ class GlobalSubscriberDbManager implements IGlobalSubscriberDbManager
      */
     public function findOneByEmail(string $email): ?GlobalSubscriber
     {
-        return $this->subscriberRepo->findOneBy(array('email' => $email));
+        return $this->subscriberRepo->findOneBy(array('email' => $email, 'isSubscribed' => true));
     }
 
     /**
@@ -96,6 +97,6 @@ class GlobalSubscriberDbManager implements IGlobalSubscriberDbManager
      */
     public function findAll(): array
     {
-        return $this->subscriberRepo->findAll();
+        return $this->subscriberRepo->findBy(array('isSubscribed' => true));
     }
 }

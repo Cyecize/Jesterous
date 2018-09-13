@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\BindingModel\NotificationBindingModel;
 use AppBundle\Contracts\IGlobalSubscriberDbManager;
+use AppBundle\Contracts\IMailSenderManager;
 use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\User;
@@ -44,12 +45,18 @@ class SubscribeAndFollowController extends BaseController
      */
     private $notificationSendService;
 
-    public function __construct(LocalLanguage $language, IUserDbManager $userDbManager, IGlobalSubscriberDbManager $globalSubscriberDb, INotificationSenderManager $notificationSender)
+    /**
+     * @var IMailSenderManager
+     */
+    private $mailSenderService;
+
+    public function __construct(LocalLanguage $language, IUserDbManager $userDbManager, IGlobalSubscriberDbManager $globalSubscriberDb, INotificationSenderManager $notificationSender, IMailSenderManager $mailSender)
     {
         parent::__construct($language);
         $this->userService = $userDbManager;
         $this->subscriberDbService = $globalSubscriberDb;
         $this->notificationSendService = $notificationSender;
+        $this->mailSenderService = $mailSender;
     }
 
     /**
@@ -112,7 +119,7 @@ class SubscribeAndFollowController extends BaseController
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function notifyAllFollowersAction(Request $request)
+    public function notifyAllUsersAction(Request $request)
     {
         $bindingModel = new NotificationBindingModel();
         $form = $this->createForm(NotificationType::class, $bindingModel);
@@ -128,6 +135,35 @@ class SubscribeAndFollowController extends BaseController
         escape:
         return $this->render('admin/users/send-notification.html.twig', [
             'form1' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/admin/email/all" , name="email_all_post", methods={"POST"})
+     * @Security("has_role('ROLE_ADMIN')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function emailAllSubscribersAction(Request $request)
+    {
+        $html = $this->renderView('mail/from-admin.html.twig', [
+            'message' => $request->get('message')
+        ]);
+        $subj = $request->get('subject');
+        $people = $this->subscriberDbService->findAll();
+        foreach ($people as $person) {
+            $this->mailSenderService->sendHtml($subj, $html, $person->getEmail());
+        }
+        return $this->redirectToRoute("admin_panel", ['info' => "message sent!"]);
+    }
+
+    /**
+     * @Route("/admin/email/all" , name="email_all_get", methods={"GET"})
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function emailAllRequest(){
+        return $this->render('admin/users/send-email.html.twig', [
+
         ]);
     }
 

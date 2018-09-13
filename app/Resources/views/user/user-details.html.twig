@@ -20,7 +20,9 @@
                                     <span class="text-muted">{{ user.dateRegistered.format(twigInformer.simpleDateFormat) }}</span>
                                 </div>
                                 <div class="col-sm-1">
+                                    {% if app.user %}
                                     {% embed 'partials/follow-and-sub/follow-btn.html.twig' with {'targetUser':user} %} {% endembed %}
+                                    {% endif %}
                                 </div>
                             </div>
                             <div class="row">
