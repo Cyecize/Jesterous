@@ -15,6 +15,9 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 interface ICategoryDbManager
 {
+
+    function initCategories() : void ;
+
     /**
      * @param CreateCategoryBindingModel $bindingModel
      * @return ArticleCategory

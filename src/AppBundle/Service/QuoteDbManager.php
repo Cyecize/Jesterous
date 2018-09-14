@@ -40,7 +40,7 @@ class QuoteDbManager implements IQuoteDbManager
         $this->likeDbManager = $likeDbManager;
     }
 
-    function findRandomQuote(): Quote
+    function findRandomQuote(): ?Quote
     {
         $arr = $this->quoteRepo->findAll();
         shuffle($arr);
@@ -48,7 +48,7 @@ class QuoteDbManager implements IQuoteDbManager
         return $quote;
     }
 
-    function findTopQuote(): Quote
+    function findTopQuote(): ?Quote
     {
         return $this->quoteRepo->findOneBy(array('isVisible' => true), array('likes' => 'DESC'));
     }
@@ -63,7 +63,7 @@ class QuoteDbManager implements IQuoteDbManager
         return $this->quoteRepo->findBy(array('isVisible' => true));
     }
 
-    function like(User $user, int $quoteId, bool $isDislike = false)
+    function like(User $user, int $quoteId, bool $isDislike = false) : void 
     {
         $quote = $this->findOneById($quoteId);
         if($isDislike){
@@ -82,7 +82,7 @@ class QuoteDbManager implements IQuoteDbManager
         $this->entityManager->flush();
     }
 
-    function findOneById(int $id)
+    function findOneById(int $id) : ?Quote
     {
         return $this->quoteRepo->findOneBy(array('id'=>$id));
     }

@@ -63,7 +63,7 @@ class GlobalSubscriberDbManager implements IGlobalSubscriberDbManager
      */
     public function createSubscriberOnRegister(string $email): GlobalSubscriber
     {
-        $sub = $this->findOneByEmail($email);
+        $sub = $this->findAnyByEmail($email);
         if ($sub != null) {
             $sub->setIsSubscribed(true);
             $this->entityManager->merge($sub);
@@ -98,5 +98,13 @@ class GlobalSubscriberDbManager implements IGlobalSubscriberDbManager
     public function findAll(): array
     {
         return $this->subscriberRepo->findBy(array('isSubscribed' => true));
+    }
+
+
+    /**
+     * @return GlobalSubscriber|null
+     */
+    private function findAnyByEmail($email) : ?GlobalSubscriber{
+        return $this->subscriberRepo->findOneBy(array('email'=>$email));
     }
 }

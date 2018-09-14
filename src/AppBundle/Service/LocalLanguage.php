@@ -10,6 +10,7 @@ namespace AppBundle\Service;
 
 
 use AppBundle\Constants\Config;
+use AppBundle\Contracts\ILanguageDbManager;
 use AppBundle\Contracts\ILanguagePack;
 use AppBundle\Entity\Language;
 use AppBundle\Service\LanguagePacks\BulgarianILanguagePack;
@@ -32,21 +33,17 @@ class LocalLanguage implements ILanguagePack
      */
     private $currentLang;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
+    private $languageDbService;
 
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(ILanguageDbManager $languageDb)
     {
-        $this->entityManager = $em;
+        $this->languageDbService = $languageDb;
         $this->initLang();
     }
 
     public function findCurrentLangs(): array
     {
-        return $this->entityManager->getRepository(Language::class)
-            ->findBy(array('localeName' => array(Config::COOKIE_NEUTRAL_LANG, $this->currentLang)));
+        return $this->languageDbService->findRange(array(Config::COOKIE_NEUTRAL_LANG, $this->currentLang));
     }
 
     public function getLocalLang(): string
@@ -56,7 +53,7 @@ class LocalLanguage implements ILanguagePack
 
     public function findLanguageByName(string $langName): ?Language
     {
-        return $this->entityManager->getRepository(Language::class)->findOneBy(array('localeName' => $langName));
+        return $this->languageDbService->findLangByLocale($langName);
     }
 
     public function forName(string $funcName): string
@@ -95,7 +92,8 @@ class LocalLanguage implements ILanguagePack
         $this->setLang($_COOKIE[Config::COOKIE_LANG_NAME]);
     }
 
-    private function setCookie($lang){
+    private function setCookie($lang)
+    {
         setcookie(Config::COOKIE_LANG_NAME, $lang, time() + self::COOKIE_EXPIRE, '/');
     }
 

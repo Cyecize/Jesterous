@@ -50,7 +50,7 @@ class CategoryController extends BaseController
 
     /**
      * @Route("/categories/create", name="create_category")
-     * @Security("has_role('ROLE_AUTHOR')")
+     * @Security("has_role('ROLE_ADMIN')")
      * @param Request $request
      * @return Response
      */
@@ -71,10 +71,10 @@ class CategoryController extends BaseController
                 goto escape;
             }catch (CategoryNotFoundException $e){}
             $this->categoryService->createCategory($bindingModel);
-            return $this->redirectToRoute('author_panel', ['info'=>self::CATEGORY_WAS_CREATED]);
+            return $this->redirectToRoute('admin_panel', ['info'=>self::CATEGORY_WAS_CREATED]);
         }
         escape:
-        return $this->render('author/categories/create-category.html.twig',
+        return $this->render('admin/categories/create-category.html.twig',
             [
                 'languages' => $this->getDoctrine()->getRepository(Language::class)->findAll(),
                 'form1' => $form->createView(),

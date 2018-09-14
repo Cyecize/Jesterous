@@ -39,7 +39,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ArticleDbManager implements IArticleDbManager
 {
-    private const MAX_ARTICLES_PER_PAGE = 3;
+    private const MAX_ARTICLES_PER_PAGE = 15;
 
     /**
      * @var EntityManagerInterface

@@ -56,7 +56,7 @@ class TwigInformer
         return Config::MINIMUM_PASSWORD_LENGTH;
     }
 
-    public function findQuote() : Quote{
+    public function findQuote() : ?Quote{
         return $this->quoteDbManager->findRandomQuote();
     }
 

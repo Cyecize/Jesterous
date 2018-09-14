@@ -55,7 +55,7 @@ class CategoryDbManager implements ICategoryDbManager
      */
     public function createCategory(CreateCategoryBindingModel $bindingModel): ArticleCategory
     {
-        $this->createParentCategory();
+        //$this->initCategories();
         $category = new ArticleCategory();
         $category->setCategoryName($bindingModel->getCategoryName());
         $lang = $this->localLanguage->findLanguageByName($bindingModel->getLocale());
@@ -96,7 +96,7 @@ class CategoryDbManager implements ICategoryDbManager
         return $this->catRepo->findBy(array('language' => $this->localLanguage->findCurrentLangs()));
     }
 
-    private function createParentCategory()
+    function initCategories(): void
     {
         try {
             $this->findOneByName(self::PARENT_CATEGORY_NAME);
@@ -106,7 +106,7 @@ class CategoryDbManager implements ICategoryDbManager
         }
         $cat = new ArticleCategory();
         $cat->setCategoryName(self::PARENT_CATEGORY_NAME);
-        $cat->setLanguage($this->entityManager->getRepository(Language::class)->findOneBy(array('localeName' => Config::COOKIE_NEUTRAL_LANG)));
+        $cat->setLanguage($this->localLanguage->findLanguageByName(Config::COOKIE_NEUTRAL_LANG));
         $this->entityManager->persist($cat);
         $this->entityManager->flush();
     }

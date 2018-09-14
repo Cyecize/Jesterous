@@ -14,18 +14,47 @@ use AppBundle\Entity\User;
 
 interface IQuoteDbManager
 {
-    function findRandomQuote(): Quote;
 
-    function findTopQuote(): Quote;
+    /**
+     * @param User $user
+     * @param int $quoteId
+     * @param bool $dislike
+     */
+    function like(User $user, int $quoteId, bool $dislike = false): void;
 
+    /**
+     * @param User $user
+     * @param int $quoteId
+     * @return bool
+     */
+    function hasLike(User $user, int $quoteId): bool;
+
+    /**
+     * @return Quote|null
+     */
+    function findRandomQuote(): ?Quote;
+
+    /**
+     * @return Quote|null
+     */
+    function findTopQuote(): ?Quote;
+
+
+    /**
+     * @param int $id
+     * @return Quote|null
+     */
+    function findOneById(int $id): ?Quote;
+
+
+    /**
+     * @return array
+     */
     function findAll(): array;
 
+    /**
+     * @return Quote[]
+     */
     function findAllVisibleQuotes(): array;
-
-    function like(User $user, int $quoteId, bool $dislike = false);
-
-    function findOneById(int $id);
-
-    function hasLike(User $user, int $quoteId) : bool ;
 
 }

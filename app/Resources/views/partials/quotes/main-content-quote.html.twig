@@ -1,26 +1,31 @@
 <!--  example quote -->
 {% set quote = twigInformer.findQuote %}
-                        {% set nameLocaleMethod = localLang.getLocalLang ~ 'AuthorName' %}
-                        {% set contentLocaleMethod = localLang.getLocalLang ~ 'Quote' %}
+{% if quote %}
+    {% set nameLocaleMethod = localLang.getLocalLang ~ 'AuthorName' %}
+    {% set contentLocaleMethod = localLang.getLocalLang ~ 'Quote' %}
 
-<div class="blog_section">
-    <div class="section_panel d-flex flex-row">
-        <div class="section_title">{{ attribute(quote, nameLocaleMethod) }}</div>
-    </div>
+    <div class="blog_section">
+        <div class="section_panel d-flex flex-row">
+            <div class="section_title">{{ attribute(quote, nameLocaleMethod) }}</div>
+        </div>
 
-    <div class="section_content">
-        <hr>
-        <div class="flex align-items-center font-pacifico text-info" style="font-size: 1.8em;">
-            {{ attribute(quote, contentLocaleMethod) }}
+        <div class="section_content">
+            <hr>
+            <div class="flex align-items-center font-pacifico text-info" style="font-size: 1.8em;">
+                {{ attribute(quote, contentLocaleMethod) }}
+            </div>
+            <div class="like-section mt-2">
+                {% if app.user %}
+                    <button token="{{ csrf_token('quote') }}" quote-id="{{ quote.id }}"
+                            class="btn btn-info btn-sm quote-like-btn {% if app.user and quote.hasUserLiked(app.user) %}active {% endif %}">
+                        <i class="fa fa-thumbs-up" aria-hidden="true"></i> {{ localLang.like }}</button>
+                {% else %}
+                    <a href="{{ path('security_login') }}">{{ localLang.loginToLike }}</a>
+                {% endif %}
+                <span class="ml-2 text-info quote-like-count">{{ localLang.likes }}: <span
+                            class="likes-count">{{ quote.likes.count }}</span></span>
+            </div>
+            <hr>
         </div>
-        <div class="like-section mt-2">
-            {% if app.user %}
-                <button token="{{ csrf_token('quote') }}" quote-id="{{ quote.id }}" class="btn btn-info btn-sm quote-like-btn {% if app.user and quote.hasUserLiked(app.user) %}active {% endif %}"><i class="fa fa-thumbs-up" aria-hidden="true"></i> {{ localLang.like }}</button>
-            {% else %}
-                <a href="{{ path('security_login') }}" >{{ localLang.loginToLike }}</a>
-            {% endif %}
-            <span class="ml-2 text-info quote-like-count">{{ localLang.likes }}: <span class="likes-count">{{ quote.likes.count }}</span></span>
-        </div>
-        <hr>
     </div>
-</div>
+{% endif %}

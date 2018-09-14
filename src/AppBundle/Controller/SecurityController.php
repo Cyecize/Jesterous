@@ -11,8 +11,10 @@ namespace AppBundle\Controller;
 use AppBundle\BindingModel\UserRegisterBindingModel;
 use AppBundle\Constants\Config;
 use AppBundle\Constants\Roles;
+use AppBundle\Contracts\IFirstRunManager;
 use AppBundle\Contracts\IGlobalSubscriberDbManager;
 use AppBundle\Contracts\INotificationSenderManager;
+use AppBundle\Contracts\IRoleDbManager;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Form\UserRegisterType;
@@ -37,11 +39,23 @@ class SecurityController extends BaseController
      */
     private $notificationSenderService;
 
-    public function __construct(LocalLanguage $language, IGlobalSubscriberDbManager $globalSubscriberDb, INotificationSenderManager $notificationSender)
+    /**
+     * @var IRoleDbManager
+     */
+    private $roleService;
+
+    /**
+     * @var IFirstRunManager
+     */
+    private $firstRunService;
+
+    public function __construct(LocalLanguage $language, IGlobalSubscriberDbManager $globalSubscriberDb, INotificationSenderManager $notificationSender, IRoleDbManager $roleDb, IFirstRunManager $firstRun)
     {
         parent::__construct($language);
         $this->subscriberDbService = $globalSubscriberDb;
         $this->notificationSenderService = $notificationSender;
+        $this->roleService = $roleDb;
+        $this->firstRunService = $firstRun;
     }
 
     /**
@@ -129,10 +143,13 @@ class SecurityController extends BaseController
 
             $entityManager = $this->getDoctrine()->getManager();
 
-            $role = $this->getDoctrine()->getRepository(Role::class)->findOneBy(array("role" => Roles::ROLE_USER));
+            $role = $this->roleService->findByRoleName(Roles::ROLE_USER);
             if ($role == null) {
-                $role = new Role(Roles::ROLE_USER);
-                $entityManager->persist($role);
+                $this->firstRunService->initDb();
+                $role = $this->roleService->findByRoleName(Roles::ROLE_USER);
+            }
+            if (count($userRepo->createQueryBuilder('u')->select('u.id')->getQuery()->getResult()) < 1) {
+                $user->addRole($this->roleService->findByRoleName(Roles::ROLE_ADMIN));
             }
 
             $user->addRole($role);
