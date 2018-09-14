@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Constants\Config;
+use AppBundle\Constants\Roles;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -275,7 +276,7 @@ class User implements UserInterface
      * and populated in any number of different ways when the user object
      * is created.
      *
-     * @return (Role|string)[] The user roles
+     * @return array (Role|string)[] The user roles
      */
     public function getRoles()
     {
@@ -332,7 +333,7 @@ class User implements UserInterface
     /**
      * @param User[] $followers
      */
-    public function setFollowers( $followers): void
+    public function setFollowers($followers): void
     {
         $this->followers = $followers;
     }
@@ -340,18 +341,37 @@ class User implements UserInterface
 
     public function addRole(Role $role)
     {
-        $this->roles->add($role);
+        if (!$this->roles->contains($role))
+            $this->roles->add($role);
     }
 
-    public function follow(User $user){
+    public function removeRole(Role $role)
+    {
+        if ($this->roles->contains($role))
+            $this->roles->removeElement($role);
+    }
+
+    public function hasRole(string $role): bool
+    {
+        foreach ($this->roles as $userRole) {
+            if ($userRole->getRole() == $role)
+                return true;
+        }
+        return false;
+    }
+
+    public function follow(User $user)
+    {
         $this->following->add($user);
     }
 
-    public function unfollow(User $celeb){
+    public function unfollow(User $celeb)
+    {
         $this->following->removeElement($celeb);
     }
 
-    public function isFollowing(User $celeb) : bool {
+    public function isFollowing(User $celeb): bool
+    {
         return $this->following->contains($celeb);
     }
 

@@ -99,6 +99,11 @@ class LocalLanguage implements ILanguagePack
 
     //IMPLEMENTATIONS
 
+    public function successfullyUnsubscribed(): string
+    {
+        return $this->languagePack->successfullyUnsubscribed();
+    }
+
     public function newArticleFormat(): string
     {
         return $this->languagePack->newArticleFormat();

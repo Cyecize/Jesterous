@@ -1,0 +1,92 @@
+{% extends 'admin/panel.html.twig' %}
+{% block title %}All Users{% endblock %}
+{% block sectionBody %}
+    <h2 class="text-dark">All Users</h2>
+    <small>TODO -> Add search box when users get too many</small>
+    <hr>
+    <div class="container">
+        <table class="table">
+            <thead class="rounded bg-dark p-0 text-light">
+            <tr>
+                <th scope="row">
+                    Username
+                </th>
+                <th scope="row">
+
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for user in users %}
+                {#<hr>#}
+                <tr>
+                    <th>
+                        <a href="{{ path('user_details', {'username': user.username}) }}"><p
+                                    class="text-dark">{{ user.username }}</p></a>
+                    </th>
+                    <th class="text-right">
+                        <button type="button" roleType="ROLE_AUTHOR"
+                                class="btn btn-success btn-outline-success  {% if user.hasRole('ROLE_AUTHOR') %} active remove-role-btn {% else %} add-role-btn {% endif %}"
+                                userId="{{ user.id }}">Author
+                        </button>
+                        <button type="button" roleType="ROLE_MAILER"
+                                class="btn btn-success btn-outline-info  {% if user.hasRole('ROLE_MAILER') %} active remove-role-btn {% else %} add-role-btn {% endif %}"
+                                userId="{{ user.id }}">Mailer
+                        </button>
+                        <button type="button" roleType="ROLE_ADMIN"
+                                class="btn btn-success btn-outline-danger  {% if user.hasRole('ROLE_ADMIN') %} active remove-role-btn {% else %} add-role-btn {% endif %}"
+                                userId="{{ user.id }}">Admin
+                        </button>
+                    </th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+
+{% block sectionScripts %}
+    <script>
+        var removeRoleUrl = '{{ path('remove_role') }}';
+        var addRoleUrl = '{{ path('add_role') }}';
+
+        function getBtnProps(btn) {
+            btn = $(btn);
+            return {
+                role: btn.attr('roleType'),
+                userId: btn.attr('userId')
+            };
+        }
+
+        function ajaxCall(url, props) {
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {token: CSRF_TOKEN, roleType: props['role'], userId: props['userId']},
+                success: function () {
+                    location.reload();
+                },
+                error: function (err) {
+                    alert(err['responseJSON']['message']);
+                }
+            });
+        }
+
+        $(function () {
+
+            $('.remove-role-btn').on('click', function (e) {
+                var props = getBtnProps(this);
+                if (!confirm('Alter user with id: ' + props['userId'] + ' and remove his role: ' + props['role'] + ' ?'))
+                    return;
+                ajaxCall(removeRoleUrl, props);
+            });
+
+            $('.add-role-btn').on('click', function () {
+                var props = getBtnProps(this);
+                if (!confirm('Alter user with id: ' + props['userId'] + ' and add role: ' + props['role'] + ' ?'))
+                    return;
+                ajaxCall(addRoleUrl, props);
+            });
+        });
+    </script>
+{% endblock %}

@@ -47,7 +47,7 @@ class Log
 
     public function __construct()
     {
-        $this->date = new \DateTime('now', Config::DEFAULT_TIMEZONE);
+        $this->date = new \DateTime('now', new \DateTimeZone(Config::DEFAULT_TIMEZONE));
     }
 
 

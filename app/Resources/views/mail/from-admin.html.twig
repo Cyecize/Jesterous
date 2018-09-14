@@ -1,2 +1,11 @@
-<h1>Message from the Admin himself</h1>
-<p>{{ message }}</p>
+<style>
+    #megDiv{
+        white-space: pre-wrap;
+    }
+</style>
+
+<h3>Message from the admin {{ admin.username }}</h3>
+<br>
+<div id="megDiv" style="">{{ message }}</div>
+<br>
+{% embed 'mail/partials/lang/' ~ localLang.localLang ~  '/unsubscribe.html.twig' %} {% endembed %}

@@ -103,6 +103,13 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const NEW_ARTICLE_FORMAT = "%s добави: %s.";
 
+    public const SUCCESSFULLY_UNSUBBED = "Успешно се отписахте.";
+
+    public function successfullyUnsubscribed(): string
+    {
+      return self::SUCCESSFULLY_UNSUBBED;
+    }
+
     public function newArticleFormat(): string
     {
         return self::NEW_ARTICLE_FORMAT;

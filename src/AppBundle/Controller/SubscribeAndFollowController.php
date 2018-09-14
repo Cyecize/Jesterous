@@ -8,9 +8,9 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\BindingModel\NotificationBindingModel;
 use AppBundle\Contracts\IGlobalSubscriberDbManager;
+use AppBundle\Contracts\IMailingManager;
 use AppBundle\Contracts\IMailSenderManager;
 use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Contracts\IUserDbManager;
@@ -46,17 +46,37 @@ class SubscribeAndFollowController extends BaseController
     private $notificationSendService;
 
     /**
-     * @var IMailSenderManager
+     * @var IMailingManager
      */
-    private $mailSenderService;
+    private $mailingManager;
 
-    public function __construct(LocalLanguage $language, IUserDbManager $userDbManager, IGlobalSubscriberDbManager $globalSubscriberDb, INotificationSenderManager $notificationSender, IMailSenderManager $mailSender)
+    public function __construct(LocalLanguage $language, IUserDbManager $userDbManager, IGlobalSubscriberDbManager $globalSubscriberDb, INotificationSenderManager $notificationSender, IMailingManager $mailSender)
     {
         parent::__construct($language);
         $this->userService = $userDbManager;
         $this->subscriberDbService = $globalSubscriberDb;
         $this->notificationSendService = $notificationSender;
-        $this->mailSenderService = $mailSender;
+        $this->mailingManager = $mailSender;
+    }
+
+    /**
+     * @Route("/unsubscribe", name="unsubscribe")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function unsubscribeAction(Request $request)
+    {
+        $email = $request->get('email');
+        if ($email == null)
+            goto escape;
+        $subscriber = $this->subscriberDbService->findOneByEmail($email);
+        if ($subscriber == null)
+            goto  escape;
+        $this->subscriberDbService->unsubscribe($subscriber);
+
+        return $this->redirectToRoute('homepage', ['info' => $this->language->successfullyUnsubscribed()]);
+        escape:
+        return $this->redirectToRoute('homepage');
     }
 
     /**
@@ -146,14 +166,11 @@ class SubscribeAndFollowController extends BaseController
      */
     public function emailAllSubscribersAction(Request $request)
     {
-        $html = $this->renderView('mail/from-admin.html.twig', [
-            'message' => $request->get('message')
-        ]);
-        $subj = $request->get('subject');
-        $people = $this->subscriberDbService->findAll();
-        foreach ($people as $person) {
-            $this->mailSenderService->sendHtml($subj, $html, $person->getEmail());
-        }
+        $subject = $request->get('subject');
+        $message = $request->get('message');
+        if ($subject == null || $message == null)
+            return $this->redirectToRoute('email_all_get', ['error' => "Fill all fields!"]);
+        $this->mailingManager->sendMessageToSubscribers($this->getUser(), $subject, $message);
         return $this->redirectToRoute("admin_panel", ['info' => "message sent!"]);
     }
 
@@ -161,7 +178,8 @@ class SubscribeAndFollowController extends BaseController
      * @Route("/admin/email/all" , name="email_all_get", methods={"GET"})
      * @Security("has_role('ROLE_ADMIN')")
      */
-    public function emailAllRequest(){
+    public function emailAllRequest()
+    {
         return $this->render('admin/users/send-email.html.twig', [
 
         ]);

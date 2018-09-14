@@ -9,8 +9,11 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\Constants\Roles;
 use AppBundle\Contracts\IUserDbManager;
+use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
+use AppBundle\Exception\IllegalArgumentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use Doctrine\ORM\EntityManagerInterface;
 
@@ -18,6 +21,9 @@ class UserDbManager implements IUserDbManager
 {
     private const USER_ALREADY_FOLLOWED = "User already followed";
     private const USER_ALREADY_UNFOLLOWED = "User already unfollowed";
+    private const CANNOT_ALTER_ADMIN = "Cannot remove admin privileges!";
+    private const USER_HAS_THAT_ROLE = "User already has that role!";
+    private const USER_DOES_NOT_HAVE_ROLE = "User doesn't have that role!";
     /**
      * @var EntityManagerInterface
      */
@@ -34,6 +40,25 @@ class UserDbManager implements IUserDbManager
         $this->userRepo = $em->getRepository(User::class);
     }
 
+    function removeRole(User $user, Role $role): void
+    {
+        if ($user->hasRole(Roles::ROLE_ADMIN) && $role->getRole() == Roles::ROLE_ADMIN)
+            throw new IllegalArgumentException(self::CANNOT_ALTER_ADMIN);
+        if (!$user->hasRole($role->getRole()))
+            throw new IllegalArgumentException(self::USER_DOES_NOT_HAVE_ROLE);
+        $user->removeRole($role);
+        $this->save($user);
+    }
+
+    function addRole(User $user, Role $role): void
+    {
+        if ($user->hasRole($role->getRole()))
+            throw new IllegalArgumentException(self::USER_HAS_THAT_ROLE);
+        $user->addRole($role);
+        $this->save($user);
+    }
+
+
     /**
      * @param User $target
      * @param User $celeb
@@ -41,7 +66,7 @@ class UserDbManager implements IUserDbManager
      */
     public function addFollower(User $target, User $celeb): void
     {
-        if($this->isUserFollowing($target, $celeb))
+        if ($this->isUserFollowing($target, $celeb))
             throw new RestFriendlyExceptionImpl(self::USER_ALREADY_FOLLOWED);
         $target->follow($celeb);
         $this->entityManager->merge($target);
@@ -55,11 +80,11 @@ class UserDbManager implements IUserDbManager
      */
     public function removeFollower(User $target, User $celeb): void
     {
-       if(!$this->isUserFollowing($target, $celeb))
-           throw new RestFriendlyExceptionImpl(self::USER_ALREADY_UNFOLLOWED);
-       $target->unfollow($celeb);
-       $this->entityManager->merge($target);
-       $this->entityManager->flush();
+        if (!$this->isUserFollowing($target, $celeb))
+            throw new RestFriendlyExceptionImpl(self::USER_ALREADY_UNFOLLOWED);
+        $target->unfollow($celeb);
+        $this->entityManager->merge($target);
+        $this->entityManager->flush();
     }
 
     /**
@@ -70,7 +95,7 @@ class UserDbManager implements IUserDbManager
     public function isUserFollowing(User $candidate, User $celebrity): bool
     {
         foreach ($celebrity->getFollowers() as $follower) {
-            if($follower->getId() == $candidate->getId())
+            if ($follower->getId() == $candidate->getId())
                 return true;
         }
         return false;
@@ -82,7 +107,7 @@ class UserDbManager implements IUserDbManager
      */
     function findOneById(int $id): ?User
     {
-        return $this->userRepo->findOneBy(array('id'=>$id));
+        return $this->userRepo->findOneBy(array('id' => $id));
     }
 
     /**
@@ -91,7 +116,7 @@ class UserDbManager implements IUserDbManager
      */
     function findOneByUsername(string $username): ?User
     {
-        return $this->userRepo->findOneBy(array('username'=>$username));
+        return $this->userRepo->findOneBy(array('username' => $username));
     }
 
     /**
@@ -108,6 +133,13 @@ class UserDbManager implements IUserDbManager
      */
     public function findByRole(string $role): array
     {
-       return $this->userRepo->findByRoleName($role);
+        return $this->userRepo->findByRoleName($role);
+    }
+
+    //PRIVATE
+    private function save(User $user): void
+    {
+        $this->entityManager->merge($user);
+        $this->entityManager->flush();
     }
 }

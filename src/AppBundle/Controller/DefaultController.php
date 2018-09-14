@@ -23,7 +23,7 @@ class DefaultController extends BaseController
     public function __construct(LocalLanguage $language, ICategoryDbManager $categoryDbManager, IArticleDbManager $articleDb)
     {
         parent::__construct($language);
-        $this->articleService =$articleDb;
+        $this->articleService = $articleDb;
         $this->categoryService = $categoryDbManager;
     }
 
@@ -35,19 +35,20 @@ class DefaultController extends BaseController
     public function indexAction(Request $request)
     {
         $lang = $request->get('lang');
-        if($lang != null)
+        if ($lang != null)
             $this->language->setLang($lang);
         $categories = $this->categoryService->findAllLocalCategories();
         $latestPosts = $this->articleService->findArticlesForLatestPosts(0, $categories);
         $sliderArticles = $this->articleService->forgeSliderViewModel($this->articleService->findArticlesByCategories($categories, 4));
-        $trendingArticles = $this->articleService->findArticlesByCategories( $categories, 7);
+        $trendingArticles = $this->articleService->findArticlesByCategories($categories, 7);
 
         return $this->render('default/index.html.twig', [
-            'categories'=>$categories,
-            'latestPosts'=>$latestPosts,
-            'sliderArticles'=>$sliderArticles,
-            'trendingArticles'=>$trendingArticles,
-            'error'=>$request->get('error')
+            'categories' => $categories,
+            'latestPosts' => $latestPosts,
+            'sliderArticles' => $sliderArticles,
+            'trendingArticles' => $trendingArticles,
+            'error' => $request->get('error'),
+            'info' => $request->get('info'),
         ]);
     }
 
@@ -55,7 +56,8 @@ class DefaultController extends BaseController
      * @Route("/contacts", name="contacts_page")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function contactsAction(){
+    public function contactsAction()
+    {
         return $this->render("default/contacts.html.twig", array());
     }
 

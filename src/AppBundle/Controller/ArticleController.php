@@ -13,6 +13,7 @@ use AppBundle\BindingModel\EditArticleBindingModel;
 use AppBundle\BindingModel\ImageBindingModel;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
+use AppBundle\Contracts\IMailingManager;
 use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Exception\ArticleNotFoundException;
@@ -54,13 +55,19 @@ class ArticleController extends BaseController
      */
     private $notificationSenderService;
 
-    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager, IUserDbManager $userDbManager, INotificationSenderManager $notificationSender)
+    /**
+     * @var IMailingManager
+     */
+    private $mailingService;
+
+    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager, IUserDbManager $userDbManager, INotificationSenderManager $notificationSender, IMailingManager $mailing)
     {
         parent::__construct($language);
         $this->articleService = $articleDbManager;
         $this->categoryService = $categoryDbManager;
         $this->userService = $userDbManager;
         $this->notificationSenderService = $notificationSender;
+        $this->mailingService = $mailing;
     }
 
     /**
@@ -81,8 +88,10 @@ class ArticleController extends BaseController
             if (count($errors) > 0)
                 goto escape;
             $article = $this->articleService->createArticle($articleBindingModel, $this->getUser());
-            if ($articleBindingModel->isNotify())
+            if ($articleBindingModel->isNotify()) {
+                $this->mailingService->sendMessageForNewArticle($article);
                 $this->notificationSenderService->onNewBlogPost($article);
+            }
             return $this->redirectToRoute('author_panel', ['info' => "Article was created!"]);
         }
 
@@ -126,8 +135,10 @@ class ArticleController extends BaseController
                     goto escape;
             }
             $article = $this->articleService->editArticle($article, $bindingModel, $bindingModel->getFile());
-            if ($bindingModel->isNotify())
+            if ($bindingModel->isNotify() && !$article->isNotified()) {
+                $this->mailingService->sendMessageForNewArticle($article);
                 $this->notificationSenderService->onNewBlogPost($article);
+            }
             return $this->redirectToRoute('author_panel', ['info' => sprintf(self::ARTICLE_WAS_EDITED_FORMAT, $id)]);
         }
 

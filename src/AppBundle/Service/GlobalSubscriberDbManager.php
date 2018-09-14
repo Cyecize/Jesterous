@@ -47,13 +47,20 @@ class GlobalSubscriberDbManager implements IGlobalSubscriberDbManager
     public function createSubscriber(string $email): GlobalSubscriber
     {
         //TODO if sub unsubbed, resub him, not throw exception
-        if ($this->findOneByEmail($email) != null)
-            throw new IllegalArgumentException($this->lang->emailAlreadyInUse());
-        $sub = new GlobalSubscriber();
-        $sub->setEmail($email);
-        $this->entityManager->persist($sub);
-        $this->entityManager->flush();
-        return $sub;
+        $sub = $this->findAnyByEmail($email);
+        if($sub != null){
+            if($sub->getIsSubscribed())
+                throw new IllegalArgumentException($this->lang->emailAlreadyInUse());
+            return  $this->createSubscriberOnRegister($sub->getEmail());
+        }
+        else {
+
+            $sub = new GlobalSubscriber();
+            $sub->setEmail($email);
+            $this->entityManager->persist($sub);
+            $this->entityManager->flush();
+            return $sub;
+        }
     }
 
     /**

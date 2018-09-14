@@ -9,21 +9,40 @@
 namespace AppBundle\Contracts;
 
 
+use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
+use AppBundle\Exception\IllegalArgumentException;
 
 interface IUserDbManager
 {
     /**
-     * @param User $target
-     * @param User $celeb
+     * @param User $user
+     * @param Role $role
+     * @throws IllegalArgumentException
      */
-    function addFollower(User $target, User $celeb) : void ;
+    function removeRole(User $user, Role $role) : void ;
+
+    /**
+     * @param User $user
+     * @param Role $role
+     * @throws IllegalArgumentException
+     */
+
+    function addRole(User $user, Role $role): void;
 
     /**
      * @param User $target
      * @param User $celeb
      */
-    function removeFollower(User $target, User $celeb) : void ;
+    function addFollower(User $target, User $celeb): void;
+
+    /**
+     * @param User $target
+     * @param User $celeb
+     */
+
+    function removeFollower(User $target, User $celeb): void;
+
     /**
      * @param User $candidate
      * @param User $celebrity
@@ -52,5 +71,5 @@ interface IUserDbManager
      * @param string $role
      * @return User[]
      */
-    function findByRole(string  $role) : array ;
+    function findByRole(string $role): array;
 }

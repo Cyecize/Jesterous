@@ -12,6 +12,9 @@
             {% if error is defined and error != null %}
                 <h2 class="alert alert-danger">{{ error }}</h2>
             {% endif %}
+            {% if info is defined and info != null %}
+                <h2 class="alert alert-success">{{ info }}</h2>
+            {% endif %}
             <div class="row row-lg-eq-height">
 
                 <!-- Main Content -->

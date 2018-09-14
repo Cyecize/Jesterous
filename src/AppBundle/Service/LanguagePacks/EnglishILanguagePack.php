@@ -103,6 +103,13 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const NEW_ARTICLE_FORMAT = "%s added: %s.";
 
+    public const SUCCESSFULLY_UNSUBBED = "Successfully unsubscribed";
+
+    public function successfullyUnsubscribed(): string
+    {
+        return self::SUCCESSFULLY_UNSUBBED;
+    }
+
     public function newArticleFormat(): string
     {
        return self::NEW_ARTICLE_FORMAT;

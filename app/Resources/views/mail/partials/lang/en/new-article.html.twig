@@ -1,0 +1,7 @@
+<h3>New post from {{ article.author.username }}</h3>
+<div>
+    <p>{{ article.title }}</p>
+    <small>{{ article.summary }}</small><br>
+    <a href="{{ url('homepage') }}articles/{{ article.id }}">Read more</a>
+</div>
+{% embed 'mail/partials/lang/en/unsubscribe.html.twig' %} {% endembed %}
