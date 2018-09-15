@@ -85,7 +85,7 @@ class DefaultController extends BaseController
 
         if($form->isSubmitted()){
             $this->validateToken($request);
-            if(count($this->get('validator')->validate($bindingModel)) > 0)
+            if(count($this->validate($bindingModel)) > 0)
                 goto escape;
             $this->notificationSenderService->onFeedback($bindingModel);
             $this->mailingService->sendFeedback($bindingModel);

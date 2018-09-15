@@ -8,38 +8,7 @@
             <div class="row row-lg-eq-height">
                 <!-- Main Content -->
                 <div class="col-lg-9">
-                    <div class="post_content">
-                        <div class="post_body">
-                            <div class="row align-items-center">
-                                <div class="col-sm-1">
-                                    <div class="author_image">
-                                        <div><img src="{% if user.profileImage %}{{ user.profileImage }}{% else %}{{ asset('images/profile-default.png') }}{% endif %}" alt=""></div>
-                                    </div>
-                                </div>
-                                <div class="col">
-                                    <span class="text-muted">{{ user.dateRegistered.format(twigInformer.simpleDateFormat) }}</span>
-                                </div>
-                                <div class="col-sm-1">
-                                    {% if app.user %}
-                                    {% embed 'partials/follow-and-sub/follow-btn.html.twig' with {'targetUser':user} %} {% endembed %}
-                                    {% endif %}
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col">
-                                    <span class="text-muted">{{ localLang.following }}: <b>{{ user.following|length }}
-                                            , </b></span>
-                                    <span class="text-muted">{{ localLang.followers }}
-                                        : <b>{{ user.followers|length }}</b></span>
-                                </div>
-                            </div>
-                            <div>
-                                <hr>
-                                <h4 class="text-dark">{{ localLang.aboutUser(user.username) }}:</h4>
-                                <div class="text-muted raw-content">{% if user.userDescription %}{{ user.userDescription }}{% else %}N/A{% endif %}</div>
-                            </div>
-                        </div>
-                    </div>
+                   {% embed 'user/profile/profile-details.html.twig' with {'user':user} %} {% endembed %}
                     {% if articles|length > 0 %}
                         <div class="mt-1 mb-1">
                             <h4 class="text-dark">{{ localLang.blogPosts }}</h4>

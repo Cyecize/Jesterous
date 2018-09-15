@@ -85,7 +85,7 @@ class QuotesController extends BaseController
         $form->handleRequest($request);
         if ($form->isSubmitted()) {
             $this->validateToken($request);
-            if (count($this->get('validator')->validate($bindingModel)) > 0)
+            if (count($this->validate($bindingModel)) > 0)
                 goto  escape;
             $this->quoteService->createQuote($bindingModel);
             return $this->redirectToRoute('admin_panel', ['info' => 'Quote Created!']);
@@ -114,7 +114,7 @@ class QuotesController extends BaseController
         $quote = $this->quoteService->findOneById(intval($quoteId));
         if ($quote == null)
             throw new RestFriendlyExceptionImpl(self::QUOTE_NOT_FOUND);
-        if (!$form->isSubmitted() || count($this->get('validator')->validate($bindingModel)) > 0)
+        if (!$form->isSubmitted() || count($this->validate($bindingModel)) > 0)
             throw new RestFriendlyExceptionImpl(self::INVALID_PARAMETERS);
         $this->quoteService->edit($quote, $bindingModel);
         return $this->redirectToRoute('admin_panel', ['info'=>'Quote Edited!']);

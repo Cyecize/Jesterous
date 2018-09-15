@@ -11,6 +11,7 @@
                             <li class="route-categories"><a href="{{ path('categories_page') }}">{{ localLang.blogPosts }}</a></li>
                             <li class="route-contacts"><a href="{{ path('contacts_page') }}">{{ localLang.contacts }}</a></li>
                             {% if app.user %}
+                                <li class="route-logout"><a href="{{ path('user_panel') }}">{{ localLang.profile }}</a> </li>
                                 <li class="route-logout"><a href="{{ path('security_logout') }}">{{ localLang.logout }}</a> </li>
                             {% else %}
                                 <li class="route-login"><a href="{{ path('security_login') }}">{{ localLang.login }}</a> </li>
@@ -77,6 +78,7 @@
             <li class="menu_mm"><a href="{{ path('categories_page') }}">{{ localLang.blogPosts }}</a></li>
             <li class="menu_mm"><a href="{{ path('contacts_page') }}">{{ localLang.contacts }}</a></li>
             {% if app.user %}
+                <li class="menu_mm"><a href="{{ path('user_panel') }}">{{ localLang.profile }}</a>  </li>
                 <li class="menu_mm"><a href="{{ path('security_logout') }}">{{ localLang.logout }}</a> </li>
                 <li class="menu_mm"><a href="#" id="mobileNotificationsBtn">{{ localLang.notifications }}</a></li>
             {% else %}

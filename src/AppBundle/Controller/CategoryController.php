@@ -63,7 +63,7 @@ class CategoryController extends BaseController
         $error = null;
 
         if ($form->isSubmitted()) {
-            if(count($this->get('validator')->validate($bindingModel)) > 0)
+            if(count($this->validate($bindingModel)) > 0)
                 goto escape;
             try{
                 $this->categoryService->findOneByName($bindingModel->getCategoryName());

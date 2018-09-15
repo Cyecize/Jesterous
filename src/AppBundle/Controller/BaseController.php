@@ -49,6 +49,14 @@ abstract class BaseController extends Controller
     }
 
     /**
+     * @param $bindingModel
+     * @return \Symfony\Component\Validator\ConstraintViolationListInterface
+     */
+    protected function validate($bindingModel){
+       return $this->get('validator')->validate($bindingModel);
+    }
+
+    /**
      * @param Request $request
      * @throws RestFriendlyExceptionImpl
      */

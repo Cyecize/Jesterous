@@ -127,5 +127,15 @@ interface ILanguagePack
 
     function fieldCannotBeEmpty(): string;
 
-    function messageWasSent() : string ;
+    function messageWasSent(): string;
+
+    function profile(): string;
+
+    function changePassword(): string;
+
+    function removeAccount(): string;
+
+    function editSummary(): string;
+
+    function changeProfilePicture(): string;
 }

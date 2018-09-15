@@ -109,6 +109,41 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const FIELD_IS_EMPTY = "Полето е празно";
 
+    public const PROFILE = "Профил";
+
+    public const CHANGE_PASSWORD = "Смяна на парола";
+
+    public const REMOVE_ACCOUNT = "Премахване на профил";
+
+    public const EDIT_SUMMARY = "За мен";
+
+    public const CHANGE_PROFILE_PICTURE = "Промяна на профилна снимка";
+
+    function profile(): string
+    {
+       return self::PROFILE;
+    }
+
+    function changePassword(): string
+    {
+        return self::CHANGE_PASSWORD;
+    }
+
+    function removeAccount(): string
+    {
+        return self::REMOVE_ACCOUNT;
+    }
+
+    function editSummary(): string
+    {
+        return self::EDIT_SUMMARY;
+    }
+
+    function changeProfilePicture(): string
+    {
+        return self::CHANGE_PROFILE_PICTURE;
+    }
+
     function fieldCannotBeEmpty(): string
     {
         return self::FIELD_IS_EMPTY;

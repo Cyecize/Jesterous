@@ -146,7 +146,7 @@ class SubscribeAndFollowController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            if (count($this->get('validator')->validate($bindingModel)) > 0)
+            if (count($this->validate($bindingModel)) > 0)
                 goto escape;
             $this->notificationSendService->notifyAll($bindingModel->getMessage(), $bindingModel->getHref());
             return $this->redirectToRoute('admin_panel', ['info' => "Message was send!"]);

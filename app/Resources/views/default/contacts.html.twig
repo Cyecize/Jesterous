@@ -22,39 +22,21 @@
                                                    placeholder="{{ localLang.yourName }}"
                                                     {% if app.user %} value="{{ app.user.username }}" {% else %}
                                                    value="{{ bindingModel.name }}" {% endif %}required="required">
-                                            <div class="text-danger">
-                                                <ul>
-                                                    {% for err in twigUtil.errorToArray(form_errors(form1.name)) %}
-                                                        <li>{{ localLang.forName(err) }}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
+                                           {% embed 'partials/errors/field-error-handler.html.twig' with {'field':form1.name} %} {% endembed  %}
                                         </div>
                                         <div class="form-group col-md-6">
                                             <input name="feedback[email]" type="email"
                                                    class="contact_input "
                                                    placeholder="{{ localLang.yourEmail }}" required="required"
                                                     {% if app.user %} value="{{ app.user.email }}" {% else %} value="{{ bindingModel.email }}" {% endif %}>
-                                            <div class="text-danger">
-                                                <ul>
-                                                    {% for err in twigUtil.errorToArray(form_errors(form1.email)) %}
-                                                        <li>{{ localLang.forName(err) }}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                            </div>
+                                            {% embed 'partials/errors/field-error-handler.html.twig' with {'field':form1.email} %} {% endembed  %}
                                         </div>
                                     </div>
                                     <div class="form-group">
                                          <textarea name="feedback[message]" class="contact_text"
                                                    placeholder="{{ localLang.yourMessage }}"
                                                    required="required">{{ bindingModel.message }}</textarea>
-                                        <div class="text-danger">
-                                            <ul>
-                                                {% for err in twigUtil.errorToArray(form_errors(form1.message)) %}
-                                                    <li>{{ localLang.forName(err) }}</li>
-                                                {% endfor %}
-                                            </ul>
-                                        </div>
+                                        {% embed 'partials/errors/field-error-handler.html.twig' with {'field':form1.message} %} {% endembed  %}
                                     </div>
                                     <input type="hidden" name="token" value="{{ csrf_token('token') }}" required>
                                     <button type="submit" class="contact_button">{{ localLang.sendMessage }}</button>

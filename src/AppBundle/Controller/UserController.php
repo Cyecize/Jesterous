@@ -9,11 +9,16 @@
 namespace AppBundle\Controller;
 
 
+use AppBundle\BindingModel\ChangePasswordBindingModel;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\IUserDbManager;
+use AppBundle\Exception\IllegalArgumentException;
 use AppBundle\Exception\UserNotFoundException;
+use AppBundle\Form\EditPasswordType;
 use AppBundle\Service\LocalLanguage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Symfony\Component\HttpFoundation\Request;
 
 class UserController extends BaseController
 {
@@ -48,5 +53,53 @@ class UserController extends BaseController
                 'user' => $user,
                 'articles' => $this->articleService->findUserArticles($user),
             ]);
+    }
+
+    /**
+     * @Route("/user/panel", name="user_panel")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function profilePanelAction(Request $request)
+    {
+        return $this->render('user/panel.html.twig', [
+            'info' => $request->get('info'),
+            'error' => $request->get('error')
+        ]);
+    }
+
+    /**
+     * @Route("/users/password/edit", name="change_password")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \AppBundle\Exception\RestFriendlyExceptionImpl
+     */
+    public function changePasswordAction(Request $request)
+    {
+        $bindingModel = new ChangePasswordBindingModel();
+        $form = $this->createForm(EditPasswordType::class, $bindingModel);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $this->validateToken($request);
+            if (count($this->validate($bindingModel)) > 0)
+                goto  escape;
+            try {
+                $this->userService->changePassword($this->userService->findOneById($this->getUser()->getId()), $bindingModel);
+                return $this->redirectToRoute('security_logout');
+            } catch (IllegalArgumentException $e) {
+                return $this->redirectToRoute('change_password', [
+                    'error' => $this->language->forName($e->getMessage()),
+                ]);
+            }
+        }
+
+        escape:
+        return $this->render('user/profile/change-password.html.twig', [
+            'error' => $request->get('error'),
+            'form1' => $form->createView(),
+        ]);
     }
 }

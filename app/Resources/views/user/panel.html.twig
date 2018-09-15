@@ -1,10 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Author Panel {% endblock %}
+{% block title %}Jesterous {{ localLang.profile }} {% endblock %}
 
 {% block body %}
-   {% embed 'partials/banner.html.twig' %} {% endembed %}
-
+   {% embed 'partials/banner.html.twig' with{'bannerTitle':app.user.username ~ ' - ' ~ localLang.profile } %} {% endembed %}
     <div class="page_content">
         <div class="container">
             <div class="row">
@@ -15,9 +14,9 @@
                     {% if error is defined and error %}
                         <h3 class="alert response-text info alert-danger">{{ error }}</h3>
                     {% endif %}
-                    <div class="main_content">
+                    <div class="main_content" style="display: none;">
                         {% block sectionBody %}
-                        <h3 class="text-dan">Select one of the options from the sidebar</h3>
+                            {% embed 'user/profile/profile-details.html.twig' with {'user':app.user} %} {% endembed %}
                         {% endblock %}
                     </div>
                 </div>
@@ -25,31 +24,26 @@
                     {% block sections %}
                         <div class="sidebar_section">
                             <div class="sidebar_title_container">
-                                <div class="sidebar_title">Articles</div>
+                                <div class="sidebar_title">{{ localLang.profile }}</div>
                             </div>
                             <div class="sidebar_section_content pt-0">
                                 <ul class="list-group">
-                                    <li class="list-group-item"><a href="{{ path('create_article') }}">Create article</a>
+                                    <li class="list-group-item">
+                                        <a href="{{ path('change_password') }}">{{ localLang.changeProfilePicture }}</a>
                                     </li>
                                     <li class="list-group-item">
-                                        <a href="{{ path('my_articles') }}">My articles</a>
+                                        <a href="{{ path('change_password') }}">{{ localLang.editSummary }}</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="{{ path('change_password') }}">{{ localLang.changePassword }}</a>
+                                    </li>
+                                    <li class="list-group-item">
+                                        <a href="{{ path('change_password') }}">{{ localLang.removeAccount }}</a>
                                     </li>
                                 </ul>
                             </div>
                         </div>
                         <hr>
-                        <div class="sidebar_section">
-                            <div class="sidebar_title_container">
-                                <div class="sidebar_title">Followers ({{ app.user.followers|length }})</div>
-                            </div>
-                            <div class="sidebar_section_content pt-0">
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <a href="{{ path('author_followers') }}">My followers</a>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
                     {% endblock %}
                 {% endembed %}
             </div>
@@ -58,8 +52,8 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/category.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/contact_responsive.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
     {% block  sectionStyles %}{% endblock %}
 {% endblock %}
 
@@ -67,9 +61,12 @@
     <script src="{{ asset('styles/js/custom.js') }}"></script>
     <script>
         $(function () {
-           setTimeout(function () {
-               $('.response-text').fadeOut(1000);
-           }, 3000);
+            setTimeout(function () {
+                $('.response-text').fadeOut(1000);
+            }, 3000);
+            setTimeout(function () {
+                $('.main_content').fadeIn(600);
+            }, 200);
         });
     </script>
     {% block sectionScripts %} {% endblock %}

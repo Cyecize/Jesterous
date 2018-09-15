@@ -109,6 +109,41 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const FIELD_IS_EMPTY = "Field is empty";
 
+    public const PROFILE = "Profile";
+
+    public const CHANGE_PASSWORD = "Change password";
+
+    public const REMOVE_ACCOUNT = "Remove account";
+
+    public const EDIT_SUMMARY = "About me";
+
+    public const CHANGE_PROFILE_PICTURE = "Change profile picture";
+
+    function profile(): string
+    {
+        return self::PROFILE;
+    }
+
+    function changePassword(): string
+    {
+        return self::CHANGE_PASSWORD;
+    }
+
+    function removeAccount(): string
+    {
+        return self::REMOVE_ACCOUNT;
+    }
+
+    function editSummary(): string
+    {
+        return self::EDIT_SUMMARY;
+    }
+
+    function changeProfilePicture(): string
+    {
+        return self::CHANGE_PROFILE_PICTURE;
+    }
+
     function fieldCannotBeEmpty(): string
     {
         return self::FIELD_IS_EMPTY;

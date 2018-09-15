@@ -32,7 +32,7 @@ var ModalManager = (function (id, openBtnId) {
                 hideModal();
             }
         });
-        
+
         window.onkeypress = function (event) {
             if(event.keyCode == 27)
                 hideModal();

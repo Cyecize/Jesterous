@@ -9,6 +9,7 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\BindingModel\ChangePasswordBindingModel;
 use AppBundle\Constants\Roles;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Role;
@@ -16,6 +17,7 @@ use AppBundle\Entity\User;
 use AppBundle\Exception\IllegalArgumentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserDbManager implements IUserDbManager
 {
@@ -24,6 +26,7 @@ class UserDbManager implements IUserDbManager
     private const CANNOT_ALTER_ADMIN = "Cannot remove admin privileges!";
     private const USER_HAS_THAT_ROLE = "User already has that role!";
     private const USER_DOES_NOT_HAVE_ROLE = "User doesn't have that role!";
+
     /**
      * @var EntityManagerInterface
      */
@@ -34,10 +37,16 @@ class UserDbManager implements IUserDbManager
      */
     private $userRepo;
 
-    public function __construct(EntityManagerInterface $em)
+    /**
+     * @var UserPasswordEncoderInterface
+     */
+    private $passwordEncoder;
+
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder)
     {
         $this->entityManager = $em;
         $this->userRepo = $em->getRepository(User::class);
+        $this->passwordEncoder = $passwordEncoder;
     }
 
     function removeRole(User $user, Role $role): void
@@ -84,6 +93,15 @@ class UserDbManager implements IUserDbManager
             throw new RestFriendlyExceptionImpl(self::USER_ALREADY_UNFOLLOWED);
         $target->unfollow($celeb);
         $this->entityManager->merge($target);
+        $this->entityManager->flush();
+    }
+
+    public function changePassword(User $user, ChangePasswordBindingModel $bindingModel): void
+    {
+        if (!password_verify($bindingModel->getOldPassword(), $user->getPassword()))
+            throw new IllegalArgumentException("passwordIsIncorrect");
+        $user->setPassword($this->passwordEncoder->encodePassword($user, $bindingModel->getNewPassword()));
+        $this->entityManager->merge($user);
         $this->entityManager->flush();
     }
 

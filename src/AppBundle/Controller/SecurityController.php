@@ -117,8 +117,7 @@ class SecurityController extends BaseController
         $error = null;
 
         if ($bindForm->isSubmitted()) {
-            $validator = $this->get('validator');
-            $errors = $validator->validate($userBindingModel);
+            $errors = $this->validate($userBindingModel);
             if (count($errors) > 0)
                 goto escape;
 

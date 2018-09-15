@@ -3,11 +3,7 @@
 {% block title %}Admin Panel {% endblock %}
 
 {% block body %}
-    <div class="home">
-        <div class="home_background parallax-window" data-parallax="scroll"
-             data-image-src="{% block sectionBackground %}/images/category.jpg{% endblock %}"
-             data-speed="0.8"></div>
-    </div>
+   {% embed 'partials/banner.html.twig' %} {% endembed %}
 
     <div class="page_content">
         <div class="container">

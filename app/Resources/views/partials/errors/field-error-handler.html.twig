@@ -1,0 +1,7 @@
+<div class="text-danger">
+    <ul>
+        {% for err in twigUtil.errorToArray(form_errors(field)) %}
+            <li>{{ localLang.forName(err) }}</li>
+        {% endfor %}
+    </ul>
+</div>

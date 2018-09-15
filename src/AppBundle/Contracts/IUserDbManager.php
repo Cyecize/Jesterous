@@ -9,6 +9,7 @@
 namespace AppBundle\Contracts;
 
 
+use AppBundle\BindingModel\ChangePasswordBindingModel;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Exception\IllegalArgumentException;
@@ -42,6 +43,13 @@ interface IUserDbManager
      */
 
     function removeFollower(User $target, User $celeb): void;
+
+    /**
+     * @param User $user
+     * @param ChangePasswordBindingModel $bindingModel
+     * @throws IllegalArgumentException
+     */
+    function changePassword(User $user, ChangePasswordBindingModel $bindingModel) : void ;
 
     /**
      * @param User $candidate

@@ -84,7 +84,7 @@ class ArticleController extends BaseController
 
         $errors = array();
         if ($form->isSubmitted()) {
-            $errors = $this->get('validator')->validate($articleBindingModel);
+            $errors = $this->validate($articleBindingModel);
             if (count($errors) > 0)
                 goto escape;
             $article = $this->articleService->createArticle($articleBindingModel, $this->getUser());
@@ -126,11 +126,11 @@ class ArticleController extends BaseController
         $form->handleRequest($request);
         $errors = array();
         if ($form->isSubmitted()) {
-            $errors = $this->get('validator')->validate($bindingModel);
+            $errors = $this->validate($bindingModel);
             if (count($errors) > 0)
                 goto escape;
             if ($bindingModel->getFile() != null) {
-                $errors = $this->get('validator')->validate(ImageBindingModel::imageOverload($bindingModel->getFile()));
+                $errors = $this->validate(ImageBindingModel::imageOverload($bindingModel->getFile()));
                 if (count($errors) > 0)
                     goto escape;
             }

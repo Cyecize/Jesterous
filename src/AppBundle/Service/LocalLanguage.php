@@ -98,7 +98,31 @@ class LocalLanguage implements ILanguagePack
     }
 
     //IMPLEMENTATIONS
+    function profile(): string
+    {
+        return $this->languagePack->profile();
+    }
 
+    function changePassword(): string
+    {
+        return $this->languagePack->changePassword();
+    }
+
+    function removeAccount(): string
+    {
+        return $this->languagePack->removeAccount();
+    }
+
+    function editSummary(): string
+    {
+        return $this->languagePack->editSummary();
+    }
+
+    function changeProfilePicture(): string
+    {
+        return $this->languagePack->changeProfilePicture();
+    }
+    
     public function fieldCannotBeEmpty(): string
     {
         return $this->languagePack->fieldCannotBeEmpty();
