@@ -141,8 +141,7 @@
             $(function () {
                 var viewQuoteBtn = $('.view-quote-btn');
                 var quoteModalContentDiv = $('#viewQuoteModalContent');
-                var modalManager = new ModalManager();
-                modalManager.initModal('viewQuoteModal', '');
+                var modalManager = new ModalManager('viewQuoteModal', '');
 
                 viewQuoteBtn.on('click', function () {
                     var quoteId = $(this).attr('quoteId');
@@ -178,8 +177,8 @@
                 var enQuote = $('#enQuote');
                 var form = $('#editQuoteForm');
 
-                var modalManager = new ModalManager();
-                modalManager.initModal('editQuoteModal', '');
+                var modalManager = new ModalManager('editQuoteModal', '');
+                //modalManager.initModal();
 
                 editQuoteBtn.on('click', function () {
                     var quoteId = $(this).attr('quoteId');

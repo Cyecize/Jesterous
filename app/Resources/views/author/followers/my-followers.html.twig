@@ -69,9 +69,8 @@
         $(function () {
             var modal = $('#sendMessageModal');
             var buttons = $('.message-follower-btn');
-            var modalManager = new ModalManager();
+            var modalManager = new ModalManager("sendMessageModal", "openModal");
             var userToNotifyField = $('#userToNotify');
-            modalManager.initModal("sendMessageModal", "openModal");
 
             buttons.on('click', function () {
                 var userId = $(this).attr('followerId');
