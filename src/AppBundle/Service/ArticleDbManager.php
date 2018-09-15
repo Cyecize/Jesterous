@@ -81,7 +81,10 @@ class ArticleDbManager implements IArticleDbManager
      */
     private $fileService;
 
-    public function __construct(EntityManagerInterface $em, IUserDbManager $userDbManager, ITagDbManager $tagDbManager, ModelMapper $modelMapper, ICategoryDbManager $categoryDbManager, LocalLanguage $localLanguage, IFileManager $fileManager)
+    public function __construct(EntityManagerInterface $em,
+                                IUserDbManager $userDbManager, ITagDbManager $tagDbManager,
+                                ModelMapper $modelMapper, ICategoryDbManager $categoryDbManager,
+                                LocalLanguage $localLanguage, IFileManager $fileManager)
     {
         $this->entityManager = $em;
         $this->articleRepo = $em->getRepository(Article::class);
@@ -116,6 +119,11 @@ class ArticleDbManager implements IArticleDbManager
         $this->entityManager->flush();
     }
 
+    /**
+     * @param int $id
+     * @param bool $hidden
+     * @return Article|null
+     */
     function findOneById(int $id, bool $hidden = false): ?Article
     {
         if ($hidden)
@@ -174,6 +182,10 @@ class ArticleDbManager implements IArticleDbManager
         return $article;
     }
 
+    /**
+     * @param bool $hidden
+     * @return Article[]
+     */
     function findAll(bool $hidden = false): array
     {
         if ($hidden)
@@ -224,7 +236,6 @@ class ArticleDbManager implements IArticleDbManager
     {
         $sliderViewModelArr = array();
         $articlesSize = count($articles);
-
 
         foreach ($articles as $index => $article) {
             $slide = null;
@@ -277,13 +288,6 @@ class ArticleDbManager implements IArticleDbManager
         return $this->articleRepo->findBy(array('isVisible' => true, 'category' => $categories), array('dateAdded' => "DESC"), self::MAX_ARTICLES_PER_PAGE, $offset);
     }
 
-    private function uploadFileToUser(UploadedFile $file, User $user): string
-    {
-        $pathToUser = sprintf(Config::USER_FILES_PATH_FORMAT, $user->getUsername());
-        $imageName = $this->fileService->uploadFile($file, $pathToUser);
-        return "/" . $pathToUser . $imageName;
-    }
-
     /**
      * @param string $searchText
      * @param Pageable $pageable
@@ -318,5 +322,13 @@ class ArticleDbManager implements IArticleDbManager
             ->setParameter('tag', $tag)
             ->orderBy('a.dailyViews', 'DESC');
         return new Page($query, $pageable);
+    }
+
+    //PRIVATE LOGIC
+    private function uploadFileToUser(UploadedFile $file, User $user): string
+    {
+        $pathToUser = sprintf(Config::USER_FILES_PATH_FORMAT, $user->getUsername());
+        $imageName = $this->fileService->uploadFile($file, $pathToUser);
+        return "/" . $pathToUser . $imageName;
     }
 }

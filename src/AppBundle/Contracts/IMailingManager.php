@@ -9,6 +9,7 @@
 namespace AppBundle\Contracts;
 
 
+use AppBundle\BindingModel\UserFeedbackBindingModel;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\User;
 
@@ -25,4 +26,9 @@ interface IMailingManager
      * @param Article $article
      */
     public function sendMessageForNewArticle( Article $article) : void ;
+
+    /**
+     * @param UserFeedbackBindingModel $bindingModel
+     */
+    public function sendFeedback(UserFeedbackBindingModel $bindingModel) : void ;
 }

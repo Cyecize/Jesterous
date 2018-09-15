@@ -103,12 +103,10 @@ class SecurityController extends BaseController
      * @param Request $request
      * @param LocalLanguage $language
      * @return \Symfony\Component\HttpFoundation\Response
+     * @Security("is_anonymous()", message="You are already logged in")
      */
     public function registerAction(Request $request, LocalLanguage $language)
     {
-        if ($this->isUserLogged())
-            return $this->redirectToRoute("homepage");
-
         $userRepo = $this->getDoctrine()->getRepository(User::class);
         $userBindingModel = new UserRegisterBindingModel();
 
@@ -171,7 +169,6 @@ class SecurityController extends BaseController
         ));
 
     }
-
 
     /**
      * This is the route the user can use to logout.

@@ -9,11 +9,13 @@
 namespace AppBundle\Service;
 
 
+use AppBundle\BindingModel\UserFeedbackBindingModel;
 use AppBundle\Constants\Roles;
 use AppBundle\Contracts\IGlobalSubscriberDbManager;
 use AppBundle\Contracts\ILogDbManager;
 use AppBundle\Contracts\IMailingManager;
 use AppBundle\Contracts\IMailSenderManager;
+use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\User;
 
@@ -22,6 +24,8 @@ class MailingManager implements IMailingManager
     private const LOGGER_LOCATION = "Mailing Manager";
     private const ADMIN_SENT_MESSAGE_FORMAT = "Admin %s sent message to %s subs";
     private const AUTHOR_SENT_MESSAGE_FORMAT = "Author %s sent message to %s subs";
+    private const FEEDBACK_SENT_FORMAT = "Person %s with email %s sent feedback to %d admins";
+    private const FEEDBACK_SUBJECT = "Someone is asking something";
 
     /**
      * @var IMailSenderManager
@@ -49,19 +53,29 @@ class MailingManager implements IMailingManager
     private $language;
 
     /**
+     * @var IUserDbManager
+     */
+    private $userService;
+
+    /**
      * MailingManager constructor.
      * @param IMailSenderManager $mailerService
      * @param IGlobalSubscriberDbManager $subscriberService
      * @param ILogDbManager $logDb
      * @param \Twig_Environment $twig_Environment
+     * @param LocalLanguage $localLanguage
+     * @param IUserDbManager $userDbManager
      */
-    public function __construct(IMailSenderManager $mailerService, IGlobalSubscriberDbManager $subscriberService, ILogDbManager $logDb, \Twig_Environment $twig_Environment, LocalLanguage $localLanguage)
+    public function __construct(
+        IMailSenderManager $mailerService, IGlobalSubscriberDbManager $subscriberService, ILogDbManager $logDb,
+        \Twig_Environment $twig_Environment, LocalLanguage $localLanguage, IUserDbManager $userDbManager)
     {
         $this->mailerService = $mailerService;
         $this->subscriberService = $subscriberService;
         $this->logger = $logDb;
         $this->twig = $twig_Environment;
         $this->language = $localLanguage;
+        $this->userService = $userDbManager;
     }
 
     public function sendMessageToSubscribers(User $admin, string $subject, string $message): void
@@ -96,5 +110,15 @@ class MailingManager implements IMailingManager
         }
     }
 
-
+    public function sendFeedback(UserFeedbackBindingModel $bindingModel): void
+    {
+        $admins = $this->userService->findByRole(Roles::ROLE_ADMIN);
+        $this->logger->log(self::LOGGER_LOCATION, sprintf(self::FEEDBACK_SENT_FORMAT, $bindingModel->getName(), $bindingModel->getEmail(), count($admins)));
+        $html = $this->twig->render('mail/feedback-admin-form.html.twig',[
+           'sender'=>$bindingModel
+        ]);
+        foreach ($admins as $admin) {
+            $this->mailerService->sendHtml(self::FEEDBACK_SUBJECT, $html, $admin->getEmail());
+        }
+    }
 }

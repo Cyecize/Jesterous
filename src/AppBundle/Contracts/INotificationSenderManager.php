@@ -9,6 +9,7 @@
 namespace AppBundle\Contracts;
 
 
+use AppBundle\BindingModel\UserFeedbackBindingModel;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\User;
 use AppBundle\Exception\IllegalArgumentException;
@@ -45,4 +46,9 @@ interface INotificationSenderManager
      * @param string $href
      */
     public function notifyAll(string $message, string $href): void;
+
+    /**
+     * @param UserFeedbackBindingModel $bindingModel
+     */
+    public function onFeedback(UserFeedbackBindingModel $bindingModel) : void ;
 }

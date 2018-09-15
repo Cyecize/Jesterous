@@ -99,6 +99,16 @@ class LocalLanguage implements ILanguagePack
 
     //IMPLEMENTATIONS
 
+    public function fieldCannotBeEmpty(): string
+    {
+        return $this->languagePack->fieldCannotBeEmpty();
+    }
+
+    public function messageWasSent(): string
+    {
+        return $this->languagePack->messageWasSent();
+    }
+
     public function successfullyUnsubscribed(): string
     {
         return $this->languagePack->successfullyUnsubscribed();

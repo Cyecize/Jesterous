@@ -105,6 +105,20 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const SUCCESSFULLY_UNSUBBED = "Successfully unsubscribed";
 
+    public const MESSAGE_SENT = "Message was sent";
+
+    public const FIELD_IS_EMPTY = "Field is empty";
+
+    function fieldCannotBeEmpty(): string
+    {
+        return self::FIELD_IS_EMPTY;
+    }
+
+    function messageWasSent(): string
+    {
+        return self::MESSAGE_SENT;
+    }
+
     public function successfullyUnsubscribed(): string
     {
         return self::SUCCESSFULLY_UNSUBBED;

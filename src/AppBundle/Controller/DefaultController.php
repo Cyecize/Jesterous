@@ -2,8 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\BindingModel\UserFeedbackBindingModel;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
+use AppBundle\Contracts\IMailingManager;
+use AppBundle\Contracts\INotificationSenderManager;
+use AppBundle\Entity\User;
+use AppBundle\Form\FeedbackType;
 use AppBundle\Service\LocalLanguage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,11 +25,24 @@ class DefaultController extends BaseController
      */
     private $categoryService;
 
-    public function __construct(LocalLanguage $language, ICategoryDbManager $categoryDbManager, IArticleDbManager $articleDb)
+    /**
+     * @var IMailingManager
+     */
+    private $mailingService;
+
+    /**
+     * @var INotificationSenderManager
+     */
+    private $notificationSenderService;
+
+
+    public function __construct(LocalLanguage $language, ICategoryDbManager $categoryDbManager, IArticleDbManager $articleDb, IMailingManager $mailing, INotificationSenderManager $notificationSender)
     {
         parent::__construct($language);
         $this->articleService = $articleDb;
         $this->categoryService = $categoryDbManager;
+        $this->mailingService = $mailing;
+        $this->notificationSenderService = $notificationSender;
     }
 
     /**
@@ -54,11 +72,33 @@ class DefaultController extends BaseController
 
     /**
      * @Route("/contacts", name="contacts_page")
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \AppBundle\Exception\RestFriendlyExceptionImpl
      */
-    public function contactsAction()
+    public function contactsAction(Request $request)
     {
-        return $this->render("default/contacts.html.twig", array());
+        $info = null;
+        $bindingModel = new UserFeedbackBindingModel();
+        $form = $this->createForm(FeedbackType::class, $bindingModel);
+        $form->handleRequest($request);
+
+        if($form->isSubmitted()){
+            $this->validateToken($request);
+            if(count($this->get('validator')->validate($bindingModel)) > 0)
+                goto escape;
+            $this->notificationSenderService->onFeedback($bindingModel);
+            $this->mailingService->sendFeedback($bindingModel);
+            $info = $this->language->messageWasSent();
+            $bindingModel = new UserFeedbackBindingModel();
+        }
+
+        escape:
+        return $this->render("default/contacts.html.twig", array(
+            'form1'=>$form->createView(),
+            'bindingModel'=>$bindingModel,
+            'info'=>$info
+        ));
     }
 
 }

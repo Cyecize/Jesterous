@@ -115,13 +115,17 @@ interface ILanguagePack
 
     function remove(): string;
 
-    function noNotifications() : string ;
+    function noNotifications(): string;
 
-    function viewFullScreen() : string ;
+    function viewFullScreen(): string;
 
-    function removeAll() : string ;
+    function removeAll(): string;
 
-    function newArticleFormat() : string ;
+    function newArticleFormat(): string;
 
-    function successfullyUnsubscribed() : string ;
+    function successfullyUnsubscribed(): string;
+
+    function fieldCannotBeEmpty(): string;
+
+    function messageWasSent() : string ;
 }

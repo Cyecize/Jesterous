@@ -105,6 +105,20 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const SUCCESSFULLY_UNSUBBED = "Успешно се отписахте.";
 
+    public const MESSAGE_SENT = "Запитването беше изпратено";
+
+    public const FIELD_IS_EMPTY = "Полето е празно";
+
+    function fieldCannotBeEmpty(): string
+    {
+        return self::FIELD_IS_EMPTY;
+    }
+
+    function messageWasSent(): string
+    {
+      return self::MESSAGE_SENT;
+    }
+
     public function successfullyUnsubscribed(): string
     {
       return self::SUCCESSFULLY_UNSUBBED;

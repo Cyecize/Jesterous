@@ -55,3 +55,4 @@ twig:
   globals:
         twigInformer: '@AppBundle\Service\TwigInformer'
         localLang: '@AppBundle\Service\LocalLanguage'
+        twigUtil: '@AppBundle\Util\TwigUtil'

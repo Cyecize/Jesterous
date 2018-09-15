@@ -11,6 +11,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
+use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Exception\CategoryNotFoundException;
 use AppBundle\Service\LocalLanguage;
@@ -22,7 +23,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class SearchController extends BaseController
 {
-
     /**
      * @var IArticleDbManager
      */
@@ -33,13 +33,18 @@ class SearchController extends BaseController
      */
     private $categoryService;
 
-    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager)
+    /**
+     * @var IUserDbManager
+     */
+    private $userService;
+
+    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager, IUserDbManager $userDbManager)
     {
         parent::__construct($language);
         $this->articleService = $articleDbManager;
         $this->categoryService = $categoryDbManager;
+        $this->userService = $userDbManager;
     }
-
 
     /**
      * @Route("/search", name="search_everyone")
@@ -51,6 +56,9 @@ class SearchController extends BaseController
         $searchQuery = $request->get('q');
         if ($searchQuery == null) $searchQuery = "";
 
+        $user = $this->userService->findOneByUsername($searchQuery);
+        if($user != null)
+            return $this->redirectToRoute('user_details', ['username'=>$user->getUsername()]);
         $category = $this->searchCategory($searchQuery);
         if ($category != null)
             return $this->redirectToRoute('category_details', ['catName' => $category->getCategoryName()]);
@@ -61,7 +69,6 @@ class SearchController extends BaseController
             'page' => $this->articleService->search($searchQuery,$pageable),
         ]);
     }
-
 
     private function searchCategory(string $name): ?ArticleCategory
     {

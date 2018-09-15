@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    {% embed 'partials/banner.html.twig' with {'bannerTitle':"Page not found!"} %} {% endembed %}
+
+    <!-- Page Content -->
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+                <!-- Main Content -->
+
+                <div class="col-lg-9">
+                    <div class="main_content mt-2">
+                        {% embed 'partials/lang/'  ~ localLang.getLocalLang ~ '/not-found-partial.html.twig'%} {% endembed %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
+{% endblock %}

@@ -11,13 +11,52 @@
                         <!-- Post Comment -->
                         <div class="post_comment">
                             <div class="contact_form_container">
-                                <form action="#">
-                                    <input type="text" class="contact_input contact_input_name" placeholder="{{ localLang.yourName }}"
-                                           required="required">
-                                    <input type="email" class="contact_input contact_input_email"
-                                           placeholder="{{ localLang.yourEmail }}" required="required">
-                                    <textarea class="contact_text" placeholder="{{ localLang.yourMessage }}"
-                                              required="required"></textarea>
+                                {% if info %}
+                                    <h2 class="text-success">{{ info }}</h2>
+                                {% endif %}
+                                <form method="post">
+                                    <div class="row">
+                                        <div class="form-group col-md-6">
+                                            <input name="feedback[name]" type="text"
+                                                   class="contact_input "
+                                                   placeholder="{{ localLang.yourName }}"
+                                                    {% if app.user %} value="{{ app.user.username }}" {% else %}
+                                                   value="{{ bindingModel.name }}" {% endif %}required="required">
+                                            <div class="text-danger">
+                                                <ul>
+                                                    {% for err in twigUtil.errorToArray(form_errors(form1.name)) %}
+                                                        <li>{{ localLang.forName(err) }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-6">
+                                            <input name="feedback[email]" type="email"
+                                                   class="contact_input "
+                                                   placeholder="{{ localLang.yourEmail }}" required="required"
+                                                    {% if app.user %} value="{{ app.user.email }}" {% else %} value="{{ bindingModel.email }}" {% endif %}>
+                                            <div class="text-danger">
+                                                <ul>
+                                                    {% for err in twigUtil.errorToArray(form_errors(form1.email)) %}
+                                                        <li>{{ localLang.forName(err) }}</li>
+                                                    {% endfor %}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                         <textarea name="feedback[message]" class="contact_text"
+                                                   placeholder="{{ localLang.yourMessage }}"
+                                                   required="required">{{ bindingModel.message }}</textarea>
+                                        <div class="text-danger">
+                                            <ul>
+                                                {% for err in twigUtil.errorToArray(form_errors(form1.message)) %}
+                                                    <li>{{ localLang.forName(err) }}</li>
+                                                {% endfor %}
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <input type="hidden" name="token" value="{{ csrf_token('token') }}" required>
                                     <button type="submit" class="contact_button">{{ localLang.sendMessage }}</button>
                                 </form>
                             </div>
