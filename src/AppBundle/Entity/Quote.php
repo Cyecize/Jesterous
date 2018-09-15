@@ -68,7 +68,7 @@ class Quote
 
     public function __construct()
     {
-        $this->isVisible = false;
+        $this->isVisible = true;
         $this->likes = new ArrayCollection();
     }
 

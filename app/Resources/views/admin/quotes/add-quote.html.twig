@@ -1,0 +1,60 @@
+{% extends 'admin/panel.html.twig' %}
+{% block title %}Add new quote{% endblock %}
+{% block sectionBody %}
+    <h2 class="text-dark">New Quote</h2>
+    <hr>
+    <div class="container">
+        <form method="post">
+            <div class="form-group">
+                <label for="authorBg">Bg Author Name</label>
+                <input type="text" required class="form-control" id="authorBg" name="quote[bgAuthorName]"
+                       value="{{ bindingModel.bgAuthorName }}">
+                <div class="text-danger">
+                    <ul>
+                        {% for err in twigUtil.errorToArray(form_errors(form1.bgAuthorName)) %}
+                            <li>{{ localLang.forName(err) }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="authorEn">En Author Name</label>
+                <input type="text" required class="form-control" id="authorEn" name="quote[enAuthorName]"
+                       value="{{ bindingModel.enAuthorName }}">
+                <div class="text-danger">
+                    <ul>
+                        {% for err in twigUtil.errorToArray(form_errors(form1.enAuthorName)) %}
+                            <li>{{ localLang.forName(err) }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="bgQuote">Bg Quote</label>
+                <textarea type="text" required class="form-control" id="bgQuote"
+                          name="quote[bgQuote]">{{ bindingModel.bgQuote }}</textarea>
+                <div class="text-danger">
+                    <ul>
+                        {% for err in twigUtil.errorToArray(form_errors(form1.bgQuote)) %}
+                            <li>{{ localLang.forName(err) }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="enQuote">En Quote</label>
+                <textarea type="text" required class="form-control" id="enQuote"
+                          name="quote[enQuote]">{{ bindingModel.enQuote }}</textarea>
+                <div class="text-danger">
+                    <ul>
+                        {% for err in twigUtil.errorToArray(form_errors(form1.enQuote)) %}
+                            <li>{{ localLang.forName(err) }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+            <input type="hidden" name="token" value="{{ csrf_token('token') }}" required>
+            <button type="submit" class="btn btn-outline-dark">Create Quote</button>
+        </form>
+    </div>
+{% endblock %}

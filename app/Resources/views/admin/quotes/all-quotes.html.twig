@@ -1,0 +1,210 @@
+{% extends 'admin/panel.html.twig' %}
+{% block sectionBody %}
+    <h2 class="text-dark">All Quotes</h2>
+    <hr>
+    <div class="container">
+        <table class="table">
+            <thead class="rounded bg-dark p-0 text-light">
+            <tr>
+                <th scope="row">
+                    Id
+                </th>
+                <th scope="row">
+                    Author
+                </th>
+                <th scope="row">
+                    Likes
+                </th>
+                <th scope="row">
+
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for quote in quotes %}
+                {#<hr>#}
+                <tr>
+                    <th>
+                        <p style="cursor: pointer;" class="text-dark view-quote-btn"
+                           quoteId="{{ quote.id }}">{{ quote.id }}</p>
+                    </th>
+                    <td>
+                        {{ quote.enAuthorName }}
+                    </td>
+                    <td>
+                        {{ quote.likes|length }}
+                    </td>
+                    <td class="text-right">
+                        <button type="button" quoteId="{{ quote.id }}"
+                                class="btn btn-success btn-outline-primary edit-quote-btn">Edit
+                        </button>
+                        <button type="button" quoteId="{{ quote.id }}"
+                                class="btn btn-success btn-outline-success {% if quote.isVisible %} btn-hide-quote active{% else %} btn-show-quote {% endif %}">
+                            Visible
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div id="viewQuoteModal" class="modal-container">
+            <div class="modal-content">
+                <div class="text-right">
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div id="viewQuoteModalContent">
+
+                </div>
+            </div>
+        </div>
+        <div id="editQuoteModal" class="modal-container">
+            <div class="modal-content">
+                <div class="text-right">
+                    <span class="close-modal">&times;</span>
+                </div>
+                <div>
+                    <form method="post" id="editQuoteForm">
+                        <div class="form-group">
+                            <label for="authorBg">Bg Author Name</label>
+                            <input type="text" required class="form-control" id="authorBg" name="quote[bgAuthorName]">
+                        </div>
+                        <div class="form-group">
+                            <label for="authorEn">En Author Name</label>
+                            <input type="text" required class="form-control" id="authorEn" name="quote[enAuthorName]">
+                        </div>
+                        <div class="form-group">
+                            <label for="bgQuote">Bg Quote</label>
+                            <textarea type="text" required class="form-control" id="bgQuote"
+                                      name="quote[bgQuote]"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="enQuote">En Quote</label>
+                            <textarea type="text" required class="form-control" id="enQuote"
+                                      name="quote[enQuote]"></textarea>
+                        </div>
+                        <input type="hidden" name="token" value="{{ csrf_token('token') }}" required>
+                        <button type="submit" class="btn btn-outline-dark">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sectionStyles %}
+    <link type="text/css" rel="stylesheet" href="{{ asset('styles/styles/modal.css') }}">
+{% endblock %}
+
+{% block sectionScripts %}
+    <script src="{{ asset('styles/js/modal.js') }}"></script>
+    <script>
+        function showOrHideQuotes() {
+            $(function () {
+                var hideQuoteBtn = $('.btn-hide-quote');
+                var showQuoteBtn = $('.btn-show-quote');
+
+                var hideUrl = '{{ path('hide_quote') }}';
+                var showUrl = '{{ path('show_quote') }}';
+
+                function getBtnProps(btn) {
+                    btn = $(btn);
+                    return {
+                        quoteId: btn.attr('quoteId'),
+                    };
+                }
+
+                function ajaxCall(url, props) {
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        data: {token: CSRF_TOKEN, quoteId: props['quoteId']},
+                        success: function () {
+                            location.reload();
+                        },
+                        error: function (err) {
+                            alert(err['responseJSON']['message']);
+                        }
+                    });
+                }
+
+                hideQuoteBtn.on('click', function () {
+                    ajaxCall(hideUrl, getBtnProps(this));
+                });
+
+                showQuoteBtn.on('click', function () {
+                    ajaxCall(showUrl, getBtnProps(this));
+                });
+            });
+        }
+
+        function viewQuote() {
+            $(function () {
+                var viewQuoteBtn = $('.view-quote-btn');
+                var quoteModalContentDiv = $('#viewQuoteModalContent');
+                var modalManager = new ModalManager();
+                modalManager.initModal('viewQuoteModal', '');
+
+                viewQuoteBtn.on('click', function () {
+                    var quoteId = $(this).attr('quoteId');
+                    var url = "/admin/quotes/view/" + quoteId;
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        success: function (data) {
+                            var html = '';
+                            html += '<p>Bg Author: ' + data['authorBg'] + '</p>';
+                            html += '<p>En Author: ' + data['authorEn'] + '</p>';
+                            html += '<p>Bg Quote: ' + data['quoteBg'] + '</p>';
+                            html += '<p>En Quote: ' + data['quoteEn'] + '</p>';
+                            quoteModalContentDiv.html(html);
+                            modalManager.showModal();
+                        },
+                        error: console.error
+                    })
+                });
+
+            });
+        }
+
+        function editQuote() {
+            $(function () {
+                var baseEditUrl = "/admin/quotes/edit/";
+                var baseQuoteViewUrl = "/admin/quotes/view/";
+                var editQuoteBtn = $('.edit-quote-btn');
+
+                var bgAuthor = $('#authorBg');
+                var enAuthor = $('#authorEn');
+                var bgQuote = $('#bgQuote');
+                var enQuote = $('#enQuote');
+                var form = $('#editQuoteForm');
+
+                var modalManager = new ModalManager();
+                modalManager.initModal('editQuoteModal', '');
+
+                editQuoteBtn.on('click', function () {
+                    var quoteId = $(this).attr('quoteId');
+                    var url = baseQuoteViewUrl + quoteId;
+
+                    $.ajax({
+                        type: "POST",
+                        url: url,
+                        success: function (data) {
+                            form.attr('action', baseEditUrl + quoteId);
+                            bgAuthor.val(data['authorBg']);
+                            enAuthor.val(data['authorEn']);
+                            bgQuote.val(data['quoteBg']);
+                            enQuote.val(data['quoteEn']);
+                            modalManager.showModal();
+                        },
+                        error: console.error
+                    })
+                });
+
+            });
+        }
+
+        showOrHideQuotes();
+        viewQuote();
+        editQuote();
+    </script>
+{% endblock %}

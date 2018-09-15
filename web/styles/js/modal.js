@@ -1,6 +1,6 @@
 var ModalManager = (function () {
 
-    var modal;
+    let modal;
 
     var openBtn;
 
@@ -32,6 +32,11 @@ var ModalManager = (function () {
                 hideModal();
             }
         };
+
+        window.onkeypress = function (event) {
+            if(event.keyCode == 27)
+                hideModal();
+        }
     }
 
     return {initModal: initModal, showModal: showModal, hideModal: hideModal};
