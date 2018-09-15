@@ -8,8 +8,6 @@
 
 namespace AppBundle\Service;
 
-
-use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\BindingModel\CreateArticleBindingModel;
 use AppBundle\BindingModel\EditArticleBindingModel;
 use AppBundle\Constants\Config;
@@ -20,12 +18,9 @@ use AppBundle\Contracts\ITagDbManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
-use AppBundle\Entity\Comment;
 use AppBundle\Entity\Tag;
 use AppBundle\Entity\User;
-use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Exception\CategoryNotFoundException;
-use AppBundle\Exception\CommentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Util\ModelMapper;
 use AppBundle\Util\Page;
@@ -33,8 +28,6 @@ use AppBundle\Util\Pageable;
 use AppBundle\ViewModel\SliderArticlesViewModel;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Tools\Pagination\Paginator;
-use function PHPSTORM_META\elementType;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class ArticleDbManager implements IArticleDbManager
@@ -149,7 +142,7 @@ class ArticleDbManager implements IArticleDbManager
         foreach ($tags as $tag) $article->addTag($tag);
         $article->setAuthor($this->userDbManager->findOneById($author->getId()));
         $article->setCategory($category);
-        $article->setBackgroundImageLink($this->uploadFileToUser($bindingModel->getFile(), $author));
+        $article->setBackgroundImageLink($this->fileService->uploadFileToUser($bindingModel->getFile(), $author));
         $article->setIsVisible($bindingModel->getisVisible());
         $this->entityManager->persist($article);
         $this->entityManager->flush();
@@ -176,7 +169,7 @@ class ArticleDbManager implements IArticleDbManager
         $article->setIsVisible($bindingModel->isVisible());
         if ($file != null) {
             $this->fileService->removeFile(substr($article->getBackgroundImageLink(), 1));
-            $article->setBackgroundImageLink($this->uploadFileToUser($bindingModel->getFile(), $article->getAuthor()));
+            $article->setBackgroundImageLink($this->fileService->uploadFileToUser($bindingModel->getFile(), $article->getAuthor()));
         }
         $this->saveArticle($article);
         return $article;
@@ -324,11 +317,4 @@ class ArticleDbManager implements IArticleDbManager
         return new Page($query, $pageable);
     }
 
-    //PRIVATE LOGIC
-    private function uploadFileToUser(UploadedFile $file, User $user): string
-    {
-        $pathToUser = sprintf(Config::USER_FILES_PATH_FORMAT, $user->getUsername());
-        $imageName = $this->fileService->uploadFile($file, $pathToUser);
-        return "/" . $pathToUser . $imageName;
-    }
 }

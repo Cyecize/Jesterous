@@ -1,0 +1,17 @@
+{% extends 'user/panel.html.twig' %}
+{% block title %}{{ localLang.removeAccount }}{% endblock %}
+
+{% block sectionBody %}
+    <h2 class="text-dark">{{ localLang.removeAccount }}</h2>
+    <hr>
+    <div class="container row">
+        <form method="post">
+            <h2 class="text-info">Removing your account cannot be reverted! It will remove all your images +
+                articles!</h2>
+            <h2 class="text-info">След като изтриете вашия профил, той няма да може да се възтанови! Ще се премахнат
+                вашите снимки и публикации!</h2>
+            <input type="hidden" value="{{ csrf_token('token') }}" name="token">
+            <button type="submit" class="btn btn-danger">Remove Account / Изтриване на Профил</button>
+        </form>
+    </div>
+{% endblock %}

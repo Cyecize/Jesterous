@@ -13,6 +13,7 @@ use AppBundle\Exception\CategoryNotFoundException;
 use AppBundle\Exception\InternalServerException;
 use AppBundle\Exception\NotFoundException;
 use AppBundle\Exception\RestFriendlyException;
+use Symfony\Component\Debug\Exception\FatalThrowableError;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
@@ -42,6 +43,15 @@ class ExceptionsListener
             ]));
             $event->setResponse($response);
         }
+
+//        if($exception instanceof FatalThrowableError){
+//            $response = new Response();
+//            $response->setContent($this->twig->render("exceptions/error500.html.twig", [
+//                'exception'=>$exception
+//            ]));
+//            $event->setResponse($response);
+//        }
+        //TODO uncomment this when the time comes
 
         if ($exception instanceof InternalServerException) {
             $response = new Response();

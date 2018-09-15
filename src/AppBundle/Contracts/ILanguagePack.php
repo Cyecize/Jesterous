@@ -138,4 +138,6 @@ interface ILanguagePack
     function editSummary(): string;
 
     function changeProfilePicture(): string;
+
+    function commentMessageFormat() : string ;
 }

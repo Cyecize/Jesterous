@@ -10,7 +10,11 @@ namespace AppBundle\Service;
 
 
 use AppBundle\BindingModel\ChangePasswordBindingModel;
+use AppBundle\BindingModel\ImageBindingModel;
+use AppBundle\Constants\Config;
 use AppBundle\Constants\Roles;
+use AppBundle\Contracts\IFileManager;
+use AppBundle\Contracts\ILogDbManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
@@ -21,6 +25,9 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class UserDbManager implements IUserDbManager
 {
+    private const LOGGER_LOCATION = "User Db Manager";
+    protected const LOGGER_REMOVE_ACCOUNT_MESSAGE_FORMAT = "User %s is removing his account, directory %s should be gone!";
+
     private const USER_ALREADY_FOLLOWED = "User already followed";
     private const USER_ALREADY_UNFOLLOWED = "User already unfollowed";
     private const CANNOT_ALTER_ADMIN = "Cannot remove admin privileges!";
@@ -42,11 +49,29 @@ class UserDbManager implements IUserDbManager
      */
     private $passwordEncoder;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder)
+    /**
+     * @var IFileManager
+     */
+    private $fileService;
+
+    /**
+     * @var ILogDbManager
+     */
+    private $logService;
+
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, IFileManager $fileManager, ILogDbManager $logDb)
     {
         $this->entityManager = $em;
         $this->userRepo = $em->getRepository(User::class);
         $this->passwordEncoder = $passwordEncoder;
+        $this->fileService = $fileManager;
+        $this->logService = $logDb;
+    }
+
+    function save(User $user): void
+    {
+        $this->entityManager->merge($user);
+        $this->entityManager->flush();
     }
 
     function removeRole(User $user, Role $role): void
@@ -105,6 +130,24 @@ class UserDbManager implements IUserDbManager
         $this->entityManager->flush();
     }
 
+    public function changeProfilePicture(User $user, ImageBindingModel $bindingModel): void
+    {
+        if ($user->getProfileImage() != null)
+            $this->fileService->removeFile(substr($user->getProfileImage(), 1));
+        $user->setProfileImage($this->fileService->uploadFileToUser($bindingModel->getFile(), $user));
+        $this->entityManager->merge($user);
+        $this->entityManager->flush();
+    }
+
+    public function removeAccount(User $user): void
+    {
+        $dir = sprintf(Config::USER_FILES_PATH_FORMAT, $user->getUsername());
+        $this->logService->log(self::LOGGER_LOCATION, sprintf(self::LOGGER_REMOVE_ACCOUNT_MESSAGE_FORMAT, $user->getUsername(), $dir));
+        $this->fileService->removeDirectory($dir);
+        $this->entityManager->remove($user);
+        $this->entityManager->flush();
+    }
+
     /**
      * @param User $candidate
      * @param User $celebrity
@@ -154,10 +197,4 @@ class UserDbManager implements IUserDbManager
         return $this->userRepo->findByRoleName($role);
     }
 
-    //PRIVATE
-    private function save(User $user): void
-    {
-        $this->entityManager->merge($user);
-        $this->entityManager->flush();
-    }
 }

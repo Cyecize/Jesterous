@@ -98,6 +98,11 @@ class LocalLanguage implements ILanguagePack
     }
 
     //IMPLEMENTATIONS
+    public function commentMessageFormat(): string
+    {
+        return $this->languagePack->commentMessageFormat();
+    }
+
     function profile(): string
     {
         return $this->languagePack->profile();

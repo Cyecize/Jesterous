@@ -89,7 +89,7 @@ class Article
     /**
      * @var User
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", fetch="EAGER")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $author;
 

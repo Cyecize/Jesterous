@@ -31,3 +31,23 @@ Front end
 Framework
 	
 	* Symfony framework 3.4 with php7.2
+	
+
+Want to run the app?
+---------------------
+	
+Steps: 
+	
+	* Git pull
+	
+	* php (7.1.9 at least) composer.phar install
+	
+	* set up proper smpt settings
+	
+	* doctrine:schema:update --force
+	
+	* When you open the website, the db will be completely empty. 
+	
+	* Register the first account and that will trigger the first run service, which will create the initial roles, categories, languages and such..
+	
+	* Ready to go!

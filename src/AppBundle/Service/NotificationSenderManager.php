@@ -111,4 +111,9 @@ class NotificationSenderManager implements INotificationSenderManager
             $this->notificationDbService->sendNotification($admin, sprintf(self::ON_FEEDBACK_FORMAT, $bindingModel->getName(), $bindingModel->getEmail()), "#");
         }
     }
+
+    public function onComment(User $target, User $commenter, string $href): void
+    {
+        $this->notificationDbService->sendNotification($target, sprintf($this->lang->commentMessageFormat(), $commenter->getUsername()),  $href);
+    }
 }

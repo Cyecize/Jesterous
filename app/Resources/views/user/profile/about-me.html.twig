@@ -1,0 +1,17 @@
+{% extends 'user/panel.html.twig' %}
+{% block title %}{{ localLang.editSummary }}{% endblock %}
+
+{% block sectionBody %}
+    <h2 class="text-dark">{{ localLang.editSummary }}</h2>
+    <hr>
+    <div class="container">
+        <div class="col-md-6">
+            <form method="post">
+                <input name="token" type="hidden" value="{{ csrf_token('token') }}">
+                <textarea maxlength="999" rows="10" class="form-control" name="summary" required>{{ app.user.userDescription }}</textarea>
+                <br/>
+                <button type="submit" class="btn btn-outline-dark">{{ localLang.editSummary }}</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

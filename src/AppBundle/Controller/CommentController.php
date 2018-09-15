@@ -13,6 +13,7 @@ use AppBundle\Contracts\IArticleCategoryDbManager;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Contracts\ICommentDbManager;
+use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\Comment;
 use AppBundle\Exception\ArticleNotFoundException;

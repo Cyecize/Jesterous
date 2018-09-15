@@ -18,7 +18,7 @@ class ImageBindingModel
      * @Assert\NotNull(message="Select image")
      * @Assert\File(
      *     maxSize="2M", maxSizeMessage="File size more than 2M",
-     *     mimeTypes={"image/png", "mage/jpg", "image/jpeg"},
+     *     mimeTypes={"image/png", "image/jpg", "image/jpeg"},
      *     mimeTypesMessage="Please upload a valid jpg"
      * )
      */

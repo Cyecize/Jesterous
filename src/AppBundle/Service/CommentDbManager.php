@@ -12,6 +12,7 @@ namespace AppBundle\Service;
 use AppBundle\BindingModel\CommentBindingModel;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICommentDbManager;
+use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Entity\Comment;
 use AppBundle\Entity\User;
 use AppBundle\Exception\CommentException;
@@ -32,7 +33,7 @@ class CommentDbManager implements ICommentDbManager
     /**
      * @var IArticleDbManager
      */
-    private  $articleService;
+    private $articleService;
 
     /**
      * @var ModelMapper
@@ -44,12 +45,18 @@ class CommentDbManager implements ICommentDbManager
      */
     private $commentRepo;
 
-    public function __construct(EntityManagerInterface $em, IArticleDbManager $articleDb, ModelMapper $modelMapper)
+    /**
+     * @var INotificationSenderManager
+     */
+    private $notificationService;
+
+    public function __construct(EntityManagerInterface $em, IArticleDbManager $articleDb, ModelMapper $modelMapper, INotificationSenderManager $notificationSender)
     {
         $this->entityManager = $em;
         $this->articleService = $articleDb;
         $this->modelMapper = $modelMapper;
         $this->commentRepo = $em->getRepository(Comment::class);
+        $this->notificationService = $notificationSender;
     }
 
     /**
@@ -71,6 +78,11 @@ class CommentDbManager implements ICommentDbManager
 
         $this->entityManager->persist($comment);
         $this->entityManager->flush();
+        if ($user == null) {
+            $user = new User();
+            $user->setUsername($bindingModel->getCommenterName());
+        }
+        $this->notificationService->onComment($article->getAuthor(), $user, trim($bindingModel->getRedirect()));
     }
 
     /**
@@ -90,6 +102,8 @@ class CommentDbManager implements ICommentDbManager
 
         $this->entityManager->persist($reply);
         $this->entityManager->flush();
+        if ($parentComment->getUser() != null)
+            $this->notificationService->onComment($parentComment->getUser(), $user, trim($bindingModel->getRedirect()));
     }
 
     /**

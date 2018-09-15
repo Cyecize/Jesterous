@@ -10,15 +10,19 @@ namespace AppBundle\Controller;
 
 
 use AppBundle\BindingModel\ChangePasswordBindingModel;
+use AppBundle\BindingModel\ImageBindingModel;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Exception\IllegalArgumentException;
 use AppBundle\Exception\UserNotFoundException;
 use AppBundle\Form\EditPasswordType;
+use AppBundle\Form\ImageType;
 use AppBundle\Service\LocalLanguage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
 
 class UserController extends BaseController
 {
@@ -100,6 +104,80 @@ class UserController extends BaseController
         return $this->render('user/profile/change-password.html.twig', [
             'error' => $request->get('error'),
             'form1' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/users/profile-picture", name="change_profile_picture")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \AppBundle\Exception\RestFriendlyExceptionImpl
+     */
+    public function changeProfileImageAction(Request $request)
+    {
+
+        $bindingModel = new ImageBindingModel();
+        $form = $this->createForm(ImageType::class, $bindingModel);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            $this->validateToken($request);
+            if (count($this->validate($bindingModel)) > 0)
+                goto  escape;
+            $this->userService->changeProfilePicture($this->userService->findOneById($this->getUser()->getId()), $bindingModel);
+            return $this->redirectToRoute('user_panel');
+        }
+
+        escape:
+        return $this->render('user/profile/change-profile-image.html.twig', [
+            'form1' => $form->createView(),
+        ]);
+    }
+
+    /**
+     * @Route("/users/profile/destroy", name="destroy_profile")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws IllegalArgumentException
+     * @throws \AppBundle\Exception\RestFriendlyExceptionImpl
+     */
+    public function removeProfileAction(Request $request)
+    {
+        if ($request->getMethod() == "POST") {
+            $userId = $this->getUser()->getId();
+            $this->validateToken($request);
+            $this->get('security.token_storage')->setToken(null);
+            $this->get('session')->invalidate();
+            $this->userService->removeAccount($this->userService->findOneById($userId));
+            return $this->redirectToRoute('homepage');
+        }
+        return $this->render('user/profile/remove-profile.html.twig', []);
+    }
+
+    /**
+     * @Route("/users/about-me/edit", name="edit_summary")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \AppBundle\Exception\RestFriendlyExceptionImpl
+     */
+    public function aboutMeAction(Request $request) {
+
+        if($request->getMethod() == "POST"){
+            $this->validateToken($request);
+            $summary = $request->get('summary');
+            if($summary == null || strlen($summary) > 1000)
+                return $this->redirectToRoute('edit_summary', ['error'=>$this->language->fieldCannotBeEmpty()]);
+            $user = $this->userService->findOneById($this->getUser()->getId());
+            $user->setUserDescription($summary);
+            $this->userService->save($user);
+            return $this->redirectToRoute('user_panel');
+        }
+
+        return $this->render('user/profile/about-me.html.twig', [
+            'error'=>$request->get('error'),
         ]);
     }
 }

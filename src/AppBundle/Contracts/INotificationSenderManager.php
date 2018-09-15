@@ -51,4 +51,12 @@ interface INotificationSenderManager
      * @param UserFeedbackBindingModel $bindingModel
      */
     public function onFeedback(UserFeedbackBindingModel $bindingModel) : void ;
+
+    /**
+     * @param User $target
+     * @param User $commenter
+     * @param string $href
+     */
+    public function onComment(User $target, User $commenter, string $href) : void ;
+
 }

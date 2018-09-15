@@ -119,6 +119,13 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const CHANGE_PROFILE_PICTURE = "Change profile picture";
 
+    public const  COMMENT_MESSAGE_FORMAT = "%s mentioned you in a comment!";
+
+    public function commentMessageFormat(): string
+    {
+        return self::COMMENT_MESSAGE_FORMAT;
+    }
+
     function profile(): string
     {
         return self::PROFILE;

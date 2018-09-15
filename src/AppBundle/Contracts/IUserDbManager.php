@@ -10,12 +10,18 @@ namespace AppBundle\Contracts;
 
 
 use AppBundle\BindingModel\ChangePasswordBindingModel;
+use AppBundle\BindingModel\ImageBindingModel;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Exception\IllegalArgumentException;
 
 interface IUserDbManager
 {
+    /**
+     * @param User $user
+     */
+    function save(User $user) : void ;
+
     /**
      * @param User $user
      * @param Role $role
@@ -50,6 +56,18 @@ interface IUserDbManager
      * @throws IllegalArgumentException
      */
     function changePassword(User $user, ChangePasswordBindingModel $bindingModel) : void ;
+
+    /**
+     * @param User $user
+     * @param ImageBindingModel $bindingModel
+     */
+    function changeProfilePicture(User $user, ImageBindingModel $bindingModel) : void ;
+
+    /**
+     * @param User $user
+     * @throws IllegalArgumentException
+     */
+    function removeAccount(User $user) : void ;
 
     /**
      * @param User $candidate

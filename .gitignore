@@ -17,6 +17,7 @@
 /web/bundles/
 /web/node_modules/
 /web/node_modules/*
-/web/files/
-/web/files/*
+/web/files/users/*
+!/web/files/users/readme.txt
+
 **/.idea/
