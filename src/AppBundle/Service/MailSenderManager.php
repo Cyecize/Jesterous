@@ -12,6 +12,7 @@ namespace AppBundle\Service;
 use AppBundle\Constants\Config;
 use AppBundle\Contracts\ILogDbManager;
 use AppBundle\Contracts\IMailSenderManager;
+use AppBundle\Util\YamlParser;
 use Swift_TransportException;
 
 class MailSenderManager implements IMailSenderManager
@@ -29,10 +30,16 @@ class MailSenderManager implements IMailSenderManager
      */
     private $logger;
 
+    /**
+     * @var string
+     */
+    private $senderEmail;
+
     public function __construct(\Swift_Mailer $mailer, ILogDbManager $logDb)
     {
         $this->mailer = $mailer;
         $this->logger = $logDb;
+        $this->senderEmail = YamlParser::getMailerUsername();
     }
 
     /**
@@ -43,7 +50,7 @@ class MailSenderManager implements IMailSenderManager
     public function sendText(string $subject, string $message, string $receiver): void
     {
         $swiftMailerMsg = (new \Swift_Message($subject))
-            ->setFrom([Config::MAILER_SENDER_EMAIL => Config::MAILER_SENDER_NAME])
+            ->setFrom([$this->senderEmail => Config::MAILER_SENDER_NAME])
             ->setTo($receiver)
             ->setBody($message);
         try {
@@ -61,7 +68,7 @@ class MailSenderManager implements IMailSenderManager
     public function sendHtml(string $subject, $content, string $receiver): void
     {
         $swiftMailerMsg = (new \Swift_Message($subject))
-            ->setFrom([Config::MAILER_SENDER_EMAIL => Config::MAILER_SENDER_NAME])
+            ->setFrom([$this->senderEmail=> Config::MAILER_SENDER_NAME])
             ->setTo($receiver)
             ->setBody($content, 'text/html');
         try {

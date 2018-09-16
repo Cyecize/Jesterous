@@ -88,7 +88,7 @@ class CategoryController extends BaseController
     {
         $categories = $this->categoryService->findAllLocalCategories();
         $thisCat = array_shift($categories);
-        $viewModel = new CategoriesViewModel($thisCat, $categories, $this->articleService->findArticlesByCategory(array_shift($categories), new Pageable($request)));
+        $viewModel = new CategoriesViewModel($thisCat, $categories, $this->articleService->findArticlesByCategory($thisCat, new Pageable($request)));
 
         return $this->render("default/categories.html.twig", array(
             'viewModel' => $viewModel,
