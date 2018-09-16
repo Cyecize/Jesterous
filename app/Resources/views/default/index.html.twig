@@ -28,7 +28,7 @@
                                     <ul>
                                         {#<li class="active"><a href="category.html">all</a></li>#}
                                         {% for cat in categories %}
-                                            <li><a href="{{ path('categories_page') }}">{{ cat.categoryName }}</a></li>
+                                            <li><a href="{{ path('category_details', {'catName':cat.categoryName}) }}">{{ cat.categoryName }}</a></li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -51,7 +51,7 @@
                                     {% set trendArtCount = 0 %}
                                     {% for article in trendingArticles %}
                                         {% set modulus = trendArtCount % 4 %}
-                                        {% if modulus == 0  %}
+                                        {% if modulus == 0 %}
                                             {% embed 'partials/articles/large-card-with-image.html.twig' with {'article':article} %} {% endembed %}
                                         {% else %}
                                             {% if modulus == 1 %}
@@ -90,15 +90,16 @@
                             </div>
                             <div class="section_content">
                                 <div class="grid clearfix" id="latestPostsHolder">
-                                    {% embed 'partials/articles/articles-cards-renderer.html.twig' with {'articles':latestPosts} %} {% endembed %}
+                                    {% embed 'partials/articles/articles-cards-renderer.html.twig' with {'articles':latestPosts.elements} %} {% endembed %}
                                 </div>
                             </div>
                         </div>
 
                     </div>
                     <div class="load_more">
-                        <div id="load_more" class="load_more_button text-center trans_200">{{ localLang.loadMore }}
-                        </div>
+                        {% if latestPosts.pages > latestPosts.pageable.page %}
+                            <div id="load_more" class="load_more_button text-center trans_200">{{ localLang.loadMore }}</div>
+                        {% endif %}
                     </div>
                 </div>
 
@@ -124,31 +125,8 @@
 {% block javascripts %}
     {#<script src="{{ asset('styles/plugins/jquery.mb.YTPlayer-3.1.12/jquery.mb.YTPlayer.js') }}"></script>#}
     <script src="{{ asset('styles/js/custom.js') }}"></script>
+    <script src="{{ asset('styles/js/load-more.js') }}"></script>
     <script>
-        var numberOfLatestArticles = Number('{{ latestPosts|length }}');
-
-        $(function () {
-            var latestPostsHolder = $('#latestPostsHolder');
-            var btn = $('#load_more');
-
-            btn.on('click', function () {
-                btn.hide();
-                $.ajax({
-                    method: "GET",
-                    url: "{{ path('latest_articles_load_more') }}?offset=" + numberOfLatestArticles,
-                    success: function (data) {
-                        if (data.indexOf('Number(\'0\')') !== -1) {
-                            return;
-                        }
-                        latestPostsHolder.append(data).imagesLoaded(function () {
-                            latestPostsHolder.masonry('reloadItems');
-                            latestPostsHolder.masonry();
-                            btn.show();
-                        });
-                    },
-                    error: console.error
-                })
-            });
-        });
+       var loadMoreManager = new LoadMoreManager('{{ path('latest_articles_load_more') }}', 'load_more', 'latestPostsHolder');
     </script>
 {% endblock %}

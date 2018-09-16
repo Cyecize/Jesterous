@@ -13,20 +13,26 @@ use Symfony\Component\HttpFoundation\Request;
 
 class Pageable
 {
+    protected const DEFAULT_SIZE  =6;
+
+
     private $size;
 
     private $page;
 
-    public function __construct(Request $request)
+    public function __construct(Request $request = null)
     {
-       $this->init($request);
+        if ($request == null)
+            return;
+        $this->init($request);
     }
 
-    private function init(Request $request) : void {
+    private function init(Request $request): void
+    {
         $pageReq = intval($request->get('page'));
         $sizeReq = intval($request->get('size'));
         if ($pageReq < 1) $pageReq = 1;
-        if ($sizeReq < 1) $sizeReq = 6;
+        if ($sizeReq < 1) $sizeReq = self::DEFAULT_SIZE;
         $this->setPage($pageReq);
         $this->setSize($sizeReq);
     }

@@ -11,6 +11,7 @@ namespace AppBundle\ViewModel;
 
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
+use AppBundle\Util\Page;
 
 class CategoriesViewModel
 {
@@ -24,17 +25,22 @@ class CategoriesViewModel
      */
     private $categories;
 
-
     /**
      * @var Article[]
      */
     private $articles;
 
-    public function __construct(ArticleCategory $category, array $categories)
+    /**
+     * @var Page
+     */
+    private $page;
+
+    public function __construct(ArticleCategory $category, array $categories, Page $page)
     {
         $this->categories = $categories;
         $this->selectedCategory = $category;
-        $this->articles = $this->selectedCategory->getArticlesRecursive();
+        $this->articles = $page->getElements();
+        $this->page = $page;
     }
 
     /**
@@ -61,6 +67,13 @@ class CategoriesViewModel
         return $this->articles;
     }
 
+    /**
+     * @return Page
+     */
+    public function getPage(): Page
+    {
+        return $this->page;
+    }
 
 
 }

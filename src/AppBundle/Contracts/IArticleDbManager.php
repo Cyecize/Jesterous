@@ -90,25 +90,18 @@ interface IArticleDbManager
 
     /**
      * @param ArticleCategory $articleCategory
-     * @param int|null $limit
-     * @return Article[]
+     * @param Pageable $pageable
+     * @return Page
      */
-    function findArticlesByCategory(ArticleCategory $articleCategory, int $limit = null): array;
-
-    /**
-     * @param ArticleCategory[] $articleCategories
-     * @param int|null $limit
-     * @return Article[]
-     */
-    function findArticlesByCategories(array $articleCategories, int $limit = null): array;
+    function findArticlesByCategory(ArticleCategory $articleCategory, Pageable $pageable): Page;
 
     /**
      *
-     * @param int $offset
+     * @param Pageable $pageable
      * @param ArticleCategory[] $categories
-     * @return Article[]
+     * @return Page
      */
-    function findArticlesForLatestPosts(int $offset, array $categories): array;
+    function findArticlesByCategories(Pageable $pageable, array $categories): Page;
 
     /**
      * @param string $searchText

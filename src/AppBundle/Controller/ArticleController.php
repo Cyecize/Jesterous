@@ -21,6 +21,7 @@ use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Form\CreateArticleType;
 use AppBundle\Form\EditArticleType;
 use AppBundle\Service\LocalLanguage;
+use AppBundle\Util\Pageable;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -158,7 +159,6 @@ class ArticleController extends BaseController
      */
     public function myArticles()
     {
-
         return $this->render('author/articles/my-articles.html.twig',
             [
                 'articles' => $this->articleService->findMyArticles($this->getUser()),
@@ -192,11 +192,8 @@ class ArticleController extends BaseController
      */
     public function loadMoreArticlesAction(Request $request)
     {
-        $offset = $request->get("offset");
-        if ($offset == null || $offset < 0) $offset = 0;
-        $articles = $this->articleService->findArticlesForLatestPosts($offset, $this->categoryService->findAllLocalCategories());
-
-        return $this->render("queries/load-more-articles-index-query.html.twig", [
+        $articles = $this->articleService->findArticlesByCategories(new Pageable($request), $this->categoryService->findAllLocalCategories());
+        return $this->render("queries/load-more-articles-query.html.twig", [
             'articles' => $articles,
         ]);
     }

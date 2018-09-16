@@ -253,32 +253,33 @@ class ArticleDbManager implements IArticleDbManager
 
     /**
      * @param ArticleCategory $articleCategory
-     * @param int|null $limit
-     * @return Article[]
+     * @param Pageable $pageable
+     * @return Page
      */
-    function findArticlesByCategory(ArticleCategory $articleCategory, int $limit = null): array
+    function findArticlesByCategory(ArticleCategory $articleCategory,Pageable $pageable): Page
     {
-        return $this->articleRepo->findBy(array('category' => $articleCategory, 'isVisible' => true), array('dailyViews' => 'DESC'), $limit);
+        $cats = $articleCategory->getChildrenCategoriesRecursive();
+        $cats[] = $articleCategory;
+        return $this->findArticlesByCategories($pageable, $cats);
+        //return $this->articleRepo->findBy(array('category' => $articleCategory, 'isVisible' => true), array('dailyViews' => 'DESC'), $limit);
     }
 
     /**
-     * @param ArticleCategory[] $articleCategories
-     * @param int|null $limit
-     * @return Article[]
-     */
-    function findArticlesByCategories(array $articleCategories, int $limit = null): array
-    {
-        return $this->articleRepo->findBy(array('category' => $articleCategories, 'isVisible' => true), array('dailyViews' => 'DESC', 'id' => 'DESC'), $limit);
-    }
-
-    /**
-     * @param int $offset
+     * @param Pageable $pageable
      * @param ArticleCategory[] $categories
-     * @return Article[]
+     * @return Page
      */
-    function findArticlesForLatestPosts(int $offset, array $categories): array
+    function findArticlesByCategories(Pageable $pageable, array $categories): Page
     {
-        return $this->articleRepo->findBy(array('isVisible' => true, 'category' => $categories), array('dateAdded' => "DESC"), self::MAX_ARTICLES_PER_PAGE, $offset);
+        //return $this->articleRepo->findBy(array('isVisible' => true, 'category' => $categories), array('dateAdded' => "DESC"), self::MAX_ARTICLES_PER_PAGE, $offset);
+        $qb = $this->articleRepo->createQueryBuilder('a');
+        $query = $qb
+            ->where('a.isVisible = TRUE')
+            ->andWhere($qb->expr()->in('a.category', '?1'))
+            ->setParameter(1, $categories)
+            ->orderBy('a.dailyViews', 'DESC')
+            ->addOrderBy('a.id', 'DESC');
+        return new Page($query, $pageable);
     }
 
     /**

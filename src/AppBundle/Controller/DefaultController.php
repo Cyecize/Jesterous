@@ -10,6 +10,8 @@ use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Entity\User;
 use AppBundle\Form\FeedbackType;
 use AppBundle\Service\LocalLanguage;
+use AppBundle\Util\Pageable;
+use AppBundle\Util\PageRequest;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -56,9 +58,10 @@ class DefaultController extends BaseController
         if ($lang != null)
             $this->language->setLang($lang);
         $categories = $this->categoryService->findAllLocalCategories();
-        $latestPosts = $this->articleService->findArticlesForLatestPosts(0, $categories);
-        $sliderArticles = $this->articleService->forgeSliderViewModel($this->articleService->findArticlesByCategories($categories, 4));
-        $trendingArticles = $this->articleService->findArticlesByCategories($categories, 7);
+        $latestPosts = $this->articleService->findArticlesByCategories(new Pageable($request), $categories);
+
+        $sliderArticles = $this->articleService->forgeSliderViewModel($latestPosts->getElements());
+        $trendingArticles = $this->articleService->findArticlesByCategories(new PageRequest(1,8),$categories)->getElements();
 
         return $this->render('default/index.html.twig', [
             'categories' => $categories,

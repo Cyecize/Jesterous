@@ -44,14 +44,15 @@ class ExceptionsListener
             $event->setResponse($response);
         }
 
-//        if($exception instanceof FatalThrowableError){
-//            $response = new Response();
-//            $response->setContent($this->twig->render("exceptions/error500.html.twig", [
-//                'exception'=>$exception
-//            ]));
-//            $event->setResponse($response);
-//        }
-        //TODO uncomment this when the time comes
+        if($exception instanceof FatalThrowableError){
+            $response = new Response();
+            $response->setContent($this->twig->render("exceptions/error500.html.twig", [
+                'exception'=>$exception
+            ]));
+            //TODO comment this when developing
+            $event->setResponse($response);
+        }
+
 
         if ($exception instanceof InternalServerException) {
             $response = new Response();

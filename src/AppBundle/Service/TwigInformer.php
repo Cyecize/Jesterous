@@ -16,6 +16,7 @@ use AppBundle\Contracts\IQuoteDbManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Quote;
 use AppBundle\Entity\User;
+use AppBundle\Util\PageRequest;
 
 class TwigInformer
 {
@@ -62,7 +63,7 @@ class TwigInformer
 
     public function findPopularArticlesForSidebar() : array {
         $cats = $this->categoryDbManager->findAllLocalCategories();
-        return $this->articleDbManager->findArticlesByCategories($cats, 15);
+        return $this->articleDbManager->findArticlesByCategories(new PageRequest(1,15), $cats)->getElements();
     }
 
     public function simpleDateFormat(){

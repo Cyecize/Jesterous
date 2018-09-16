@@ -60,7 +60,7 @@ class ArticleCategory
 
     public function __construct()
     {
-
+        $this->childrenCategories = new ArrayCollection();
     }
 
     /**
@@ -153,21 +153,34 @@ class ArticleCategory
         return $this->articles;
     }
 
+//    /**
+//     * @return Article[]
+//     */
+//    public function getArticlesRecursive(): array
+//    {
+//        $res = array();
+//
+//        foreach ($this->articles as $article)
+//            if ($article->getIsVisible())
+//                $res[] = $article;
+//
+//        foreach ($this->childrenCategories as $childrenCategory) {
+//            $res = array_merge($res, $childrenCategory->getArticlesRecursive());
+//        }
+//        return array_unique($res);
+//    }
+
     /**
-     * @return Article[]
+     * @return ArticleCategory[]
      */
-    public function getArticlesRecursive(): array
+    public function getChildrenCategoriesRecursive(): array
     {
         $res = array();
-
-        foreach ($this->articles as $article)
-            if ($article->getIsVisible())
-                $res[] = $article;
-
-        foreach ($this->childrenCategories as $childrenCategory) {
-            $res = array_merge($res, $childrenCategory->getArticlesRecursive());
+        foreach ($this->childrenCategories as $childCategory) {
+            $res = array_merge($childCategory->getChildrenCategoriesRecursive(), $res);
         }
-        return array_unique($res);
+        $res = array_merge($this->childrenCategories->toArray(), $res);
+        return $res;
     }
 
     /**
@@ -178,6 +191,10 @@ class ArticleCategory
         $this->articles = $articles;
     }
 
+    public function __toString()
+    {
+        return $this->categoryName;
+    }
 
 }
 
