@@ -78,4 +78,9 @@ class TwigInformer
     public function isUserFollowing(User $cand, User $celeb){
         return $this->userDbManager->isUserFollowing($cand, $celeb);
     }
+
+    public function appId() : string {
+        return Config::FB_APP_ID;
+    }
+
 }

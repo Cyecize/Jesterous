@@ -19,9 +19,13 @@
     <div class="post_share ml-sm-auto">
         <span>{{ localLang.share }}</span>
         <ul class="post_share_list">
-            <li class="post_share_item"><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-            <li class="post_share_item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>
-            <li class="post_share_item"><a href="#"><i class="fa fa-google" aria-hidden="true"></i></a></li>
+
+            <li class="post_share_item"><a
+                        href="https://www.facebook.com/sharer/sharer.php?app_id={{ twigInformer.appId }}&sdk=joey&u={{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}&display=popup&ref=plugin&src=share_button"
+                        onclick="return !window.open(this.href, 'Facebook', 'width=640,height=580')"><i
+                            class="fa fa-facebook" aria-hidden="true"></i></a></li>
+            {#<li class="post_share_item"><a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a></li>#}
+            {#<li class="post_share_item"><a href="#"><i class="fa fa-google" aria-hidden="true"></i></a></li>#}
         </ul>
     </div>
 </div>

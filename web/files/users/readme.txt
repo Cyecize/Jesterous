@@ -1,2 +1,2 @@
-This directory contains folders names exactly like users' usernames.
+This directory contains folders with names exactly like users' usernames.
 They contain profile and article images. 

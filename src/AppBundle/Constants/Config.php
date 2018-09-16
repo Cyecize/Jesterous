@@ -32,4 +32,6 @@ class Config
     public const MAILER_SENDER_EMAIL = "ceci_nfs9@abv.bg";
 
     public const MAILER_SENDER_NAME = "Jesterous.net";
+
+    public const FB_APP_ID = "431697957339837";
 }

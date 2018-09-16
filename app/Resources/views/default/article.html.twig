@@ -21,11 +21,9 @@
                 <!-- Main Content -->
                 <div class="col-lg-9">
                     <div class="post_content">
-
                         <!-- Top Panel -->
                         {% embed 'partials/articles/article-author-info-panel.html.twig' with {'article':article} %} {% endembed %}
                         <!-- Post Body -->
-
                         <div class="post_body ">
                             <div class="pb-2"><p class="text-dark">{{ article.summary }}</p></div>
                             <div class="ql-editor ql-snow">
@@ -35,11 +33,25 @@
                             <div class="post_tags">
                                 <ul>
                                     {% for tag in article.tags %}
-                                    <li class="post_tag"><a href="{{ path('tag_details', {'tagName':tag.tagName}) }}">{{ tag.tagName }}</a></li>
+                                        <li class="post_tag"><a
+                                                    href="{{ path('tag_details', {'tagName':tag.tagName}) }}">{{ tag.tagName }}</a>
+                                        </li>
                                     {% endfor %}
                                 </ul>
                             </div>
-                            <small>{{ localLang.views }}: {{ article.views }}</small>
+                            <div class="d-flex">
+                                <div class="mr-auto">
+                                    <div class="fb-like text-right"
+                                         data-href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}"
+                                         data-layout="standard"
+                                         data-action="like"
+                                         data-show-faces="true">
+                                    </div>
+                                </div>
+                                <div class="ml-auto">
+                                    <small>{{ localLang.views }}: {{ article.views }}</small>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Bottom Panel -->
@@ -104,4 +116,15 @@
             }
         });
     </script>
+
+    <script>(function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s);
+            js.id = id;
+            js.src = 'https://connect.facebook.net/en_GB/sdk.js#xfbml=1&version=v3.1&appId=431697957339837&autoLogAppEvents=1';
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
 {% endblock %}
