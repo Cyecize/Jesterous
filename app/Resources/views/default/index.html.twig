@@ -47,7 +47,7 @@
                                 </div>
                             </div>
                             <div class="section_content">
-                                <div class="grid clearfix" id="popularGrid">
+                                <div class="grid" id="popularGrid">
                                     {% set trendArtCount = 0 %}
                                     {% for article in trendingArticles %}
                                         {% set modulus = trendArtCount % 4 %}
@@ -89,7 +89,7 @@
                                 <div class="section_title">{{ localLang.latestArticles }}</div>
                             </div>
                             <div class="section_content">
-                                <div class="grid clearfix" id="latestPostsHolder">
+                                <div class="grid clearfix" id="latestPostsHolder" style="min-height: 250px;">
                                     {% embed 'partials/articles/articles-cards-renderer.html.twig' with {'articles':latestPosts.elements} %} {% endembed %}
                                 </div>
                             </div>
@@ -128,5 +128,8 @@
     <script src="{{ asset('styles/js/load-more.js') }}"></script>
     <script>
        var loadMoreManager = new LoadMoreManager('{{ path('latest_articles_load_more') }}', 'load_more', 'latestPostsHolder');
+    </script>
+    <script>
+
     </script>
 {% endblock %}

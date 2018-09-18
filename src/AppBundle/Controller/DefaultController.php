@@ -61,7 +61,7 @@ class DefaultController extends BaseController
         $latestPosts = $this->articleService->findArticlesByCategories(new Pageable($request), $categories);
 
         $sliderArticles = $this->articleService->forgeSliderViewModel($latestPosts->getElements());
-        $trendingArticles = $this->articleService->findArticlesByCategories(new PageRequest(1,8),$categories)->getElements();
+        $trendingArticles = $this->articleService->findArticlesByCategories(new PageRequest(1,7),$categories)->getElements();
 
         return $this->render('default/index.html.twig', [
             'categories' => $categories,

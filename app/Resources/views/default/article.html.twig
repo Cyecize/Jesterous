@@ -39,16 +39,17 @@
                                     {% endfor %}
                                 </ul>
                             </div>
-                            <div class="d-flex">
-                                <div class="mr-auto">
+                            <div class="row">
+                                <div class="col-md-6 d-md-block">
                                     <div class="fb-like text-right"
                                          data-href="{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}"
                                          data-layout="standard"
                                          data-action="like"
+                                         data-width="300"
                                          data-show-faces="true">
                                     </div>
                                 </div>
-                                <div class="ml-auto">
+                                <div class="col-md-6 ml-auto text-right">
                                     <small>{{ localLang.views }}: {{ article.views }}</small>
                                 </div>
                             </div>

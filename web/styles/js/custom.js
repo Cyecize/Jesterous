@@ -343,17 +343,20 @@ var customController = (function () {
     */
 
     function initGrid() {
-        setTimeout(function () {
-            $('.grid').masonry(
-                {
-                    itemSelector: '.grid-item',
-                    columnWidth: '.card_default',
-                    gutter: 30
-                });
-        }, 500);
+        $(window).on('load', function () {
+            setTimeout(function () {
+                $('.grid').masonry(
+                    {
+                        itemSelector: '.grid-item',
+                        columnWidth: '.card_default',
+                        gutter: 30,
+                        autoHeight: true,
+                    });
+            }, 300);
+        });
 
     }
 
-    return {initGrid:initGrid};
+    return {initGrid: initGrid};
 
 })();

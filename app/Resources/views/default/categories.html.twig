@@ -8,12 +8,9 @@
 <div class="page_content">
     <div class="container">
         <div class="row row-lg-eq-height">
-
             <!-- Main Content -->
-
             <div class="col-lg-9">
                 <div class="main_content">
-
                     <!-- Category -->
                     <div class="category">
                         <div class="section_panel d-flex flex-row align-items-center justify-content-start">
@@ -39,7 +36,7 @@
                         </div>
                         <div class="section_content">
                             <h3 class="font-kirang-hearang text-info">{{ viewModel.selectedCategory.categoryName }} <small>({{ viewModel.page.itemsCount }})</small></h3>
-                            <div class="grid clearfix" id="catArticlesHolder">
+                            <div class="grid clearfix" id="catArticlesHolder" style="min-height: 250px;">
                                 {% embed 'partials/articles/articles-cards-renderer.html.twig' with {'articles':viewModel.articles} %} {% endembed %}
                             </div>
                         </div>
@@ -56,7 +53,6 @@
             </div>
 
             <!-- Sidebar -->
-
            {% embed 'partials/sidebar/sidebar.html.twig' %}
                 {% block sections %}
                     {% embed 'partials/sidebar/top-stories-section.html.twig' %} {% endembed %}
@@ -65,8 +61,6 @@
         </div>
 
     </div>
-
-
 <!-- Footer -->
 
 {% endblock %}
@@ -77,7 +71,7 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="{{ asset('styles/js/category.js') }}"></script>
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
     <script src="{{ asset('styles/js/load-more.js') }}"></script>
     <script>
          var loadMoreManager = new LoadMoreManager('{{ path('categories_page_load_more_articles', {'catName':viewModel.selectedCategory.categoryName}) }}', 'load_more', 'catArticlesHolder');
