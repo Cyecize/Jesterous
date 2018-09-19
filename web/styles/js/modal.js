@@ -1,3 +1,4 @@
+var modalCloseEvent = new Event('modalClosed');
 var ModalManager = (function (id, openBtnId) {
 
     var modal;
@@ -18,6 +19,10 @@ var ModalManager = (function (id, openBtnId) {
         modal.style.display = "none";
     }
 
+    function isModalOpen() {
+        return modal.style.display == "block";
+    }
+
     //private
     function initEvents(thisModal) {
         $(openBtn).on('click', function () {
@@ -25,6 +30,7 @@ var ModalManager = (function (id, openBtnId) {
         });
         $('.close-modal').on('click', function () {
             hideModal();
+            this.dispatchEvent(modalCloseEvent);
         });
 
         window.addEventListener('click', function (event) {
@@ -42,6 +48,6 @@ var ModalManager = (function (id, openBtnId) {
     //constructor
     initModal(id, openBtnId);
 
-    return {initModal: initModal, showModal: showModal, hideModal: hideModal};
+    return {initModal: initModal, showModal: showModal, hideModal: hideModal, isModalOpen:isModalOpen};
 
 });

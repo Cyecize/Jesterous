@@ -13,7 +13,8 @@
                 <div class="col-md-6">
                     <div class="form-group">
                         <label for="tags">Tags</label>
-                        <input type="text" name="create_article[tags]" id="tags" placeholder="tag1 tag2 tag3" value="{{ model.tags }}"
+                        <input type="text" name="create_article[tags]" id="tags" placeholder="tag1 tag2 tag3"
+                               value="{{ model.tags }}"
                                class="form-control">
                         <div class="text-danger">{{ form_errors(form1.tags) }}</div>
                     </div>
@@ -53,17 +54,23 @@
             </div>
             <div class="form-group">
                 <label for="visible">Is Article visible</label>
-                <input type="checkbox" {% if model.isVisible %}checked{% endif %} name="create_article[isVisible]" id="visible">
+                <input type="checkbox" {% if model.isVisible %}checked{% endif %} name="create_article[isVisible]"
+                       id="visible">
             </div>
             <div class="form-group">
                 <label for="notify">Notify users (make sure article is visible)</label>
-                <input type="checkbox" {% if model.notify %}checked{% endif %} name="create_article[notify]" id="notify">
+                <input type="checkbox" {% if model.notify %}checked{% endif %} name="create_article[notify]"
+                       id="notify">
             </div>
             <div class="form-group">
                 <label for="summary">Summary</label>
                 <input type="text" maxlength="255" name="create_article[summary]" id="summary" placeholder="Summary"
                        value="{{ model.summary }}" class="form-control">
                 <p class="text-danger"></p>
+            </div>
+            <div class="form-group">
+                <p id="openImageModal" style="cursor: pointer;" class="text-info font-weight-bold">Open Image
+                    browser</p>
             </div>
             {#<div class="form-group">#}
             {#<label for=""></label>#}
@@ -81,51 +88,15 @@
 
     </div>
 
+    {% embed 'author/articles/partials/my-images-modal.html.twig' %} {% endembed %}
+
 {% endblock %}
 
 {% block sectionStyles %}
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/styles/modal.css') }}" type="text/css">
 {% endblock %}
 
 {% block sectionScripts %}
-    <script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
-    <script src="//cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
-    <script src="{{ asset('styles/js/quill-manager.js') }}"></script>
-    <script>
-        ImagePreviewManager.attachEvent("image", "imgPrev");
-        $(function () {
-            Quill.register('modules/ImageResize', ImageResize);
-            var quillManager = new QuillManager();
-            quillManager.initQuill("#editor-container");
-
-            var form = $('#createArticleForm');
-            var btnSubmit = $('#createArticleBtn');
-            var mainContentField = $('#articleContent');
-
-            btnSubmit.on('click', function (e) {
-                var tagsFieldVal = $('#tags').val();
-                if(!tagsFieldVal.match(/^[a-zA-Z\s\d-_]*$/)){
-                    alert("Invalid tag format use tag1 tag2 tag3!");
-                    e.preventDefault();
-                    return;
-                }
-                var lenExceeding = false;
-                tagsFieldVal.split(/\s+/).forEach(e => {
-                    if(e.length > 50)
-                        lenExceeding = true;
-                });
-                if(lenExceeding){
-                    e.preventDefault();
-                    alert("Tag too long (50 max)")
-                    return;
-                }
-            });
-            form.on('submit', function (e) {
-                var mainContent = quillManager.getQuillContent();
-                mainContentField.text(mainContent);
-                //e.preventDefault();
-                // form.trigger('submit');
-            });
-        });
-    </script>
+    {% embed 'author/articles/partials/create-edit-article-scripts.html.twig' %} {% endembed %}
 {% endblock %}

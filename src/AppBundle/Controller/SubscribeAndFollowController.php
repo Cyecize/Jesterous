@@ -104,7 +104,7 @@ class SubscribeAndFollowController extends BaseController
      */
     public function myFollowersAction()
     {
-        $user = $this->userService->findOneById($this->getUser()->getId());
+        $user = $this->userService->findOneById($this->getUserId());
         return $this->render('author/followers/my-followers.html.twig',
             [
                 'author' => $user,
@@ -195,7 +195,7 @@ class SubscribeAndFollowController extends BaseController
      */
     public function followUserAction($celebId)
     {
-        $targetUser = $this->userService->findOneById($this->getUser()->getId());
+        $targetUser = $this->userService->findOneById($this->getUserId());
         $celebrity = $this->getCelebrity($celebId, $this->getUser());
         $this->userService->addFollower($targetUser, $celebrity);
         $this->notificationSendService->onFollow($targetUser, $celebrity);
@@ -211,7 +211,7 @@ class SubscribeAndFollowController extends BaseController
      */
     public function unfollowUserAction($celebId)
     {
-        $targetUser = $this->userService->findOneById($this->getUser()->getId());
+        $targetUser = $this->userService->findOneById($this->getUserId());
         $celebrity = $this->getCelebrity($celebId, $this->getUser());
         $this->userService->removeFollower($targetUser, $celebrity);
         return new JsonResponse(["message" => sprintf("%s was unfollowed!", $celebrity->getId())]);

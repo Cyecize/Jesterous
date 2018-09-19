@@ -23,8 +23,8 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class NotificationController extends BaseController
 {
-    private const USER_NOT_LOGGED_IN =  "User is not logged in!";
-    private const INVALID_NOTIFICATION_MSG =  "Invalid Notification";
+    private const USER_NOT_LOGGED_IN = "User is not logged in!";
+    private const INVALID_NOTIFICATION_MSG = "Invalid Notification";
     /**
      * @var INotificationDbManager
      */
@@ -41,9 +41,10 @@ class NotificationController extends BaseController
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      *
      */
-    public function mobileNotificationsAction(){
-        return $this->render('default/notifications.html.twig',[
-            'notis'=>$this->notificationDbService->findByUser($this->getUser()),
+    public function mobileNotificationsAction()
+    {
+        return $this->render('default/notifications.html.twig', [
+            'notis' => $this->notificationDbService->findByUser($this->getUser()),
         ]);
     }
 
@@ -53,9 +54,10 @@ class NotificationController extends BaseController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws RestFriendlyExceptionImpl
      */
-    public function updateNotificationsAction(Request $request){
+    public function updateNotificationsAction(Request $request)
+    {
         $this->validateToken($request);
-        if(!$this->isUserLogged()) //importang! TODO this is used instead of @Security for Front end reasons
+        if (!$this->isUserLogged()) //importang! TODO this is used instead of @Security for Front end reasons
             throw new RestFriendlyExceptionImpl(self::USER_NOT_LOGGED_IN);
         return $this->renderMyNotifications();
     }
@@ -67,7 +69,8 @@ class NotificationController extends BaseController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws RestFriendlyExceptionImpl
      */
-    public function removeAllNotificationsAction(Request $request){
+    public function removeAllNotificationsAction(Request $request)
+    {
         $this->validateToken($request);
         $this->notificationDbService->removeAll($this->notificationDbService->findByUser($this->getUser()));
         return $this->renderMyNotifications();
@@ -80,7 +83,8 @@ class NotificationController extends BaseController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws RestFriendlyExceptionImpl
      */
-    public function viewNotification(Request $request, $notiId){
+    public function viewNotification(Request $request, $notiId)
+    {
         $this->validateToken($request);
         $noti = $this->notificationDbService->findOneById($notiId);
         $this->validateNotification($noti);
@@ -112,17 +116,19 @@ class NotificationController extends BaseController
      * @param Notification|null $noti
      * @throws RestFriendlyExceptionImpl
      */
-    private function validateNotification(Notification $noti = null){
-        if($noti == null || $noti->getUser()->getId() != $this->getUser()->getId())
+    private function validateNotification(Notification $noti = null)
+    {
+        if ($noti == null || $noti->getUser()->getId() != $this->getUserId())
             throw new RestFriendlyExceptionImpl(self::INVALID_NOTIFICATION_MSG);
     }
 
     /**
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    private function renderMyNotifications(){
-        return $this->render('partials/notifications/notification-update-result.html.twig',[
-            'notis'=>$this->notificationDbService->findByUser($this->getUser()),
+    private function renderMyNotifications()
+    {
+        return $this->render('partials/notifications/notification-update-result.html.twig', [
+            'notis' => $this->notificationDbService->findByUser($this->getUser()),
         ]);
     }
 }

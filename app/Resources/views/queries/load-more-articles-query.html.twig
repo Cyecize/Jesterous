@@ -5,7 +5,9 @@
 {% if articles.pages > articles.pageable.page %}
     <script>
         $(function () {
-          loadMoreManager.showButton();
+            loadMoreManager.showButton();
+            loadMoreManager.loadMasonry();
         });
+
     </script>
 {% endif %}

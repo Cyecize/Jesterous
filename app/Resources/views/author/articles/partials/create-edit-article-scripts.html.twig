@@ -1,0 +1,71 @@
+<script src="//cdn.quilljs.com/1.3.6/quill.js"></script>
+<script src="//cdn.jsdelivr.net/npm/quill-image-resize-module@3.0.0/image-resize.min.js"></script>
+<script src="{{ asset('styles/js/load-more.js') }}"></script>
+<script src="{{ asset('styles/js/modal.js') }}"></script>
+<script src="{{ asset('styles/js/quill-manager.js') }}"></script>
+
+<script descr="Load More">
+    var loadMoreManager = new LoadMoreManager('{{ path('browse_my_images_rest') }}', 'loadMoreImages', 'myImagesContainer');
+    loadMoreManager.setPage(0);
+    loadMoreManager.loadMore();
+</script>
+<script>
+    var modalManager = new ModalManager('myImagesModal', 'openImageModal');
+
+    var imageLinkParagraph = $('#targetImageLink');
+    var imagePreview = $('#targetImageSrc');
+    var baseUrl = '{{ url('homepage') }}';
+
+    function displayImageLink(link) {
+        imageLinkParagraph.html(baseUrl + link.substring(1));
+        imagePreview.attr('src', link);
+    }
+
+    ImagePreviewManager.attachEvent("image", "imgPrev");
+    $(function () {
+        Quill.register('modules/ImageResize', ImageResize);
+
+        function imageHandler() {
+            var range = this.quill.getSelection();
+            modalManager.showModal();
+            imageLinkParagraph.html('');
+            var thisQuill = this.quill;
+
+            var onImageSelectListener = function () {
+                console.log('i been triggered 2nite')
+                if (imageLinkParagraph.html() != '')
+                    thisQuill.insertEmbed(range.index, 'image', imageLinkParagraph.html(), Quill.sources.USER);
+                $('.close-modal').off('modalClosed', onImageSelectListener);
+            };
+            $('.close-modal').on('modalClosed', onImageSelectListener);
+        }
+
+        var quillManager = new QuillManager("#editor-container", imageHandler);
+        var form = $('#createArticleForm');
+        var btnSubmit = $('#createArticleBtn');
+        var mainContentField = $('#articleContent');
+
+        btnSubmit.on('click', function (e) {
+            var tagsFieldVal = $('#tags').val();
+            if (!tagsFieldVal.match(/^[a-zA-Z\s\d-_]*$/)) {
+                alert("Invalid tag format use tag1 tag2 tag3!");
+                e.preventDefault();
+                return;
+            }
+            var lenExceeding = false;
+            tagsFieldVal.split(/\s+/).forEach(function (e) {
+                if (e.length > 50)
+                    lenExceeding = true;
+            });
+            if (lenExceeding) {
+                e.preventDefault();
+                alert("Tag too long (50 max)");
+                return;
+            }
+        });
+        form.on('submit', function (e) {
+            var mainContent = quillManager.getQuillContent();
+            mainContentField.text(mainContent);
+        });
+    });
+</script>

@@ -48,6 +48,10 @@ abstract class BaseController extends Controller
         return $this->get('security.authorization_checker')->isGranted(Roles::ROLE_AUTHOR, 'ROLES');
     }
 
+    protected function getUserId() : int {
+        return $this->getUser()->getId();
+    }
+
     /**
      * @param $bindingModel
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface

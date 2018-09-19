@@ -10,6 +10,8 @@ Table of content
 
 3-> Back to Top Btn
 
+4 -> hovers
+
  */
 
 /* fonts */
@@ -31,7 +33,7 @@ Table of content
     font-family: 'Kirang Haerang', cursive;
 }
 
-.ql-syntax{
+.ql-syntax {
     -webkit-border-radius: 5px;
     -moz-border-radius: 5px;
     border-radius: 5px;
@@ -40,14 +42,22 @@ Table of content
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-    background: rgba(0,0,0,1);
+    background: rgba(0, 0, 0, 1);
 }
 
-    /*text formatting*/
+/*text formatting*/
 .raw-content {
     white-space: pre-wrap;
 }
-    /*text formatting*/
+
+.all-copy  {
+    -webkit-user-select: all;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
+}
+
+/*text formatting*/
 
 /* !fonts */
 
@@ -67,10 +77,10 @@ header .logo a {
     transition: all 0.3s;
 }
 
-    /*notifications*/
-    #notificationsBtn{
-        cursor: pointer;
-    }
+/*notifications*/
+#notificationsBtn {
+    cursor: pointer;
+}
 
 #hidden-noti-bar {
     -webkit-border-radius: 3px;
@@ -90,12 +100,13 @@ header .logo a {
     display: none;
     overflow: auto;
     z-index: 1000000;
-    padding:5px;
+    padding: 5px;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
 }
-    /*!notifications*/
+
+/*!notifications*/
 
 /*!header */
 
@@ -140,6 +151,22 @@ header .logo a {
 /*
     end BACK TO TOP
  */
+
+/*Hovers*/
+.author-img-overlay{
+    -webkit-transition: all 0.5s;
+    -moz-transition: all 0.5s;
+    -ms-transition: all 0.5s;
+    -o-transition: all 0.5s;
+    transition: all 0.5s;
+}
+
+.author-img-overlay:hover{
+    -webkit-box-shadow:  5px 4px 10px rebeccapurple;
+    -moz-box-shadow:  5px 4px 10px rebeccapurple;
+    box-shadow:  5px 4px 10px rebeccapurple;
+}
+/*!Hovers*/
 
 @media screen and (max-width: 1280px) {
     header .logo a {

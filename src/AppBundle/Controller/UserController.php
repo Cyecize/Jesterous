@@ -91,7 +91,7 @@ class UserController extends BaseController
             if (count($this->validate($bindingModel)) > 0)
                 goto  escape;
             try {
-                $this->userService->changePassword($this->userService->findOneById($this->getUser()->getId()), $bindingModel);
+                $this->userService->changePassword($this->userService->findOneById($this->getUserId()), $bindingModel);
                 return $this->redirectToRoute('security_logout');
             } catch (IllegalArgumentException $e) {
                 return $this->redirectToRoute('change_password', [
@@ -125,7 +125,7 @@ class UserController extends BaseController
             $this->validateToken($request);
             if (count($this->validate($bindingModel)) > 0)
                 goto  escape;
-            $this->userService->changeProfilePicture($this->userService->findOneById($this->getUser()->getId()), $bindingModel);
+            $this->userService->changeProfilePicture($this->userService->findOneById($this->getUserId()), $bindingModel);
             return $this->redirectToRoute('user_panel');
         }
 
@@ -146,7 +146,7 @@ class UserController extends BaseController
     public function removeProfileAction(Request $request)
     {
         if ($request->getMethod() == "POST") {
-            $userId = $this->getUser()->getId();
+            $userId = $this->getUserId(); //TODO !This is important since after invalidating session userId will be null
             $this->validateToken($request);
             $this->get('security.token_storage')->setToken(null);
             $this->get('session')->invalidate();
@@ -170,7 +170,7 @@ class UserController extends BaseController
             $summary = $request->get('summary');
             if($summary == null || strlen($summary) > 1000)
                 return $this->redirectToRoute('edit_summary', ['error'=>$this->language->fieldCannotBeEmpty()]);
-            $user = $this->userService->findOneById($this->getUser()->getId());
+            $user = $this->userService->findOneById($this->getUserId());
             $user->setUserDescription($summary);
             $this->userService->save($user);
             return $this->redirectToRoute('user_panel');

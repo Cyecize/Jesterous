@@ -1,0 +1,12 @@
+{% for image in viewModel.images %}
+    <div class="col-md-4  mt-1" style="max-height: 300px;">
+        <img onclick="displayImageLink('{{ image.imageLink }}')" class="my-image author-img-overlay" src="{{ image.imageLink }}" width="100%" height="100%">
+    </div>
+{% endfor %}
+{% if viewModel.page.pages > viewModel.page.pageable.page %}
+    <script>
+        $(function () {
+            loadMoreManager.showButton();
+        });
+    </script>
+{% endif %}

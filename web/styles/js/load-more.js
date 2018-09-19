@@ -27,6 +27,14 @@ var LoadMoreManager = (function (targetUrl, loadMoreBtnId, holderId) {
     function showButton() {
         button.show();
     }
+    
+    function loadMasonry() {
+        holder.imagesLoaded(function () {
+            holder.masonry('reloadItems');
+            holder.masonry();
+        });
+
+    }
 
     function loadMore() {
         button.hide();
@@ -34,10 +42,7 @@ var LoadMoreManager = (function (targetUrl, loadMoreBtnId, holderId) {
             method: "GET",
             url: url + ++page,
             success: function (data) {
-                holder.append(data).imagesLoaded(function () {
-                    holder.masonry('reloadItems');
-                    holder.masonry();
-                });
+                holder.append(data);
             },
             error: console.error
         });
@@ -47,5 +52,5 @@ var LoadMoreManager = (function (targetUrl, loadMoreBtnId, holderId) {
     init(loadMoreBtnId, holderId);
     url = targetUrl + "?page=";
 
-    return {setPage: setPage, loadMore: loadMore, showButton: showButton};
+    return {setPage: setPage, loadMore: loadMore, showButton: showButton, loadMasonry: loadMasonry};
 });

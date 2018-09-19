@@ -1,0 +1,99 @@
+{% extends 'author/panel.html.twig' %}
+{% block title %}My Images{% endblock %}
+{% block sectionBody %}
+    <h2 class="text-dark">My images {{ viewModel.page.itemsCount }}</h2>
+    <hr>
+    <div>
+        <table class="table">
+            <thead class="rounded bg-dark p-0 text-light">
+            <tr>
+                <th scope="row">
+                    Id
+                </th>
+                <th scope="row">
+                    Image
+                </th>
+                <th scope="row">
+
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for image in viewModel.images %}
+                {#<hr>#}
+                <tr>
+                    <th>
+                        <p style="cursor: pointer;" src="{{ image.imageLink }}"
+                           class="text-dark show-image-modal">{{ image.id }}</p>
+                    </th>
+                    <td>
+                        <img class="show-image-modal" src="{{ image.imageLink }}"
+                             style="max-width: 70px; max-height: 70px;">
+                    </td>
+                    <td class="text-right">
+                        <button type="button" imageId="{{ image.id }}"
+                                class="btn btn-success btn-outline-danger remove-image-btn">Remove
+                        </button>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% embed 'partials/articles/pagination.html.twig' with {'page':viewModel.page} %} {% endembed %}
+    </div>
+    <div id="showImageModal" class="modal-container">
+        <div class="modal-content">
+            <div class="text-right">
+                <span class="close-modal"><i class="fa fa-close" aria-hidden="true"></i> </span>
+            </div>
+            <div class="container text-center">
+                <div style="max-width: 300px; max-height: 300px; margin:0 auto;">
+                    <img src="" id="targetImageSrc" style="width:100%;">
+                </div>
+                <br/>
+                <p class="all-copy" style="word-wrap: break-word;" id="targetImageLink"></p>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sectionStyles %}
+    <link rel="stylesheet" href="{{ asset('styles/styles/modal.css') }}" type="text/css">
+{% endblock %}
+
+{% block sectionScripts %}
+    <script src="{{ asset('styles/js/modal.js') }}"></script>
+    <script>
+        $(function () {
+            var baseUrl = '{{ url('homepage') }}';
+            var targetImageSrc = $('#targetImageSrc');
+            var targetImageLink = $('#targetImageLink');
+            var buttons = $('.show-image-modal');
+
+            var modalManager = new ModalManager('showImageModal', '');
+            buttons.on('click', function (e) {
+                var imageLink = $(this).attr('src');
+                targetImageLink.html(baseUrl + imageLink.substr(1));
+                targetImageSrc.attr('src', imageLink);
+                modalManager.showModal();
+            });
+
+
+            var removeButtons = $('.remove-image-btn');
+            removeButtons.on('click', function (e) {
+                var imgId = $(this).attr('imageId');
+                var url = "/authors/images/remove/" + imgId;
+
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: {token: CSRF_TOKEN},
+                    success: function () {
+                        location.reload();
+                    },
+                    error: console.error
+                })
+            });
+        });
+    </script>
+{% endblock %}

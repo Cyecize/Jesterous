@@ -1,0 +1,27 @@
+{% extends 'author/panel.html.twig' %}
+{% block title %}Upload Image{% endblock %}
+{% block sectionBody %}
+    <h2 class="text-dark">Upload Image</h2>
+    <hr>
+    <div class="container row">
+        <div class="col-md-6">
+            <form method="post" enctype="multipart/form-data">
+                <div class="form-group">
+                    <input type="file" required name="image[file]" id="image"><br/>
+                    <div class="text-danger">{{ form_errors(form1.file) }}</div>
+                </div>
+                <input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                <button type="submit" class="btn btn-dark">Go</button>
+            </form>
+        </div>
+        <div class="col-md-6">
+            <img src="" id="imgPrev" style="max-height: 500px; max-width: 100%;">
+        </div>
+    </div>
+{% endblock %}
+
+{% block sectionScripts %}
+    <script>
+        ImagePreviewManager.attachEvent("image", "imgPrev");
+    </script>
+{% endblock %}
