@@ -52,7 +52,6 @@ class ImageController extends BaseController
      */
     public function uploadImageAction(Request $request)
     {
-
         $bindingModel = new ImageBindingModel();
         $form = $this->createForm(ImageType::class, $bindingModel);
         $form->handleRequest($request);

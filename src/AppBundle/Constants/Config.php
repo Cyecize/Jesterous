@@ -29,6 +29,8 @@ class Config
 
     public const USER_FILES_PATH = "files/users/";
 
+    public const BANNERS_PATH = "files/banners/";
+
     public const MAILER_SENDER_NAME = "Jesterous.net";
 
     public const FB_APP_ID = "431697957339837";

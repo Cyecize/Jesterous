@@ -18,7 +18,7 @@
     <meta property="og:title" content="{% block ogTitle %}Jesterous{% endblock %}"/>
     <meta property="og:image"
           content="{% block ogImage %}{{ url('homepage') }}images/category.jpg{% endblock %}"/>
-    <meta property="og:description" content="{% block ogDescription %}Сайт за {% endblock %}"/>
+    <meta property="og:description" content="{% block ogDescription %}{% embed 'partials/lang/'~ localLang.getLocalLang ~ '/website-description.html.twig' %}{% endembed %}{% endblock %}"/>
     {% block facebookMetas %} {% endblock %}
     <!-- end facebook -->
 

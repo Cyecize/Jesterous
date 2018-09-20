@@ -1,0 +1,1 @@
+This folder contains images that will be used as banners across the website.

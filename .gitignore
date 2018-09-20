@@ -19,5 +19,7 @@
 /web/node_modules/*
 /web/files/users/*
 !/web/files/users/readme.txt
+/web/files/banners/*
+!/web/files/banners/readme.txt
 
 **/.idea/

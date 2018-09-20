@@ -79,6 +79,7 @@ var ImagePreviewManager = (function () {
     function attachEvent(inputId, imgSrcId) {
         imgPrev = $(document.getElementById(imgSrcId));
         document.getElementById(inputId).onchange = function (event) {
+            console.log("image selected!")
             readUrl(this);
         };
     }
@@ -90,6 +91,7 @@ var ImagePreviewManager = (function () {
                 imgPrev.attr('src', e.target['result']);
             };
             reader.readAsDataURL(input.files[0]);
+            imgPrev.show();
         }
     }
 

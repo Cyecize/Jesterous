@@ -1,7 +1,7 @@
 <div class="home">
     <div class="home_background parallax-window"
          data-parallax="scroll"
-         data-image-src="{% if background is defined %}{{ background }}{% else %}/images/category.jpg{% endif %}"
+         data-image-src="{% if background is defined %}{{ background }}{% else %}{{ twigInformer.getBanner().imageLink }}{% endif %}"
          data-speed="0.8">
 
         <div class="home_content">

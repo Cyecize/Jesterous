@@ -11,9 +11,11 @@ namespace AppBundle\Service;
 
 use AppBundle\Constants\Config;
 use AppBundle\Contracts\IArticleDbManager;
+use AppBundle\Contracts\IBannerDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Contracts\IQuoteDbManager;
 use AppBundle\Contracts\IUserDbManager;
+use AppBundle\Entity\Banner;
 use AppBundle\Entity\Quote;
 use AppBundle\Entity\User;
 use AppBundle\Util\PageRequest;
@@ -41,12 +43,18 @@ class TwigInformer
      */
     private $userDbManager;
 
-    public function __construct(IQuoteDbManager $quoteDb, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager, IUserDbManager $userDbManager)
+    /**
+     * @var IBannerDbManager
+     */
+    private $bannerService;
+
+    public function __construct(IQuoteDbManager $quoteDb, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager, IUserDbManager $userDbManager, IBannerDbManager $bannerDb)
     {
         $this->quoteDbManager = $quoteDb;
         $this->articleDbManager = $articleDbManager;
         $this->categoryDbManager = $categoryDbManager;
         $this->userDbManager = $userDbManager;
+        $this->bannerService = $bannerDb;
     }
 
     public function getWebsiteName() : string {
@@ -82,6 +90,10 @@ class TwigInformer
 
     public function appId() : string {
         return Config::FB_APP_ID;
+    }
+
+    public function getBanner() : Banner{
+        return $this->bannerService->findTopBanner();
     }
 
 }
