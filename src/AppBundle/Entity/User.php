@@ -3,7 +3,6 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Constants\Config;
-use AppBundle\Constants\Roles;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -67,16 +66,15 @@ class User implements UserInterface
      */
     private $profileImage;
 
-
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Role", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Role")
      * @ORM\JoinTable(name="roles_users", joinColumns={@ORM\JoinColumn(name="user_id", onDelete="CASCADE")}, inverseJoinColumns={@ORM\JoinColumn(name="role_id", onDelete="CASCADE")})
      */
     private $roles;
 
     /**
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="followers", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", inversedBy="followers")
      * @ORM\JoinTable(name="users_followers",
      *     joinColumns={@ORM\JoinColumn(name="following_user_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="followed_user_id", referencedColumnName="id", onDelete="CASCADE")})

@@ -61,7 +61,7 @@ class Quote
 
     /**
      * @var LikeReaction[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\LikeReaction", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\LikeReaction")
      * @ORM\JoinTable(name="likes_quotes", joinColumns={@ORM\JoinColumn(name="quote_id", referencedColumnName="id", onDelete="CASCADE")}, inverseJoinColumns={@ORM\JoinColumn(name="like_id", referencedColumnName="id", onDelete="CASCADE")})
      */
     private $likes;
@@ -71,7 +71,6 @@ class Quote
         $this->isVisible = true;
         $this->likes = new ArrayCollection();
     }
-
 
     /**
      * Get id

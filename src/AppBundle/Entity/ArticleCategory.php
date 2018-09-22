@@ -32,7 +32,7 @@ class ArticleCategory
 
     /**
      * @var Language
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Language", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Language")
      * @ORM\JoinColumn(name="language_id", referencedColumnName="id")
      */
     private $language;

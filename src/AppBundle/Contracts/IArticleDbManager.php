@@ -89,6 +89,13 @@ interface IArticleDbManager
     function forgeSliderViewModel(array $articles): array;
 
     /**
+     * @param string $searchText
+     * @param User $author
+     * @return Article[]
+     */
+    function searchMyArticles(string $searchText, User $author) : array ;
+
+    /**
      * @param ArticleCategory $articleCategory
      * @param Pageable $pageable
      * @return Page

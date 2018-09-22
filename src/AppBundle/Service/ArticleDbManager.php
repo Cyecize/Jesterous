@@ -253,6 +253,11 @@ class ArticleDbManager implements IArticleDbManager
         return $sliderViewModelArr;
     }
 
+    public function searchMyArticles(string $searchText, User $author): array
+    {
+        return $this->articleRepo->searchMyArticles($searchText, $author);
+    }
+
     /**
      * @param ArticleCategory $articleCategory
      * @param Pageable $pageable
@@ -291,17 +296,7 @@ class ArticleDbManager implements IArticleDbManager
      */
     function search(string $searchText, Pageable $pageable): Page
     {
-        $searchText = preg_replace('/\s+/', '%', $searchText);
-        $qb = $this->articleRepo->createQueryBuilder('a');
-
-        $query = $qb
-            ->where($qb->expr()->like('a.title', ':pattern'))
-            ->orWhere($qb->expr()->like('a.summary', ':pattern'))
-            ->andWhere('a.isVisible = TRUE')
-            ->setParameter('pattern', "%$searchText%")
-            ->orderBy('a.id', 'DESC');
-
-        return new Page($query, $pageable);
+        return $this->articleRepo->searchVisible($searchText, $pageable);
     }
 
     /**
@@ -324,7 +319,7 @@ class ArticleDbManager implements IArticleDbManager
     private function estimateReadTime(string $content = null): float
     {
         if ($content == null) return 0;
-        $arr = preg_split('/\s+/', strip_tags($content));
+        $arr = preg_split('/[\s,.!?]+/', strip_tags($content));
         return count($arr) * Config::TIME_TO_READ_WORD;
     }
 

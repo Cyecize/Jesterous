@@ -2,6 +2,12 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Entity\Article;
+use AppBundle\Entity\User;
+use AppBundle\Util\Page;
+use AppBundle\Util\Pageable;
+use Doctrine\ORM\QueryBuilder;
+
 /**
  * ArticleRepository
  *
@@ -10,4 +16,53 @@ namespace AppBundle\Repository;
  */
 class ArticleRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * @param string $searchText
+     * @param Pageable $pageable
+     * @return Page
+     */
+    public function searchVisible(string $searchText, Pageable $pageable): Page
+    {
+        $qb = $this->forgeQueryBuilder($searchText);
+        $qb->andWhere('a.isVisible = TRUE');
+        return new Page($qb, $pageable);
+    }
+
+    public function searchAll(string $searchText, Pageable $pageable): Page
+    {
+        return new Page($this->forgeQueryBuilder($searchText), $pageable);
+    }
+
+    /**
+     * @param string $searchText
+     * @param User $user
+     * @return Article[]
+     */
+    public function searchMyArticles(string $searchText, User $user): array
+    {
+        $qb = $this->forgeQueryBuilder($searchText);
+        $qb
+            ->andWhere('a.author = :author')
+            ->setParameter('author', $user);
+        return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @param string $searchText
+     * @param Pageable $pageable
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    private function forgeQueryBuilder(string $searchText): QueryBuilder
+    {
+        $searchText = preg_replace('/\s+/', '%', $searchText);
+        $qb = $this->createQueryBuilder('a');
+
+        $query = $qb
+            ->where($qb->expr()->like('a.title', ':pattern'))
+            ->orWhere($qb->expr()->like('a.summary', ':pattern'))
+            ->orWhere($qb->expr()->like('a.mainContent', ':pattern'))
+            ->setParameter('pattern', "%$searchText%")
+            ->orderBy('a.id', 'DESC');
+        return $query;
+    }
 }

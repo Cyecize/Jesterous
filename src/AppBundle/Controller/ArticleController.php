@@ -16,6 +16,7 @@ use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Contracts\IMailingManager;
 use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Contracts\IUserDbManager;
+use AppBundle\Entity\Article;
 use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Form\CreateArticleType;
@@ -163,6 +164,22 @@ class ArticleController extends BaseController
             [
                 'articles' => $this->articleService->findMyArticles($this->getUser()),
             ]);
+    }
+
+    /**
+     * @Route("/articles/my/search", name="search_my_articles")
+     * @Security("has_role('ROLE_AUTHOR')")
+     * @param Request $request
+     * @return Response
+     */
+    public function searchMyArticles(Request $request)
+    {
+        $expr = $request->get('q');
+        if ($expr == null) $expr = "";
+        return $this->render('queries/my-articles-query.html.twig', [
+            'articles' => $this->articleService->searchMyArticles($expr, $this->userService->findOneById($this->getUserId()))
+        ]);
+
     }
 
     /**

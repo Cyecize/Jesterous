@@ -1,0 +1,31 @@
+<div class="article-group">
+    <div class="row mt-2 pt-1 pb-1">
+        <div class="col-lg-1 text-center">
+            <div style="max-width: 100px; margin:0 auto;" class="toggle-article">
+                <img src="{{ article.backgroundImageLink }}" width="100%">
+            </div>
+        </div>
+        <div class="col">
+            <h4 class="text-dark toggle-article" style="cursor: pointer;">{{ article.title }}</h4>
+        </div>
+    </div>
+    <div class="article-details" articleId="{{ article.id }}" style="display: none;">
+        <p class="p-0 m-0">Summary: {{ article.summary }}</p>
+        <p class="p-0 m-0">Comments: <strong>{{ article.comments|length }}</strong></p>
+        <p class="p-0 m-0">Views: <strong>{{ article.views }}</strong></p>
+        <p class="p-0 m-0">Weekly views: <strong>{{ article.dailyViews }}</strong></p>
+        <p class="p-0 m-0">Language: <strong>{{ article.category.language.localeName }}</strong></p>
+        {% if article.isVisible %}
+            <p class="p-0 m-0 text-success">Article is Visible</p>
+        {% else %}
+            <p class="p-0 m-0 text-danger">Article is Hidden</p>
+        {% endif %}
+        <p class="p-0 m-0">Likes: <span class="article-likes">N/A</span></p>
+        <p class="p-0 m-0">Shares: <span class="article-shares"></span></p>
+        <p>Actions:</p>
+        <a class="btn btn-outline-info" href="{{ path('edit_article', {'id': article.id}) }}">Edit</a>
+        <a class="btn btn-outline-info" href="{{ path('show_article', {'id': article.id}) }}"
+           target="_blank">View Article</a>
+    </div>
+</div>
+<hr class="hr-dark">
