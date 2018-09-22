@@ -2,14 +2,77 @@
 {% block sectionBody %}
     <h2 class="text-dark">My Articles</h2>
     <hr>
-    <div class="row justify-content-center">
+    <div class="">
         {% for article in articles %}
-            <div class="col-md-3 text-dark p-2 rounded bg-info m-2">
-                <h4><a href="{{ path('edit_article', {'id':article.id}) }}" class="text-dark">{{ article.id }}: {{ article.title }}</a> </h4>
-                <small>{{ article.dateAdded.format(twigInformer.simpleDateFormat) }}</small><br/>
-                <small>Comments: {{ article.comments|length }}</small><br/>
-                <small>Views: {{ article.views }}</small><br/>
+            {#<div class="col-md-3 text-dark p-2 rounded bg-info m-2">#}
+            {#<h4><a href="{{ path('edit_article', {'id':article.id}) }}" class="text-dark">{{ article.id }}: {{ article.title }}</a> </h4>#}
+            {#<small>{{ article.dateAdded.format(twigInformer.simpleDateFormat) }}</small><br/>#}
+            {#<small>Comments: {{ article.comments|length }}</small><br/>#}
+            {#<small>Views: {{ article.views }}</small><br/>#}
+            {#</div>#}
+            <div class="article-group">
+                <div class="row mt-2 pt-1 pb-1">
+                    <div class="col-lg-1 text-center">
+                        <div style="max-width: 100px; margin:0 auto;" class="toggle-article">
+                            <img src="{{ article.backgroundImageLink }}" width="100%">
+                        </div>
+                    </div>
+                    <div class="col">
+                        <h4 class="text-dark toggle-article" style="cursor: pointer;">{{ article.title }}</h4>
+                    </div>
+                </div>
+                <div class="article-details" articleId="{{ article.id }}" style="display: none;">
+                    <p class="p-0 m-0">Summary: {{ article.summary }}</p>
+                    <p class="p-0 m-0">Comments: <strong>{{ article.comments|length }}</strong></p>
+                    <p class="p-0 m-0">Views: <strong>{{ article.views }}</strong></p>
+                    <p class="p-0 m-0">Weekly views: <strong>{{ article.dailyViews }}</strong></p>
+                    <p class="p-0 m-0">Language: <strong>{{ article.category.language.localeName }}</strong></p>
+                    {% if article.isVisible %}
+                        <p class="p-0 m-0 text-success">Article is Visible</p>
+                    {% else %}
+                        <p class="p-0 m-0 text-danger">Article is Hidden</p>
+                    {% endif %}
+                    <p class="p-0 m-0">Likes: <span class="article-likes">N/A</span></p>
+                    <p class="p-0 m-0">Shares: <span class="article-shares"></span></p>
+                    <p>Actions:</p>
+                    <a class="btn btn-outline-info" href="{{ path('edit_article', {'id': article.id}) }}">Edit</a>
+                    <a class="btn btn-outline-info" href="{{ path('show_article', {'id': article.id}) }}"
+                       target="_blank">View Article</a>
+                </div>
             </div>
+            <hr class="hr-dark">
         {% endfor %}
     </div>
+{% endblock %}
+
+{% block sectionScripts %}
+    <script>
+        var articleUrl = "{{ url('homepage') }}articles/";
+        $(function () {
+            var articlesDetailsHolders = $('.article-details');
+            var articleTogglers = $('.toggle-article');
+
+            articleTogglers.on('click', function () {
+                var targetArticleDetails = $(this).parent().parent().parent().find('.article-details');
+                var isDivToBeShown = targetArticleDetails.css('display') === 'none';
+                articlesDetailsHolders.hide();
+                if (isDivToBeShown) {
+                    targetArticleDetails.show(200);
+                    var articleId = targetArticleDetails.attr('articleId');
+                    var fbLikesUrl = 'https://graph.facebook.com/?fields=og_object{likes.summary(total_count).limit(0)},share&id=' + articleUrl + articleId;
+                    $.ajax({
+                        method: "GET",
+                        url: fbLikesUrl,
+                        success: function (data) {
+                            if (data) {
+                                if (data['og_object'])
+                                    targetArticleDetails.find('.article-likes').html(data['og_object']['likes']['summary']['total_count']);
+                                targetArticleDetails.find('.article-shares').html(data['share']['share_count']);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+    </script>
 {% endblock %}

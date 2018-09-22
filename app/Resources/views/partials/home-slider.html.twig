@@ -19,7 +19,8 @@
                                         </a>
                                     </div>
                                     <div class="home_slider_item_title">
-                                        <a href="{{ path('show_article', {'id':sliderItem.article.id}) }}">{{ sliderItem.article.title }}</a>
+                                        <a href="{{ path('show_article', {'id':sliderItem.article.id}) }}">{{ sliderItem.article.title }}</a><br>
+                                        <span>{{ sliderItem.article.summary }}</span>
                                     </div>
                                     <div class="home_slider_item_link">
                                         <a href="{{ path('show_article', {'id': sliderItem.article.id}) }}" class="text-light">

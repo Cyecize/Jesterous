@@ -25,7 +25,7 @@
                         {% embed 'partials/articles/article-author-info-panel.html.twig' with {'article':article} %} {% endembed %}
                         <!-- Post Body -->
                         <div class="post_body ">
-                            <div class="pb-2"><p class="text-dark">{{ article.summary }}</p></div>
+                            {#<div class="pb-2"><p class="text-dark">{{ article.summary }}</p></div>#}
                             <div class="ql-editor ql-snow">
                                 {{ article.mainContent|raw }}
                             </div>
