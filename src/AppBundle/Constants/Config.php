@@ -9,6 +9,8 @@
 namespace AppBundle\Constants;
 
 
+use AppBundle\Util\YamlParser;
+
 class Config
 {
     public const DEFAULT_TIMEZONE = "Europe/Sofia";
@@ -33,5 +35,8 @@ class Config
 
     public const MAILER_SENDER_NAME = "Jesterous.net";
 
-    public const FB_APP_ID = "431697957339837";
+    public static function getAppId() : string {
+        return YamlParser::getFbAppId();
+       //return "431697957339837";
+    }
 }

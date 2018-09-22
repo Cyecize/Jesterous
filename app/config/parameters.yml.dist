@@ -15,6 +15,7 @@ parameters:
     mailer_user: ~
     mailer_password: ~
     mailer_port: ~
+    fb_app_id: 123456
 
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt

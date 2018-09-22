@@ -89,7 +89,7 @@ class TwigInformer
     }
 
     public function appId() : string {
-        return Config::FB_APP_ID;
+        return Config::getAppId();
     }
 
     public function getBanner() : Banner{

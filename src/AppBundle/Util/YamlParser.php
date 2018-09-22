@@ -41,6 +41,10 @@ class YamlParser
         return self::getFile()["parameters"]["mailer_user"];
     }
 
+    public static function getFbAppId() : string {
+        return self::getFile()["parameters"]["fb_app_id"];
+    }
+
     private static function getFile() : array {
         return Yaml::parse(file_get_contents(self::$FILE_PATH));
     }
