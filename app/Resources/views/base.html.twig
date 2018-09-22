@@ -14,10 +14,10 @@
     <!-- facebook  -->
     <meta property="fb:app_id" content="{% block fpApp %}{{ twigInformer.appId }}{% endblock %}">
     <meta property="og:type" content="{% block ogType %}website{% endblock %}"/>
-    <meta property="og:url" content="{% block ogUrl %}178.239.112.78{% endblock %}"/>
+    <meta property="og:url" content="{% block ogUrl %}{{ url('homepage') }}{% endblock %}"/>
     <meta property="og:title" content="{% block ogTitle %}Jesterous{% endblock %}"/>
     <meta property="og:image"
-          content="{% block ogImage %}{{ url('homepage') }}images/category.jpg{% endblock %}"/>
+          content="{% block ogImage %}{{ url('homepage')|trim('/', 'right') }}{{ twigInformer.getBanner().imageLink }}{% endblock %}"/>
     <meta property="og:description" content="{% block ogDescription %}{% embed 'partials/lang/'~ localLang.getLocalLang ~ '/website-description.html.twig' %}{% endembed %}{% endblock %}"/>
     {% block facebookMetas %} {% endblock %}
     <!-- end facebook -->
