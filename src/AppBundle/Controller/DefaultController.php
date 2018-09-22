@@ -104,4 +104,12 @@ class DefaultController extends BaseController
         ));
     }
 
+    /**
+     * @Route("/privacy", name="privacy_policy")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function privacy(){
+        return $this->render('default/privacy-policy.html.twig');
+    }
+
 }

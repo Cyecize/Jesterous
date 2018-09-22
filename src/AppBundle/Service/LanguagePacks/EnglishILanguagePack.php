@@ -121,6 +121,41 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const  COMMENT_MESSAGE_FORMAT = "%s mentioned you in a comment!";
 
+    public const  TIME_YOU_WILL_SPEND = "You will spend: %s of your day";
+
+    public const  LESS_THAN_MINUTE = "less than a minute";
+
+    public const  ABOUT_N_MINUTES = "about %d minutes";
+
+    public const  ABOUT_AN_HOUR = "about an hour";
+
+    public const  ABOUT_N_HOURS = "about %d hours";
+
+    function timeYouWillSpendFormat(): string
+    {
+        return self::TIME_YOU_WILL_SPEND;
+    }
+
+    function lessThanAMinute(): string
+    {
+        return self::LESS_THAN_MINUTE;
+    }
+
+    function aboutNMinutesFormat(): string
+    {
+        return self::ABOUT_N_MINUTES;
+    }
+
+    function aboutAnHour(): string
+    {
+        return self::ABOUT_AN_HOUR;
+    }
+
+    function aboutNHoursFormat(): string
+    {
+        return self::ABOUT_N_HOURS;
+    }
+
     public function commentMessageFormat(): string
     {
         return self::COMMENT_MESSAGE_FORMAT;

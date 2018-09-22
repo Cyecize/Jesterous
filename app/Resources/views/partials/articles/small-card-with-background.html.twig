@@ -8,7 +8,8 @@
                     href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a>
         </div>
         <small class="post_meta ">
-            <a href="#" class="text-light">{{ article.author.username }}</a>
+            <a href="{{ path('user_details', {'username': article.author.username }) }}"
+               class="text-light">{{ article.author.username }}</a>
             <span class="text-light">{{ article.dateAdded.format("d - M - Y") }}</span>
             <span class="pull-right text-info font-weight-bold">{{ article.category.language.localeName }}</span>
         </small>

@@ -139,5 +139,15 @@ interface ILanguagePack
 
     function changeProfilePicture(): string;
 
-    function commentMessageFormat() : string ;
+    function commentMessageFormat(): string;
+
+    function timeYouWillSpendFormat(): string;
+
+    function lessThanAMinute(): string;
+
+    function aboutNMinutesFormat(): string;
+
+    function aboutAnHour(): string;
+
+    function aboutNHoursFormat() : string ;
 }

@@ -35,6 +35,8 @@ class Config
 
     public const MAILER_SENDER_NAME = "Jesterous.net";
 
+    public const TIME_TO_READ_WORD = 0.4;
+
     public static function getAppId() : string {
         return YamlParser::getFbAppId();
        //return "431697957339837";

@@ -1,0 +1,25 @@
+{%  extends 'base.html.twig' %}
+
+{% block title %} {% endblock %}
+
+{% block body %}
+    {% embed 'partials/banner.html.twig' %} {% endembed %}
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+                <div class="col-lg-9 pt-2 pb-2 text-dark bg-white">
+                    {% embed 'partials/lang/' ~ localLang.getLocalLang ~ '/privacy.html.twig' %} {% endembed %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/category.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/contact_responsive.css') }}">
+{% endblock %}

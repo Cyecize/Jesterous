@@ -87,8 +87,15 @@ class Article
     private $dailyViews;
 
     /**
+     * @var float
+     * @ORM\Column(name="estimated_read_time", type="float", options={"default":0})
+     */
+    private $estimatedReadTime;
+
+
+    /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User", fetch="EAGER")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(name="author_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $author;
@@ -96,7 +103,7 @@ class Article
 
     /**
      * @var ArticleCategory
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ArticleCategory", fetch="EAGER", inversedBy="articles")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ArticleCategory", inversedBy="articles")
      * @ORM\JoinColumn(name="category_id", referencedColumnName="id")
      */
     private $category;
@@ -104,13 +111,13 @@ class Article
 
     /**
      * @var Comment[]
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="article", fetch="EAGER")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Comment", mappedBy="article")
      */
     private $comments;
 
     /**
      * @var Tag[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag", fetch="EAGER")
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Tag")
      * @ORM\JoinTable(name="articles_tags", joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id", onDelete="CASCADE")},
      *     inverseJoinColumns={@ORM\JoinColumn(name="tag_id", referencedColumnName="id", onDelete="CASCADE")})
      */
@@ -338,6 +345,21 @@ class Article
         $this->dailyViews = $dailyViews;
     }
 
+    /**
+     * @param float $estimatedReadTime
+     */
+    public function setEstimatedReadTime(float $estimatedReadTime): void
+    {
+        $this->estimatedReadTime = $estimatedReadTime;
+    }
+
+    /**
+     * @return float
+     */
+    public function getEstimatedReadTime(): float
+    {
+        return $this->estimatedReadTime;
+    }
 
     /**
      * @return User

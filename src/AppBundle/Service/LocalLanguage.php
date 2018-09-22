@@ -98,6 +98,31 @@ class LocalLanguage implements ILanguagePack
     }
 
     //IMPLEMENTATIONS
+    function timeYouWillSpendFormat(): string
+    {
+        return $this->languagePack->timeYouWillSpendFormat();
+    }
+
+    function lessThanAMinute(): string
+    {
+        return $this->languagePack->lessThanAMinute();
+    }
+
+    function aboutNMinutesFormat(): string
+    {
+        return $this->languagePack->aboutNMinutesFormat();
+    }
+
+    function aboutAnHour(): string
+    {
+        return $this->languagePack->aboutAnHour();
+    }
+
+    function aboutNHoursFormat(): string
+    {
+        return $this->languagePack->aboutNHoursFormat();
+    }
+
     public function commentMessageFormat(): string
     {
         return $this->languagePack->commentMessageFormat();

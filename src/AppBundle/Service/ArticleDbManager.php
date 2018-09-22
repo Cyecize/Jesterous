@@ -139,6 +139,7 @@ class ArticleDbManager implements IArticleDbManager
 
         $article = $this->modelMapper->map($bindingModel, Article::class);
         $article->setTags(new ArrayCollection());
+        $article->setEstimatedReadTime($this->estimateReadTime($article->getMainContent()));
         foreach ($tags as $tag) $article->addTag($tag);
         $article->setAuthor($this->userDbManager->findOneById($author->getId()));
         $article->setCategory($category);
@@ -164,6 +165,7 @@ class ArticleDbManager implements IArticleDbManager
 
         $article = $this->modelMapper->merge($bindingModel, $article);
         $article->setTags(new ArrayCollection());
+        $article->setEstimatedReadTime($this->estimateReadTime($article->getMainContent()));
         foreach ($tags as $tag) $article->addTag($tag);
         $article->setCategory($category);
         $article->setIsVisible($bindingModel->isVisible());
@@ -256,7 +258,7 @@ class ArticleDbManager implements IArticleDbManager
      * @param Pageable $pageable
      * @return Page
      */
-    function findArticlesByCategory(ArticleCategory $articleCategory,Pageable $pageable): Page
+    function findArticlesByCategory(ArticleCategory $articleCategory, Pageable $pageable): Page
     {
         $cats = $articleCategory->getChildrenCategoriesRecursive();
         $cats[] = $articleCategory;
@@ -316,6 +318,14 @@ class ArticleDbManager implements IArticleDbManager
             ->setParameter('tag', $tag)
             ->orderBy('a.dailyViews', 'DESC');
         return new Page($query, $pageable);
+    }
+
+    //private logic
+    private function estimateReadTime(string $content = null): float
+    {
+        if ($content == null) return 0;
+        $arr = preg_split('/\s+/', strip_tags($content));
+        return count($arr) * Config::TIME_TO_READ_WORD;
     }
 
 }

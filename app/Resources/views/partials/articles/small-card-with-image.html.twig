@@ -5,6 +5,6 @@
         <div class="card-title card-title-small">
             <a href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a>
         </div>
-        <small class="post_meta"><a href="#">{{ article.author.username }}</a><span>{{ article.dateAdded.format("d - M - Y") }}</span></small>
+        <small class="post_meta"><a href="{{ path('user_details', {'username':article.author.username}) }}">{{ article.author.username }}</a><span>{{ article.dateAdded.format("d - M - Y") }}</span></small>
     </div>
 </div>

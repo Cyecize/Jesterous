@@ -121,14 +121,49 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const  COMMENT_MESSAGE_FORMAT = "%s ви спомена в коментар!";
 
+    public const  TIME_YOU_WILL_SPEND = "Ще похарчите: %s от деня си";
+
+    public const  LESS_THAN_MINUTE = "по-малко от минута";
+
+    public const  ABOUT_N_MINUTES = "около %d минути";
+
+    public const  ABOUT_AN_HOUR = "около един час";
+
+    public const  ABOUT_N_HOURS = "около %d часа";
+
+    function timeYouWillSpendFormat(): string
+    {
+        return self::TIME_YOU_WILL_SPEND;
+    }
+
+    function lessThanAMinute(): string
+    {
+        return self::LESS_THAN_MINUTE;
+    }
+
+    function aboutNMinutesFormat(): string
+    {
+        return self::ABOUT_N_MINUTES;
+    }
+
+    function aboutAnHour(): string
+    {
+        return self::ABOUT_AN_HOUR;
+    }
+
+    function aboutNHoursFormat(): string
+    {
+        return self::ABOUT_N_HOURS;
+    }
+
     public function commentMessageFormat(): string
     {
-       return self::COMMENT_MESSAGE_FORMAT;
+        return self::COMMENT_MESSAGE_FORMAT;
     }
 
     function profile(): string
     {
-       return self::PROFILE;
+        return self::PROFILE;
     }
 
     function changePassword(): string
@@ -158,12 +193,12 @@ class BulgarianILanguagePack implements ILanguagePack
 
     function messageWasSent(): string
     {
-      return self::MESSAGE_SENT;
+        return self::MESSAGE_SENT;
     }
 
     public function successfullyUnsubscribed(): string
     {
-      return self::SUCCESSFULLY_UNSUBBED;
+        return self::SUCCESSFULLY_UNSUBBED;
     }
 
     public function newArticleFormat(): string
@@ -198,7 +233,7 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public function share(): string
     {
-       return self::SHARE;
+        return self::SHARE;
     }
 
     public function views(): string
@@ -253,10 +288,10 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public function previous(): string
     {
-       return self::PREVIOUS;
+        return self::PREVIOUS;
     }
 
-    public function trendingArticles() : string
+    public function trendingArticles(): string
     {
         return self::TRENDING_ARTICLES;
     }
@@ -441,7 +476,8 @@ class BulgarianILanguagePack implements ILanguagePack
         return self::SIMILAR;
     }
 
-    function about() : string {
+    function about(): string
+    {
         return self::ABOUT;
     }
 }

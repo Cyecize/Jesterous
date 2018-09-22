@@ -12,6 +12,9 @@
                                 </a>
                             </div>
                             {% embed 'partials/lang/' ~  localLang.getLocalLang  ~ '/about-us-footer.html.twig' %} {% endembed %}
+                            <div class="text-left">
+                                <a href="{{ path('privacy_policy') }}">Privacy Policy</a>
+                            </div>
                         </div>
                         <div class="col-md-6">
                             <div class="footer_logo">
@@ -52,7 +55,7 @@
                                 {% endif %}
                                 Copyright &copy;<script>document.write(new Date().getFullYear());</script>
                                 | Avision by <a href="https://colorlib.com" target="_blank">Colorlib</a><br>
-                                Website created by <a href="https://www.linkedin.com/in/cyecize/" target="_blank"> Tsvetelin Yakimov</a>
+                                Website created by <a href="https://www.linkedin.com/in/cyecize/" target="_blank"> Tsvetelin Yakimov</a><br/>
                             </div>
                         </div>
                     </div>
