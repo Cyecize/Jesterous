@@ -10,6 +10,10 @@
         <small class="post_meta">
             <a href="{{ path('user_details', {'username':article.author.username}) }}">{{ article.author.username }}</a><span>{{ article.dateAdded.format(twigInformer.simpleDateFormat) }}</span>
         </small>
-
+        {% if app.user %}
+            <div>
+                {% embed 'partials/articles/article-star.html.twig' with {'article':article} %} {% endembed %}
+            </div>
+        {% endif %}
     </div>
 </div>

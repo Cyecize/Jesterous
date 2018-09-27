@@ -88,12 +88,22 @@ class User implements UserInterface
      */
     private $followers;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Article", inversedBy="usersThatStarred")
+     * @ORM\JoinTable(name="users_starred_articles",
+     *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id", onDelete="CASCADE")},
+     *      inverseJoinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id", onDelete="CASCADE")})
+     * @var Article[]
+     */
+    private $starredArticles;
+
     public function __construct()
     {
         $this->dateRegistered = new \DateTime('now', new \DateTimeZone(Config::DEFAULT_TIMEZONE));
         $this->roles = new ArrayCollection();
         $this->following = new ArrayCollection();
         $this->followers = new ArrayCollection();
+        $this->starredArticles = new ArrayCollection();
     }
 
     /**
@@ -290,7 +300,7 @@ class User implements UserInterface
      */
     public function getSalt()
     {
-        // TODO: Implement getSalt() method.
+
     }
 
     /**
@@ -301,7 +311,7 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        // TODO: Implement eraseCredentials() method.
+
     }
 
     /**
@@ -336,6 +346,21 @@ class User implements UserInterface
         $this->followers = $followers;
     }
 
+    /**
+     * @return Article[]
+     */
+    public function getStarredArticles()
+    {
+        return $this->starredArticles;
+    }
+
+    /**
+     * @param Article[] $starredArticles
+     */
+    public function setStarredArticles(array $starredArticles): void
+    {
+        $this->starredArticles = $starredArticles;
+    }
 
     public function addRole(Role $role)
     {
@@ -373,5 +398,20 @@ class User implements UserInterface
         return $this->following->contains($celeb);
     }
 
+    public function addStarredArticle(Article $article)
+    {
+        if (!$this->starredArticles->contains($article))
+            $this->starredArticles->add($article);
+    }
+
+    public function removeStarredArticle(Article $article)
+    {
+        if ($this->starredArticles->contains($article))
+            $this->starredArticles->removeElement($article);
+    }
+
+    public function hasUserStarred(Article $article) : bool {
+        return $this->starredArticles->contains($article);
+    }
 }
 

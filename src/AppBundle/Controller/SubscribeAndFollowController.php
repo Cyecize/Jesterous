@@ -9,12 +9,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\BindingModel\NotificationBindingModel;
+use AppBundle\Contracts\IArticleAsMessageManager;
 use AppBundle\Contracts\IGlobalSubscriberDbManager;
 use AppBundle\Contracts\IMailingManager;
 use AppBundle\Contracts\IMailSenderManager;
 use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\User;
+use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Exception\IllegalArgumentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Form\NotificationType;
@@ -60,6 +62,23 @@ class SubscribeAndFollowController extends BaseController
     }
 
     /**
+     * @Route("/subscribe", name="subscribe_page")
+     * @param IArticleAsMessageManager $articleAsMessage
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function subscribePageAction(IArticleAsMessageManager $articleAsMessage)
+    {
+        $articleContent = null;
+        try {
+            $articleContent = $articleAsMessage->getSubscribeMessage($this->currentLang)->getMainContent();
+        } catch (ArticleNotFoundException $e) {
+        }
+        return $this->render('default/subscribe-page.html.twig', [
+            'articleContent'=>$articleContent,
+        ]);
+    }
+
+    /**
      * @Route("/unsubscribe", name="unsubscribe")
      * @param Request $request
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
@@ -82,21 +101,26 @@ class SubscribeAndFollowController extends BaseController
     /**
      * @Route("/subscribe/global", name="subscribe_global", methods={"POST"})
      * @param Request $request
+     * @param IArticleAsMessageManager $articleAsMessage
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      */
-    public function subscribeToWebsiteAction(Request $request)
+    public function subscribeToWebsiteAction(Request $request, IArticleAsMessageManager $articleAsMessage)
     {
         $mail = $request->get('email');
         if (!filter_var($mail, FILTER_VALIDATE_EMAIL) || !$this->isCsrfTokenValid('token', $request->get('token')))
             return $this->redirectToRoute('homepage', ['error' => $this->language->invalidEmailAddress()]);
         try {
-            $this->subscriberDbService->createSubscriber($mail);
+            $sub = $this->subscriberDbService->createSubscriber($mail);
+            try {
+                $article = $articleAsMessage->getSubscribeReward($this->currentLang);
+                $this->mailingManager->sendMessageToNewSubscriber($sub, $article);
+            } catch (ArticleNotFoundException $e) {
+            }
         } catch (IllegalArgumentException $e) {
             return $this->redirectToRoute('homepage', ['error' => $e->getMessage()]);
         }
         return $this->render('default/subscribe-successful.html.twig');
     }
-
 
     /**
      * @Route("/author/followers/my", name="author_followers")

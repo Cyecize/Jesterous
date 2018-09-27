@@ -1,0 +1,8 @@
+{% extends 'default/categories.html.twig' %}
+{% block javascripts %}
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
+    <script src="{{ asset('styles/js/load-more.js') }}"></script>
+    <script>
+        var loadMoreManager = new LoadMoreManager('{{ path('browse_articles_load_more', {'lang':localLang.getLocalLang}) }}', 'load_more', 'catArticlesHolder');
+    </script>
+{% endblock %}

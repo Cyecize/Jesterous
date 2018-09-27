@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 use AppBundle\Entity\User;
+use AppBundle\Util\Page;
+use AppBundle\Util\Pageable;
 
 /**
  * UserRepository
@@ -25,5 +27,4 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
-
 }

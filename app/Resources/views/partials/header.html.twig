@@ -3,12 +3,16 @@
         <div class="row">
             <div class="col">
                 <div class="header_content d-flex flex-row align-items-center justify-content-start">
-                    <div class="logo"><a href="/"><img src="{{ asset('images/jesterous-logo.png') }}" class="logo" style="max-height: 80px;" alt="">
-                            <span class="font-kirang-hearang">{{ twigInformer.websiteName }}</span></a></div>
+                    <div class="logo">
+                        <a href="/">
+                            <img src="{{ asset('images/jesterous-logo.png') }}" class="logo" style="max-height: 66px;">
+                            <span class="font-kirang-hearang">{{ twigInformer.websiteName }}</span>
+                        </a>
+                    </div>
                     <nav class="main_nav">
                         <ul>
                             <li class="route-"><a href="/">{{ localLang.home }}</a></li>
-                            <li class="route-categories"><a href="{{ path('categories_page') }}">{{ localLang.blogPosts }}</a></li>
+                            <li class="route-categories"><a href="{{ path('browse_articles') }}">{{ localLang.blogPosts }}</a></li>
                             <li class="route-contacts"><a href="{{ path('contacts_page') }}">{{ localLang.contacts }}</a></li>
                             {% if app.user %}
                                 <li class="route-logout"><a href="{{ path('user_panel') }}">{{ localLang.profile }}</a> </li>
@@ -24,6 +28,9 @@
                             <div class="weather position-relative">
                                 <i class="fa fa-bell" id="notificationsBtn"></i>
                                 <div id="hidden-noti-bar" class="notifications-section">Shiiiet</div>
+                            </div>
+                            <div class="weather position-relative">
+                                <a href="{{ path('my_starred_articles') }}"> <i class="fa fa-star text-warning" id="starredBtn"></i></a>
                             </div>
                         {% endif %}
                         <div class="weather">

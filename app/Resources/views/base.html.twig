@@ -14,7 +14,7 @@
     <!-- facebook  -->
     <meta property="fb:app_id" content="{% block fpApp %}{{ twigInformer.appId }}{% endblock %}">
     <meta property="og:type" content="{% block ogType %}website{% endblock %}"/>
-    <meta property="og:url" content="{% block ogUrl %}{{ url('homepage') }}{% endblock %}"/>
+    <meta property="og:url" content="{{ app.request.uri }}"/>
     <meta property="og:title" content="{% block ogTitle %}Jesterous{% endblock %}"/>
     <meta property="og:image"
           content="{% block ogImage %}{{ url('homepage')|trim('/', 'right') }}{{ twigInformer.getBanner().imageLink }}{% endblock %}"/>

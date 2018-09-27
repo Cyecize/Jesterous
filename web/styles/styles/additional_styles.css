@@ -6,11 +6,13 @@ Table of content
 
 2-> header
     2.1 notifications
-
+    2.2 starred articles
 
 3-> Back to Top Btn
 
 4 -> hovers
+
+5 -> footer
 
  */
 
@@ -50,7 +52,7 @@ Table of content
     white-space: pre-wrap;
 }
 
-.all-copy  {
+.all-copy {
     -webkit-user-select: all;
     -moz-user-select: all;
     -ms-user-select: all;
@@ -67,7 +69,7 @@ Table of content
 }
 
 header .logo a {
-    font-size: 40px;
+    font-size: 35px;
     text-transform: none;
     font-weight: 100;
     -webkit-transition: all 0.3s;
@@ -107,6 +109,21 @@ header .logo a {
 }
 
 /*!notifications*/
+
+/*Starred articles*/
+.starred-article, .unstarred-article {
+    font-size: 1.5em;
+}
+
+.starred-article {
+    color: #ffc107;
+}
+
+.unstarred-article {
+    color: #17a2b8;
+}
+
+/*!Starred articles*/
 
 /*!header */
 
@@ -153,7 +170,7 @@ header .logo a {
  */
 
 /*Hovers*/
-.author-img-overlay{
+.author-img-overlay, .smooth {
     -webkit-transition: all 0.5s;
     -moz-transition: all 0.5s;
     -ms-transition: all 0.5s;
@@ -161,12 +178,53 @@ header .logo a {
     transition: all 0.5s;
 }
 
-.author-img-overlay:hover{
-    -webkit-box-shadow:  5px 4px 10px rebeccapurple;
-    -moz-box-shadow:  5px 4px 10px rebeccapurple;
-    box-shadow:  5px 4px 10px rebeccapurple;
+
+.author-img-overlay:hover {
+    -webkit-box-shadow: 5px 4px 10px rebeccapurple;
+    -moz-box-shadow: 5px 4px 10px rebeccapurple;
+    box-shadow: 5px 4px 10px rebeccapurple;
 }
+
+.starred-article:hover {
+    color: #17a2b8;
+}
+
+.unstarred-article:hover {
+    color: #ffc107;
+}
+
 /*!Hovers*/
+
+/*footer*/
+.subscribe_bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 375px;
+    height: 100%;
+    background: #111111;
+}
+
+.sidebar_bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 375px;
+    height: 100%;
+    background: #ededed;
+}
+
+/*!footer*/
+
+@media screen and (max-width: 1382px) {
+    .subscribe_bg {
+        display: none;
+    }
+
+    .sidebar_bg {
+        display: none;
+    }
+}
 
 @media screen and (max-width: 1280px) {
     header .logo a {

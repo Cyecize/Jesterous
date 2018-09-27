@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+{% block title %}Jesterous: {{ localLang.starredArticles }}{% endblock %}
+{% block body %}
+    {% embed 'partials/banner.html.twig' %} {% endembed %}
+
+    <!-- Page Content -->
+
+    <div class="page_content">
+        <div class="container">
+            <div class="row row-lg-eq-height">
+                <!-- Main Content -->
+                <div class="col-lg-9">
+                    <div class="main_content">
+                        <div class="category">
+                            <div class="section_content">
+                                <h3 class="font-kirang-hearang text-info">{{ localLang.starredArticles }}
+                                    <small>({{ viewModel.page.itemsCount }})</small>
+                                </h3>
+                                <div class="grid clearfix" id="starredArticlesHolder" style="min-height: 250px;">
+                                    {% embed 'partials/articles/articles-cards-renderer.html.twig' with {'articles':viewModel.articles} %} {% endembed %}
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="load_more">
+                        {% if viewModel.page.pages > viewModel.page.pageable.page %}
+                            <div id="load_more"
+                                 class="load_more_button text-center trans_200">{{ localLang.loadMore }}</div>
+                        {% endif %}
+                    </div>
+                    {% embed 'partials/quotes/main-content-quote.html.twig' %} {% endembed %}
+                </div>
+
+                <!-- Sidebar -->
+                {% embed 'partials/sidebar/sidebar.html.twig' %}
+                    {% block sections %}
+                        {% embed 'partials/sidebar/top-stories-section.html.twig' %} {% endembed %}
+                    {% endblock %}
+                {% endembed %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/category.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/category_responsive.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
+    <script src="{{ asset('styles/js/load-more.js') }}"></script>
+    <script>
+        var loadMoreManager = new LoadMoreManager('{{ path('my_starred_articles_page') }}', 'load_more', 'starredArticlesHolder');
+    </script>
+{% endblock %}

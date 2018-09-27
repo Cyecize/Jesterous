@@ -28,7 +28,9 @@
                                     <ul>
                                         {#<li class="active"><a href="category.html">all</a></li>#}
                                         {% for cat in categories %}
-                                            <li><a href="{{ path('category_details', {'catName':cat.categoryName}) }}">{{ cat.categoryName }}</a></li>
+                                            <li>
+                                                <a href="{{ path('category_details', {'catName':cat.categoryName}) }}">{{ cat.categoryName }}</a>
+                                            </li>
                                         {% endfor %}
                                     </ul>
                                 </div>
@@ -78,7 +80,12 @@
                             <div class="section_panel d-flex flex-row align-items-center justify-content-start">
                                 <div class="section_title">{{ localLang.subscribe }}</div>
                             </div>
-                            {% embed 'partials/lang/' ~  localLang.localLang ~'/subscribe-form.html.twig' %}{% endembed %}
+                            <div class="mt-2">
+                                <div class="text-dark">{{ subscribeMessage|raw }}</div>
+                                <div class="well">
+                                    {% embed 'partials/lang/' ~  localLang.localLang ~'/subscribe-form.html.twig' %}{% endembed %}
+                                </div>
+                            </div>
                         </div>
 
                         {% embed 'partials/quotes/main-content-quote.html.twig' %} {% endembed %}
@@ -98,7 +105,8 @@
                     </div>
                     <div class="load_more">
                         {% if latestPosts.pages > latestPosts.pageable.page %}
-                            <div id="load_more" class="load_more_button text-center trans_200">{{ localLang.loadMore }}</div>
+                            <div id="load_more"
+                                 class="load_more_button text-center trans_200">{{ localLang.loadMore }}</div>
                         {% endif %}
                     </div>
                 </div>
@@ -127,7 +135,7 @@
     <script src="{{ asset('styles/js/custom.js') }}"></script>
     <script src="{{ asset('styles/js/load-more.js') }}"></script>
     <script>
-       var loadMoreManager = new LoadMoreManager('{{ path('latest_articles_load_more') }}', 'load_more', 'latestPostsHolder');
+        var loadMoreManager = new LoadMoreManager('{{ path('latest_articles_load_more') }}', 'load_more', 'latestPostsHolder');
     </script>
     <script>
 

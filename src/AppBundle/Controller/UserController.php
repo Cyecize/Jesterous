@@ -21,8 +21,7 @@ use AppBundle\Service\LocalLanguage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
-use Symfony\Component\Security\Csrf\TokenStorage\TokenStorageInterface;
+
 
 class UserController extends BaseController
 {
@@ -32,6 +31,9 @@ class UserController extends BaseController
      */
     private $userService;
 
+    /**
+     * @var IArticleDbManager
+     */
     private $articleService;
 
     public function __construct(LocalLanguage $language, IUserDbManager $userDbManager, IArticleDbManager $articleDbManager)
@@ -180,4 +182,5 @@ class UserController extends BaseController
             'error'=>$request->get('error'),
         ]);
     }
+
 }

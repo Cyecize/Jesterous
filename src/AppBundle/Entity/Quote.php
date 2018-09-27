@@ -207,7 +207,8 @@ class Quote
      */
     public function getLikes(): ArrayCollection
     {
-        return $this->likes->unwrap();
+        return new ArrayCollection($this->likes->toArray());
+        //return $this->likes;
     }
 
     /**

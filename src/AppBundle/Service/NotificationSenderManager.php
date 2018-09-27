@@ -23,7 +23,7 @@ class NotificationSenderManager implements INotificationSenderManager
 {
     private const ON_USER_REGISTER_FORMAT = "%s has joined the blog. See his details.";
     private const ON_USER_REGISTER_HREF_FORMAT = "/users/show/%s";
-    private const ON_NEW_ARTICLE_FORMAT = "/articles/%d";
+    private const ON_NEW_ARTICLE_FORMAT = "/post/%d";
     private const USER_NOT_FOLLOWER = "User does not follow you!";
     private const USER_FOLLOWED_YOU_FORMAT = "%s just followed you!";
     private const ON_FEEDBACK_FORMAT = "%s with email %s has asked something, check your email!";

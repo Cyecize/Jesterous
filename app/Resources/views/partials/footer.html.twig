@@ -1,4 +1,4 @@
-<footer class="footer">
+<footer class="footer" style="background: linear-gradient(to left, rgba(150, 111, 51,0.5), rgba(0,0,0,0.95)), url('{{ asset('images/plank.jpg') }}');">
     <div class="container">
         <div class="row row-lg-eq-height">
 
@@ -46,7 +46,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div class="copyright">
+                            <div class="copyright text-white">
                                 {% if is_granted('ROLE_AUTHOR') %}
                                     <a href="{{ path('author_panel') }}">Author panel</a><br/>
                                 {% endif %}
@@ -64,16 +64,9 @@
             </div>
             <div class="col-lg-3  order-3">
                 <div class="subscribe">
-                    <div class="subscribe_background"></div>
+                    <div class="subscribe_bg"></div>
                     <div class="subscribe_content">
-                        <div class="subscribe_title">{{ localLang.subscribe }}</div>
-                        <form action="{{ path('subscribe_global') }}" method="POST">
-                            <input type="email" class="sub_input" name="email" placeholder="{{ localLang.yourEmail }}" required="required">
-                            <input type="hidden"  name="token" value="{{ csrf_token('token') }}" required="required">
-                            <button class="sub_button">
-                                <i class="fa fa-long-arrow-right text-light" aria-hidden="true"></i>
-                            </button>
-                        </form>
+                         <a class="btn btn-outline-primary" href="{{ path('subscribe_page') }}">{{ localLang.subscribe }}</a>
                     </div>
                 </div>
             </div>

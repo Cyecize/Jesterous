@@ -1,6 +1,7 @@
-<form method="post" enctype="multipart/form-data" action="{{ path('security_register') }}" name="authenticate" class="mt-1 mb-1">
+<form method="post" enctype="multipart/form-data" action="{{ path('security_register') }}" name="authenticate"
+      class="mt-1 mb-1">
 
-    <h3 class="text-dark">Register</h3>
+    <h3 class="text-dark">{{ localLang.register }}</h3>
     {% if errors %}
         {% for err in errors %}
             <h5 class="alert alert-danger">{{ localLang.forName(err.message) }}</h5>
@@ -10,30 +11,51 @@
     {% if error %}
         <h5 class="alert alert-danger">{{ error }}</h5>
     {% endif %}
+    <div class="row">
+        <div class="text-dark col-md-6">
 
-    <div class="text-dark col-md-6">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input id="username" name="user_register[username]" maxlength="35" value="{{ userform.username }}"
+                       type="text" required placeholder="Username" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="email">Email </label>
+                <input id="email" name="user_register[email]" maxlength="35" value="{{ userform.email }}" type="email"
+                       required placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input id="password" minlength="{{ twigInformer.passwordMinLength }}" name="user_register[password]"
+                       type="password" maxlength="20" required
+                       placeholder="At least {{ twigInformer.passwordMinLength }} characters" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="passwordConf">Confirm Password</label>
+                <input id="passwordConf" name="user_register[confPassword]" type="password" required
+                       placeholder="Conf password" class="form-control">
+            </div>
 
-        <div class="form-group">
-            <label for="username">Username</label>
-            <input id="username" name="user_register[username]" maxlength="35" value="{{ userform.username }}" type="text" required placeholder="Username" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="email">Email </label>
-            <input id="email" name="user_register[email]" maxlength="35" value="{{ userform.email }}" type="email" required placeholder="Email"  class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="password">Password</label>
-            <input id="password" minlength="{{ twigInformer.passwordMinLength }}" name="user_register[password]" type="password" maxlength="20" required placeholder="At least {{ twigInformer.passwordMinLength }} characters" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="passwordConf">Confirm Password</label>
-            <input id="passwordConf" name="user_register[confPassword]" type="password" required placeholder="Conf password" class="form-control">
-        </div>
+            {{ form_row(form._token) }}
 
-        {{ form_row(form._token) }}
-
-        <div class="actions"><input tabindex="9" class="btn btn-primary " type="submit" value="Register"></div>
+            <div class="actions text-right"><input tabindex="9" class="btn btn-outline-primary " type="submit" value="{{ localLang.register }}"></div>
+        </div>
+        <div class="text-dark col-md-6">
+            <h4>Why should I sign up for Jesterous?</h4>
+            <p class="text-dark">Signing up for our blog enables various features that you can use to enrich your reading experience.</p>
+            <p class="text-dark">Those include:</p>
+            <ul>
+                <li> - Customizable personal page.</li>
+                <br>
+                <li> - Answering the comments of other people.</li>
+                <br>
+                <li> - Access to the Online Library where you can saves posts to read later.
+                </li>
+                <br>
+                <li> - Notifications about new posts, updates and messages. (the bell icon)</li>
+            </ul>
+        </div>
     </div>
 
 </form>
-<h3 class="text-dark">Have account? <a href="{{ path('security_login') }}"> Login</a> </h3>
+<h5 class="text-dark">Have account? <a href="{{ path('security_login') }}"> Login</a></h5>

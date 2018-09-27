@@ -17,6 +17,7 @@ use AppBundle\Contracts\IMailingManager;
 use AppBundle\Contracts\IMailSenderManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
+use AppBundle\Entity\GlobalSubscriber;
 use AppBundle\Entity\User;
 
 class MailingManager implements IMailingManager
@@ -120,5 +121,14 @@ class MailingManager implements IMailingManager
         foreach ($admins as $admin) {
             $this->mailerService->sendHtml(self::FEEDBACK_SUBJECT, $html, $admin->getEmail());
         }
+    }
+
+    public function sendMessageToNewSubscriber(GlobalSubscriber $email, Article $article): void
+    {
+        $content = $this->twig->render('mail/new-subscriber.html.twig',[
+            'article'=>$article,
+            'receiver'=>$email,
+        ]);
+        $this->mailerService->sendHtml($this->language->successfullySubscribed(), $content, $email->getEmail());
     }
 }

@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use AppBundle\Constants\Config;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\PersistentCollection;
 
 /**
  * Article
@@ -123,6 +122,11 @@ class Article
      */
     private $tags;
 
+    /**
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy="starredArticles")
+     * @var User[]
+     */
+    private $usersThatStarred;
 
     public function __construct()
     {
@@ -133,6 +137,7 @@ class Article
         $this->tags = new ArrayCollection();
         $this->isVisible = false;
         $this->isNotified = false;
+        $this->usersThatStarred = new ArrayCollection();
     }
 
     /**
@@ -432,10 +437,25 @@ class Article
         $this->tags = $tags;
     }
 
+    /**
+     * @return User[]
+     */
+    public function getUsersThatStarred()
+    {
+        return $this->usersThatStarred;
+    }
+
+    /**
+     * @param User[] $usersThatStarred
+     */
+    public function setUsersThatStarred(array $usersThatStarred): void
+    {
+        $this->usersThatStarred = $usersThatStarred;
+    }
+
     public function addTag(Tag $tag){
         $this->tags->add($tag);
     }
-
 
 }
 

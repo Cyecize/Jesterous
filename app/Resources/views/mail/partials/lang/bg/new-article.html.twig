@@ -2,6 +2,6 @@
 <div>
     <p>{{ article.title }}</p>
     <small>{{ article.summary }}</small><br>
-    <a href="{{ url('homepage') }}articles/{{ article.id }}">Прочетете повече</a>
+    <a href="{{ url('homepage') }}post/{{ article.id }}">Прочетете повече</a>
 </div>
 {% embed 'mail/partials/lang/bg/unsubscribe.html.twig' %} {% endembed %}

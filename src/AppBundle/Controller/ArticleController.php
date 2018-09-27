@@ -17,18 +17,24 @@ use AppBundle\Contracts\IMailingManager;
 use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
+use AppBundle\Entity\ArticleCategory;
 use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
 use AppBundle\Form\CreateArticleType;
 use AppBundle\Form\EditArticleType;
 use AppBundle\Service\LocalLanguage;
 use AppBundle\Util\Pageable;
+use AppBundle\ViewModel\CategoriesViewModel;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Encoder\XmlEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class ArticleController extends BaseController
 {
@@ -70,6 +76,39 @@ class ArticleController extends BaseController
         $this->userService = $userDbManager;
         $this->notificationSenderService = $notificationSender;
         $this->mailingService = $mailing;
+    }
+
+    /**
+     * @Route("/articles/browse", name="browse_articles")
+     * @param Request $request
+     * @return Response
+     */
+    public function browseArticles(Request $request)
+    {
+        $lang = $this->language->findLanguageByName($this->language->getLocalLang());
+        $cat = new ArticleCategory();
+        $cat->setCategoryName($this->language->all());
+        $cat->setLanguage($lang);
+
+        return $this->render('default/categories-child.html.twig', [
+            'viewModel' => new CategoriesViewModel($cat, $this->categoryService->findAllLocalCategories(), $this->articleService->findArticlesByLanguage($lang, new Pageable($request)))
+        ]);
+    }
+
+    /**
+     * @Route("/articles/lang/{lang}/load-more", name="browse_articles_load_more", defaults={"lang":"bg"})
+     * @param Request $request
+     * @param $lang
+     * @return Response
+     * @throws RestFriendlyExceptionImpl
+     */
+    public function browseArticlesLoadMore(Request $request, $lang)
+    {
+        $language = $this->language->findLanguageByName($lang);
+        if ($lang == null) throw new RestFriendlyExceptionImpl("Lang Not Found!");
+        return $this->render('queries/load-more-articles-query.html.twig', [
+            'articles' => $this->articleService->findArticlesByLanguage($language, new Pageable($request)),
+        ]);
     }
 
     /**
@@ -179,11 +218,10 @@ class ArticleController extends BaseController
         return $this->render('queries/my-articles-query.html.twig', [
             'articles' => $this->articleService->searchMyArticles($expr, $this->userService->findOneById($this->getUserId()))
         ]);
-
     }
 
     /**
-     * @Route("/articles/{id}", name="show_article", defaults={"id"=null})
+     * @Route("/post/{id}", name="show_article", defaults={"id"=null})
      * @param $id
      * @return Response
      * @throws ArticleNotFoundException
@@ -209,10 +247,27 @@ class ArticleController extends BaseController
      */
     public function loadMoreArticlesAction(Request $request)
     {
-        $articles = $this->articleService->findArticlesByCategories(new Pageable($request), $this->categoryService->findAllLocalCategories());
+        $page = $this->articleService->findArticlesByCategories(new Pageable($request), $this->categoryService->findAllLocalCategories());
         return $this->render("queries/load-more-articles-query.html.twig", [
-            'articles' => $articles,
+            'articles' => $page,
         ]);
+    }
+
+    /**
+     * @Route("/articles/latest/load-more-json", name="all_articles_load_more_json")
+     * @Security("has_role('ROLE_ADMIN')")
+     * @param Request $request
+     * @return JsonResponse
+     */
+    public function loadMoreArticlesJson(Request $request)
+    {
+        $page = $this->articleService->findArticlesByCategories(new Pageable($request), $this->categoryService->findAllLocalCategories(), true);
+
+        $articles = array_map(function (Article $a){
+            return ['id'=>$a->getId(), 'title'=>$a->getTitle()];
+        }, $page->getElements());
+        $pageItems = ['currentPage'=>$page->getPageable()->getPage(), 'allPages'=>$page->getPages()];
+        return new JsonResponse(['articles' => $articles, 'page'=>$pageItems]);
     }
 
     /**

@@ -1,4 +1,5 @@
-<form method="post" enctype="multipart/form-data" action="{{ path('security_register') }}" name="authenticate" class="mt-1 mb-1">
+<form method="post" enctype="multipart/form-data" action="{{ path('security_register') }}" name="authenticate"
+      class="mt-1 mb-1">
 
     <h3 class="text-dark">Регистрация</h3>
     {% if errors %}
@@ -11,29 +12,54 @@
         <h5 class="alert alert-danger">{{ error }}</h5>
     {% endif %}
 
-    <div class="text-dark col-md-6">
+    <div class="row">
+        <div class="text-dark col-md-6">
 
-        <div class="form-group">
-            <label for="username">Потребителско име</label>
-            <input id="username" name="user_register[username]" maxlength="35" value="{{ userform.username }}" type="text" required placeholder="Потр. име" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="email">Email адрес</label>
-            <input id="email" name="user_register[email]" maxlength="35" value="{{ userform.email }}" type="email" required placeholder="Email"  class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="password">Парола:</label>
-            <input id="password" minlength="{{ twigInformer.passwordMinLength }}" name="user_register[password]" type="password" maxlength="20" required placeholder="Поне {{ twigInformer.passwordMinLength }} знака" class="form-control">
-        </div>
-        <div class="form-group">
-            <label for="passwordConf">Парола отново:</label>
-            <input id="passwordConf" name="user_register[confPassword]" type="password" required placeholder="Потв. парола" class="form-control">
+            <div class="form-group">
+                <label for="username">Потребителско име</label>
+                <input id="username" name="user_register[username]" maxlength="35" value="{{ userform.username }}"
+                       type="text" required placeholder="Потр. име" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="email">Email адрес</label>
+                <input id="email" name="user_register[email]" maxlength="35" value="{{ userform.email }}" type="email"
+                       required placeholder="Email" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="password">Парола:</label>
+                <input id="password" minlength="{{ twigInformer.passwordMinLength }}" name="user_register[password]"
+                       type="password" maxlength="20" required
+                       placeholder="Поне {{ twigInformer.passwordMinLength }} знака" class="form-control">
+            </div>
+            <div class="form-group">
+                <label for="passwordConf">Парола отново:</label>
+                <input id="passwordConf" name="user_register[confPassword]" type="password" required
+                       placeholder="Потв. парола" class="form-control">
+            </div>
+
+            {{ form_row(form._token) }}
+
+            <div class="actions text-right"><input tabindex="9" class="btn btn-outline-primary " type="submit"
+                                                   value="Създаване на профил"></div>
         </div>
 
-        {{ form_row(form._token) }}
+        <div class="text-dark col-md-6">
+            <h4>Защо да се регистрирам в Jesterous?</h4>
+            <p class="text-dark">Регистрацията в блога предлага многобройни функции, които можете да използвате, за да обогатите престоя си тук!</p>
+            <p class="text-dark">В тях са включени:</p>
+            <ul>
+                <li> - Потребителски панел, който можете да персонализирате.</li>
+                <br>
+                <li> - Опцията за отговори на коментари.</li>
+                <br>
+                <li> - Достъп до Електронната библиотека с възможност за запазване на постове, за да можете да ги четете по-късно.
+                </li>
+                <br>
+                <li> - Известия за нови постове, ъпдейти и съобщения. (иконката с камбанката)</li>
+            </ul>
+        </div>
 
-        <div class="actions"><input tabindex="9" class="btn btn-primary " type="submit" value="Създаване на профил"></div>
     </div>
 
 </form>
-<h3 class="text-dark">Имате профил? <a href="{{ path('security_login') }}"> Вход</a> </h3>
+<h5 class="text-dark">Имате профил? <a href="{{ path('security_login') }}"> Вход</a></h5>

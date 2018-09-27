@@ -3,11 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\BindingModel\UserFeedbackBindingModel;
+use AppBundle\Constants\Config;
+use AppBundle\Contracts\IArticleAsMessageManager;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Contracts\IMailingManager;
 use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Entity\User;
+use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Form\FeedbackType;
 use AppBundle\Service\LocalLanguage;
 use AppBundle\Util\Pageable;
@@ -50,9 +53,10 @@ class DefaultController extends BaseController
     /**
      * @Route("/", name="homepage")
      * @param Request $request
+     * @param IArticleAsMessageManager $articleAsMessage
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, IArticleAsMessageManager $articleAsMessage)
     {
         $lang = $request->get('lang');
         if ($lang != null)
@@ -63,6 +67,12 @@ class DefaultController extends BaseController
         $sliderArticles = $this->articleService->forgeSliderViewModel($latestPosts->getElements());
         $trendingArticles = $this->articleService->findArticlesByCategories(new PageRequest(1,7),$categories)->getElements();
 
+        $subscribeMsg = null;
+        try {
+            $subscribeMsg = $articleAsMessage->getSubscribeMessage($this->currentLang)->getMainContent();
+        } catch (ArticleNotFoundException $e) {
+        }
+
         return $this->render('default/index.html.twig', [
             'categories' => $categories,
             'latestPosts' => $latestPosts,
@@ -70,6 +80,7 @@ class DefaultController extends BaseController
             'trendingArticles' => $trendingArticles,
             'error' => $request->get('error'),
             'info' => $request->get('info'),
+            'subscribeMessage'=>$subscribeMsg
         ]);
     }
 

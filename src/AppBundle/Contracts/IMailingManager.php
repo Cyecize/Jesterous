@@ -11,6 +11,7 @@ namespace AppBundle\Contracts;
 
 use AppBundle\BindingModel\UserFeedbackBindingModel;
 use AppBundle\Entity\Article;
+use AppBundle\Entity\GlobalSubscriber;
 use AppBundle\Entity\User;
 
 interface IMailingManager
@@ -31,4 +32,10 @@ interface IMailingManager
      * @param UserFeedbackBindingModel $bindingModel
      */
     public function sendFeedback(UserFeedbackBindingModel $bindingModel) : void ;
+
+    /**
+     * @param GlobalSubscriber $email
+     * @param Article $article
+     */
+    public function sendMessageToNewSubscriber(GlobalSubscriber $email, Article $article) : void ;
 }

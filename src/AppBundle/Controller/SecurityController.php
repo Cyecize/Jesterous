@@ -69,9 +69,6 @@ class SecurityController extends BaseController
 
     public function loginAction(AuthenticationUtils $authUtils, Request $request, LocalLanguage $language)
     {
-        if ($this->isUserLogged()) //TODO override 403 page to avoid using this
-            return $this->redirectToRoute("homepage");
-
         $lastUsername = null;
         $error = $authUtils->getLastAuthenticationError();
         // get the login error if there is one

@@ -1,0 +1,95 @@
+{% extends 'admin/panel.html.twig' %}
+{% block title %}Article As a Message{% endblock %}
+{% block sectionBody %}
+    <h2 class="text-dark">Article As a Message</h2>
+    <p>Duplicate articles are allowed.</p>
+    <hr>
+    <div class="row">
+        <div class="col-md-6 m-0">
+            <form method="post">
+                {% for section in settings %}
+                    <h3 class="text-dark">{{ section.section }}</h3>
+                    {% for  property in section.options|keys %}
+                        <div class="form-group">
+                            <label>{{ property }}
+                                {% set fieldName =  section.section ~ '__' ~ property %}
+                                <input name="article_as_message[{{ fieldName }}]"
+                                       value="{{ section.options[property] }}"
+                                       class="form-control article-selectable-field" required>
+                                {% embed 'partials/errors/field-error-handler.html.twig' with {'field':attribute(form1, fieldName)} %} {% endembed %}
+                            </label>
+                        </div>
+                    {% endfor %}
+                {% endfor %}
+                <div>
+                    <input type="hidden" name="token" value="{{ csrf_token('token') }}">
+                    <button type="submit" class="btn btn-outline-dark">Save Settings</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="articlesModal" class="modal-container">
+        <div class="modal-content">
+            <div class="text-right">
+                <span class="close-modal"><i class="fa fa-close" aria-hidden="true"></i> </span>
+            </div>
+            <div class="container text-center">
+                <div>Target Article: <p class="all-copy" id="targetArticleId"></p></div>
+                <div id="articlesModalContainer" class="text-dark text-left"></div>
+                <div class="mt-1 p-2">
+                    <button class="btn btn-outline-info" id="loadMoreArticles">Load More</button>
+                    <button class="btn btn-outline-success" id="selectArticleBtn">Select</button>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block sectionStyles %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/modal.css') }}">
+{% endblock %}
+
+{% block sectionScripts %}
+    <script src="{{ asset('styles/js/modal.js') }}"></script>
+    <script src="{{ asset('styles/js/load-more.js') }}"></script>
+
+    <script>
+        var targetArticleId = $('#targetArticleId');
+        //init loadMoreManager
+        var loadMoreManager = new LoadMoreManager('{{ path('all_articles_load_more_json') }}', 'loadMoreArticles', 'articlesModalContainer', onDataReceived);
+        loadMoreManager.setPage(0);
+        loadMoreManager.loadMore();
+
+        //custom dataReceivedHandler
+        function onDataReceived(data) {
+            for (var article of data['articles']) {
+                var parahraph = $('<p>');
+                parahraph.html(article['title']);
+                parahraph.attr('articleId', article['id']);
+                parahraph.on('click', function () {
+                    targetArticleId.html($(this).attr('articleId'))
+                });
+                loadMoreManager.holder.append(parahraph);
+            }
+            if (data['page']['allPages'] > data['page']['currentPage'])
+                loadMoreManager.showButton();
+        }
+
+        //init Modal
+        var modalManager = new ModalManager('articlesModal', '');
+        var selectedField = null;
+        $('.article-selectable-field').on('click', function () {
+            modalManager.showModal();
+            selectedField = $(this);
+        });
+
+        //select article
+        $('#selectArticleBtn').on('click', function (e) {
+            if(selectedField != null)
+                selectedField.val(targetArticleId.html());
+            modalManager.hideModal();
+        });
+
+    </script>
+{% endblock %}

@@ -11,6 +11,9 @@
             <a href="{{ path('user_details', {'username': article.author.username }) }}"
                class="text-light">{{ article.author.username }}</a>
             <span class="text-light">{{ article.dateAdded.format("d - M - Y") }}</span>
+            {% if app.user %}
+                {% embed 'partials/articles/article-star.html.twig' with {'article':article} %} {% endembed %}
+            {% endif %}
             <span class="pull-right text-info font-weight-bold">{{ article.category.language.localeName }}</span>
         </small>
     </div>

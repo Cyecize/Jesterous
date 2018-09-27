@@ -18,6 +18,7 @@ use AppBundle\Contracts\ITagDbManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
+use AppBundle\Entity\Language;
 use AppBundle\Entity\Tag;
 use AppBundle\Entity\User;
 use AppBundle\Exception\CategoryNotFoundException;
@@ -271,22 +272,21 @@ class ArticleDbManager implements IArticleDbManager
         //return $this->articleRepo->findBy(array('category' => $articleCategory, 'isVisible' => true), array('dailyViews' => 'DESC'), $limit);
     }
 
+    public function findArticlesByLanguage(Language $language, Pageable $pageable): Page
+    {
+        return $this->articleRepo->findByLanguage($language, $pageable);
+    }
+
     /**
      * @param Pageable $pageable
      * @param ArticleCategory[] $categories
+     * @param bool $showHidden
      * @return Page
      */
-    function findArticlesByCategories(Pageable $pageable, array $categories): Page
+    function findArticlesByCategories(Pageable $pageable, array $categories, bool  $showHidden = false): Page
     {
         //return $this->articleRepo->findBy(array('isVisible' => true, 'category' => $categories), array('dateAdded' => "DESC"), self::MAX_ARTICLES_PER_PAGE, $offset);
-        $qb = $this->articleRepo->createQueryBuilder('a');
-        $query = $qb
-            ->where('a.isVisible = TRUE')
-            ->andWhere($qb->expr()->in('a.category', '?1'))
-            ->setParameter(1, $categories)
-            ->orderBy('a.dailyViews', 'DESC')
-            ->addOrderBy('a.id', 'DESC');
-        return new Page($query, $pageable);
+        return $this->articleRepo->findByCategories($categories, $pageable, $showHidden);
     }
 
     /**

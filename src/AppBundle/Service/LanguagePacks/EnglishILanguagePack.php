@@ -19,11 +19,11 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const BLOG_POSTS = "Blog Posts";
 
-    public const CONTACT = "Contacts";
+    public const CONTACT = "Feedback";
 
     public const TYPE_TO_SEARCH = "Type to Search...";
 
-    public const TOP_ARTICLES = "Top Articles";
+    public const TOP_ARTICLES = "Top-Notch Reads";
 
     public const NEXT_ARTICLE = "NEXT";
 
@@ -49,9 +49,9 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const LOGIN = "Login";
 
-    public const REGISTER = "Register";
+    public const REGISTER = "Sign Up";
 
-    public const POST_COMMENT = "Post Comment";
+    public const POST_COMMENT = "Share your thoughts";
 
     public const YOUR_COMMENT = "Your Comment";
 
@@ -65,11 +65,11 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const MORE = "more";
 
-    public const SIMILAR = "Similar";
+    public const SIMILAR = "Similar Posts";
 
     public const ABOUT = "About me";
 
-    public const TRENDING_ARTICLES = "What's Trending";
+    public const TRENDING_ARTICLES = "Hot n' Spicy";
 
     public const NEXT = "Next";
 
@@ -130,6 +130,34 @@ class EnglishILanguagePack implements ILanguagePack
     public const  ABOUT_AN_HOUR = "about an hour";
 
     public const  ABOUT_N_HOURS = "about %d hours";
+
+    public const  ALL = "All";
+
+    public const  COMING_SOON = "Coming soon.";
+
+    public const  SUCCESSFULLY_SUBSCRIBED = "Successfully subscribed";
+
+    public const  STARRED_ARTICLES = "Starred";
+
+    public function starredArticles(): string
+    {
+        return self::STARRED_ARTICLES;
+    }
+
+    public function successfullySubscribed(): string
+    {
+        return self::SUCCESSFULLY_SUBSCRIBED;
+    }
+
+    public function comingSoon(): string
+    {
+        return self::COMING_SOON;
+    }
+
+    public function all(): string
+    {
+        return self::ALL;
+    }
 
     function timeYouWillSpendFormat(): string
     {

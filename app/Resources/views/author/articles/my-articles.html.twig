@@ -1,6 +1,6 @@
 {% extends 'author/panel.html.twig' %}
 {% block sectionBody %}
-    <h2 class="text-dark">My Articles</h2>
+    <h2 class="text-dark">My Posts</h2>
     <input class="form-control" id="searchMyArticles" placeholder="Type then press RETURN">
     <hr>
     <div class="" id="articlesHolder">
@@ -12,34 +12,36 @@
 
 {% block sectionScripts %}
     <script>
-        var articleUrl = "{{ url('homepage') }}articles/";
+       function initArticleDetails() {
+           var articleUrl = "{{ url('homepage') }}articles/";
 
-        $(function () {
-            var articlesDetailsHolders = $('.article-details');
-            var articleTogglers = $('.toggle-article');
+           $(function () {
+               var articlesDetailsHolders = $('.article-details');
+               var articleTogglers = $('.toggle-article');
 
-            articleTogglers.on('click', function () {
-                var targetArticleDetails = $(this).parent().parent().parent().find('.article-details');
-                var isDivToBeShown = targetArticleDetails.css('display') === 'none';
-                articlesDetailsHolders.hide();
-                if (isDivToBeShown) {
-                    targetArticleDetails.show(200);
-                    var articleId = targetArticleDetails.attr('articleId');
-                    var fbLikesUrl = 'https://graph.facebook.com/?fields=og_object{likes.summary(total_count).limit(0)},share&id=' + articleUrl + articleId;
-                    $.ajax({
-                        method: "GET",
-                        url: fbLikesUrl,
-                        success: function (data) {
-                            if (data) {
-                                if (data['og_object'])
-                                    targetArticleDetails.find('.article-likes').html(data['og_object']['likes']['summary']['total_count']);
-                                targetArticleDetails.find('.article-shares').html(data['share']['share_count']);
-                            }
-                        }
-                    });
-                }
-            });
-        });
+               articleTogglers.on('click', function () {
+                   var targetArticleDetails = $(this).parent().parent().parent().find('.article-details');
+                   var isDivToBeShown = targetArticleDetails.css('display') === 'none';
+                   articlesDetailsHolders.hide();
+                   if (isDivToBeShown) {
+                       targetArticleDetails.show(200);
+                       var articleId = targetArticleDetails.attr('articleId');
+                       var fbLikesUrl = 'https://graph.facebook.com/?fields=og_object{likes.summary(total_count).limit(0)},share&id=' + articleUrl + articleId;
+                       $.ajax({
+                           method: "GET",
+                           url: fbLikesUrl,
+                           success: function (data) {
+                               if (data) {
+                                   if (data['og_object'])
+                                       targetArticleDetails.find('.article-likes').html(data['og_object']['likes']['summary']['total_count']);
+                                   targetArticleDetails.find('.article-shares').html(data['share']['share_count']);
+                               }
+                           }
+                       });
+                   }
+               });
+           });
+       }
 
         var searchUrl = "{{ url('search_my_articles') }}?q=";
         $(function () {
@@ -53,10 +55,14 @@
                     url: searchUrl + searchQ,
                     success: function (data) {
                         articlesHolder.html(data);
+                        initArticleDetails();
                     }
                 });
             });
         });
+
+
+        initArticleDetails();
 
     </script>
 {% endblock %}

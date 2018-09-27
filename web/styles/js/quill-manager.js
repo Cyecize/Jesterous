@@ -30,7 +30,9 @@ var QuillManager = (function (divId, imgHandler) {
                         image: imageHandler
                     }
                 },
-                imageResize: true,
+                imageResize: {
+                    modules: [ 'Resize', 'DisplaySize', 'Toolbar' ]
+                },
             },
             placeholder: 'The journey of thousand miles starts with a single step...',
             theme: 'snow'

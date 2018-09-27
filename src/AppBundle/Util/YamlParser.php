@@ -13,40 +13,38 @@ use Symfony\Component\Yaml\Yaml;
 
 class YamlParser
 {
-    private static $FILE_PATH = "../app/config/parameters.yml";
+    private const FILE_PATH = "../app/config/parameters.yml";
 
-    public function __construct()
+    private $filePath;
+
+    public function __construct(string $pathToFile = null)
     {
-
+        if ($pathToFile != null)
+            $this->filePath = $pathToFile;
+        else
+            $this->filePath = self::FILE_PATH;
     }
 
-    public function getYamlParameters() : array
+    public static function getMailerUsername(): string
     {
-        return self::getFile()["parameters"];
-    }
-
-    public function saveYamlParameters(array $params) : void{
-        $file = self::getFile()["parameters"];
-        $resFile = self::getFile();
-        foreach($file as $key => $val){
-            if(array_key_exists($key, $params)){
-                $resFile["parameters"][$key] = $params[$key];
-            }
-        }
-        $yamlFile = YAML::dump($resFile);
-        file_put_contents(self::$FILE_PATH, $yamlFile);
-    }
-
-    public static function getMailerUsername() : string {
         return self::getFile()["parameters"]["mailer_user"];
     }
 
-    public static function getFbAppId() : string {
+    public static function getFbAppId(): string
+    {
         return self::getFile()["parameters"]["fb_app_id"];
     }
 
-    private static function getFile() : array {
-        return Yaml::parse(file_get_contents(self::$FILE_PATH));
+    public static function getFile(string $path = null): array
+    {
+        if ($path == null) $path = self::FILE_PATH;
+        return Yaml::parse(file_get_contents($path));
     }
 
+    public static function saveFile(array $params, string $path): void
+    {
+        $yamlFile = YAML::dump($params);
+        file_put_contents($path, $yamlFile);
+    }
 }
+

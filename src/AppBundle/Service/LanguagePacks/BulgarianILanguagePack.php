@@ -19,11 +19,11 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const BLOG_POSTS = "Публикации";
 
-    public const CONTACT = "Контакти";
+    public const CONTACT = "Отзиви";
 
     public const TYPE_TO_SEARCH = "Търсене";
 
-    public const TOP_ARTICLES = "Популяни";
+    public const TOP_ARTICLES = "Популярни";
 
     public const NEXT_ARTICLE = "Сладваща";
 
@@ -51,7 +51,7 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const REGISTER = "Регистрация";
 
-    public const POST_COMMENT = "Оставете Коментар";
+    public const POST_COMMENT = "Споделете какво мислете";
 
     public const YOUR_COMMENT = "Вашия коментар";
 
@@ -69,7 +69,7 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const ABOUT = "За автора";
 
-    public const TRENDING_ARTICLES = "Нашумелите";
+    public const TRENDING_ARTICLES = "Пикантни редове";
 
     public const NEXT = "Следваща";
 
@@ -130,6 +130,34 @@ class BulgarianILanguagePack implements ILanguagePack
     public const  ABOUT_AN_HOUR = "около един час";
 
     public const  ABOUT_N_HOURS = "около %d часа";
+
+    public const  ALL = "Всички";
+
+    public const  COMING_SOON = "Очаквайте скоро.";
+
+    public const  SUCCESSFULLY_SUBSCRIBED = "Успешно абониране";
+
+    public const  STARRED_ARTICLES = "Любими постове";
+
+    public function starredArticles(): string
+    {
+        return self::STARRED_ARTICLES;
+    }
+
+    public function successfullySubscribed(): string
+    {
+       return self::SUCCESSFULLY_SUBSCRIBED;
+    }
+
+    public function comingSoon(): string
+    {
+       return self::COMING_SOON;
+    }
+
+    public function all(): string
+    {
+       return self::ALL;
+    }
 
     function timeYouWillSpendFormat(): string
     {

@@ -15,6 +15,7 @@ use AppBundle\BindingModel\EditArticleBindingModel;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\ArticleCategory;
 use AppBundle\Entity\Comment;
+use AppBundle\Entity\Language;
 use AppBundle\Entity\Tag;
 use AppBundle\Entity\User;
 use AppBundle\Util\Page;
@@ -103,12 +104,20 @@ interface IArticleDbManager
     function findArticlesByCategory(ArticleCategory $articleCategory, Pageable $pageable): Page;
 
     /**
+     * @param Language $language
+     * @param Pageable $pageable
+     * @return Page
+     */
+    function findArticlesByLanguage(Language $language, Pageable $pageable) : Page;
+
+    /**
      *
      * @param Pageable $pageable
      * @param ArticleCategory[] $categories
+     * @param bool $showHidden
      * @return Page
      */
-    function findArticlesByCategories(Pageable $pageable, array $categories): Page;
+    function findArticlesByCategories(Pageable $pageable, array $categories, bool $showHidden = false): Page;
 
     /**
      * @param string $searchText

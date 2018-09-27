@@ -7,6 +7,8 @@
 *  3 -> image preview
 *
 *  4 -> follow and unfollow
+*
+*  5 -> add and remove from starred
  */
 
 $(function () {
@@ -127,3 +129,39 @@ $(function () {
     }
 });
 /*!Follow unfollow */
+
+/*add or remove starred*/
+$(function () {
+    var url = "/articles/";
+    $(document).on('click', '.starred-article', function () {
+       var articleId = $(this).attr('articleId');
+       starOrUnstar(url + "unstar/" + articleId, $(this));
+    });
+
+    $(document).on('click', '.unstarred-article', function () {
+        var articleId = $(this).attr('articleId');
+        starOrUnstar(url + "star/" + articleId, $(this));
+    });
+
+    function starOrUnstar(url, jQueryElement) {
+        $.ajax({
+            type:"POST",
+            async:true,
+            url:url,
+            data: {'token':CSRF_TOKEN},
+            success:function () {
+                if(jQueryElement.hasClass('starred-article')){
+                    jQueryElement.removeClass('starred-article');
+                    jQueryElement.addClass('unstarred-article')
+                }else {
+                    jQueryElement.removeClass('unstarred-article');
+                    jQueryElement.addClass('starred-article');
+                }
+            },
+            error:function (msg) {
+                alert(msg['responseJSON']['message'])
+            }
+        })
+    }
+});
+/*!add or remove starred*/

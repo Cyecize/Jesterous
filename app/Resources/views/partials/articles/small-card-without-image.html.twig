@@ -1,7 +1,18 @@
 <!-- Small Card Without Image -->
 <div class="card card_default card_small_no_image grid-item">
     <div class="card-body">
-        <div class="card-title card-title-small"><a href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a></div>
-        <small class="post_meta"><a href="{{ path('user_details', {'username':article.author.username}) }}">{{ article.author.username }}</a><span>{{ article.dateAdded.format("d - M - Y") }}</span></small>
+        <div class="card-title card-title-small"><a
+                    href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a></div>
+        <small class="post_meta">
+            <a href="{{ path('user_details', {'username':article.author.username}) }}">
+                {{ article.author.username }}
+            </a>
+            <span>
+                {{ article.dateAdded.format("d - M - Y") }}
+            </span>
+            {% if app.user %}
+                {% embed 'partials/articles/article-star.html.twig' with {'article':article} %} {% endembed %}
+            {% endif %}
+        </small>
     </div>
 </div>

@@ -7,6 +7,11 @@
     <div class="card-body">
         <div class="card-title card-title-small">
             <a href="{{ path('show_article', {'id': article.id}) }}">{{ article.title }}</a>
+            <div>
+                {% if app.user %}
+                    {% embed 'partials/articles/article-star.html.twig' with {'article':article} %} {% endembed %}
+                {% endif %}
+            </div>
         </div>
     </div>
 </div>

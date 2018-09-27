@@ -14,6 +14,7 @@
                                 {% if info %}
                                     <h2 class="text-success">{{ info }}</h2>
                                 {% endif %}
+                                {% embed 'partials/lang/' ~ localLang.getLocalLang ~ '/contacts-message.html.twig' %}  {% endembed %}
                                 <form method="post">
                                     <div class="row">
                                         <div class="form-group col-md-6">

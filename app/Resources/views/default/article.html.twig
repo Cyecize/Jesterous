@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block ogType %}article{% endblock %}
-{% block ogUrl %}{{ url(app.request.attributes.get('_route'), app.request.attributes.get('_route_params')) }}{% endblock %}
 {% block ogTitle %}{{ article.title }}{% endblock %}
 {% block ogDescription %}{{ article.summary }}{% endblock %}
 {% block ogImage %}{{ url('homepage')|trim('/', 'right') }}{{ article.backgroundImageLink }}{% endblock %}
@@ -22,7 +21,7 @@
                 <div class="col-lg-9">
                     <div class="post_content">
                         <!-- Top Panel -->
-                        {% embed 'partials/articles/article-author-info-panel.html.twig' with {'article':article} %} {% endembed %}
+                        {#{% embed 'partials/articles/article-author-info-panel.html.twig' with {'article':article} %} {% endembed %}#}
                         <small>{{ twigUtil.displayEstimated(article.estimatedReadTime) }}</small>
                         <!-- Post Body -->
                         <div class="post_body ">
@@ -34,9 +33,14 @@
                             <!-- Post Tags -->
                             <div class="post_tags">
                                 <ul>
+                                    {% if app.user %}
+                                        <li class="d-inline">
+                                            {% embed 'partials/articles/article-star.html.twig' with {'article':article} %} {% endembed %}
+                                        </li>
+                                    {% endif %}
                                     {% for tag in article.tags %}
-                                        <li class="post_tag"><a
-                                                    href="{{ path('tag_details', {'tagName':tag.tagName}) }}">{{ tag.tagName }}</a>
+                                        <li class="post_tag">
+                                            <a href="{{ path('tag_details', {'tagName':tag.tagName}) }}">{{ tag.tagName }}</a>
                                         </li>
                                     {% endfor %}
                                 </ul>
@@ -72,9 +76,7 @@
 
                             <!-- Post Comment -->
                             {% embed 'partials/comments/article-comment-form.html.twig' with {'article':article} %} {% endembed %}
-
                             {% embed 'partials/comments/article-comment-section.html.twig' with {'comments':article.comments} %} {% endembed %}
-
                         </div>
                     </div>
                 </div>
@@ -89,19 +91,17 @@
     </div>
 {% endblock %}
 
-
 {% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
     <link href="//cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="{{ asset('styles/styles/quill-production.css') }}" type="text/css">
 {% endblock %}
 
 {% block javascripts %}
     <script src="{{ asset('styles/js/post.js') }}"></script>
     <script>
         $(function () {
-            viewArticle();
-
             function viewArticle() {
                 document.onreadystatechange = function () {
                     setTimeout(function () {
@@ -117,6 +117,8 @@
                     }, 3000);
                 };
             }
+
+            viewArticle();
         });
     </script>
 

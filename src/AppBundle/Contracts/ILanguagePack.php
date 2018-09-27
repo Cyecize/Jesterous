@@ -150,4 +150,12 @@ interface ILanguagePack
     function aboutAnHour(): string;
 
     function aboutNHoursFormat() : string ;
+
+    function all() : string ;
+
+    function comingSoon() : string ;
+
+    function successfullySubscribed() : string ;
+
+    function starredArticles() : string ;
 }

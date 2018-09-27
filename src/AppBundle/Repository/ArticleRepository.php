@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Language;
 use AppBundle\Entity\User;
 use AppBundle\Util\Page;
 use AppBundle\Util\Pageable;
@@ -16,6 +17,47 @@ use Doctrine\ORM\QueryBuilder;
  */
 class ArticleRepository extends \Doctrine\ORM\EntityRepository
 {
+
+    /**
+     * @param array $categories
+     * @param Pageable $pageable
+     * @param bool $showHidden
+     * @return Page
+     */
+    public function findByCategories(array $categories, Pageable $pageable, bool $showHidden): Page
+    {
+        $qb = $this->createQueryBuilder('a');
+        $query = $qb
+            ->where($qb->expr()->in('a.category', '?1'))
+            ->setParameter(1, $categories);
+        if (!$showHidden)
+            $query
+                ->andWhere('a.isVisible = TRUE');
+        $query
+            ->orderBy('a.dailyViews', 'DESC')
+            ->addOrderBy('a.id', 'DESC');
+
+        return new Page($query, $pageable);
+    }
+
+    /**
+     * @param Language $language
+     * @param Pageable $pageable
+     * @return Page
+     */
+    public function findByLanguage(Language $language, Pageable $pageable): Page
+    {
+        $qb = $this->createQueryBuilder('a');
+        $query = $qb
+            ->join('a.category', 'c')
+            ->where('a.isVisible = TRUE')
+            ->andWhere('c.language = :language')
+            ->setParameter('language', $language)
+            ->orderBy('a.dailyViews', 'DESC')
+            ->addOrderBy('a.id', 'DESC');
+        return new Page($query, $pageable);
+    }
+
     /**
      * @param string $searchText
      * @param Pageable $pageable
@@ -45,6 +87,23 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
             ->andWhere('a.author = :author')
             ->setParameter('author', $user);
         return $qb->getQuery()->execute();
+    }
+
+    /**
+     * @param User $user
+     * @param Pageable $pageable
+     * @return Page
+     */
+    function findStarredArticles(User $user, Pageable $pageable) : Page{
+        $qb = $this->createQueryBuilder('a');
+
+        $query = $qb
+            ->join('a.usersThatStarred', 'u')
+            ->where('u.id = :uid')
+            ->andWhere('a.isVisible = TRUE')
+            ->setParameter('uid', $user->getId())
+            ->orderBy('a.id', 'DESC');
+        return new Page($query, $pageable);
     }
 
     /**

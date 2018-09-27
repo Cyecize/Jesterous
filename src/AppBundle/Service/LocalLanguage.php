@@ -98,6 +98,26 @@ class LocalLanguage implements ILanguagePack
     }
 
     //IMPLEMENTATIONS
+    public function starredArticles(): string
+    {
+        return $this->languagePack->starredArticles();
+    }
+
+    public function successfullySubscribed(): string
+    {
+        return $this->languagePack->successfullySubscribed();
+    }
+
+    public function comingSoon(): string
+    {
+        return $this->languagePack->comingSoon();
+    }
+
+    public function all(): string
+    {
+        return $this->languagePack->all();
+    }
+
     function timeYouWillSpendFormat(): string
     {
         return $this->languagePack->timeYouWillSpendFormat();
@@ -152,7 +172,7 @@ class LocalLanguage implements ILanguagePack
     {
         return $this->languagePack->changeProfilePicture();
     }
-    
+
     public function fieldCannotBeEmpty(): string
     {
         return $this->languagePack->fieldCannotBeEmpty();

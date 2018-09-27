@@ -1,0 +1,7 @@
+{% embed 'mail/partials/lang/' ~ localLang.getLocalLang ~ '/new-sub.html.twig' %} {% endembed %}
+<br>
+<div>
+    {{ article.mainContent|raw }}
+</div>
+<br>
+{% embed 'mail/partials/lang/' ~ localLang.getLocalLang ~ '/unsubscribe.html.twig' %} {% endembed %}

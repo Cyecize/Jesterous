@@ -57,8 +57,6 @@ class NotificationController extends BaseController
     public function updateNotificationsAction(Request $request)
     {
         $this->validateToken($request);
-        if (!$this->isUserLogged()) //importang! TODO this is used instead of @Security for Front end reasons
-            throw new RestFriendlyExceptionImpl(self::USER_NOT_LOGGED_IN);
         return $this->renderMyNotifications();
     }
 
