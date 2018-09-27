@@ -139,6 +139,13 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const  STARRED_ARTICLES = "Starred";
 
+    public const  FORGOTTEN_PASSWORD = "Forgotten Password";
+
+    public function forgottenPassword(): string
+    {
+        return self::FORGOTTEN_PASSWORD;
+    }
+
     public function starredArticles(): string
     {
         return self::STARRED_ARTICLES;

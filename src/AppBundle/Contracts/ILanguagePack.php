@@ -158,4 +158,7 @@ interface ILanguagePack
     function successfullySubscribed() : string ;
 
     function starredArticles() : string ;
+
+    function forgottenPassword() : string ;
+
 }

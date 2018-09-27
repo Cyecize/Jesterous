@@ -139,6 +139,13 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const  STARRED_ARTICLES = "Любими постове";
 
+    public const  FORGOTTEN_PASSWORD = "Забравена парола";
+
+    public function forgottenPassword(): string
+    {
+        return self::FORGOTTEN_PASSWORD;
+    }
+
     public function starredArticles(): string
     {
         return self::STARRED_ARTICLES;

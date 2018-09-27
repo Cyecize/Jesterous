@@ -121,9 +121,9 @@ class UserDbManager implements IUserDbManager
         $this->entityManager->flush();
     }
 
-    public function changePassword(User $user, ChangePasswordBindingModel $bindingModel): void
+    public function changePassword(User $user, ChangePasswordBindingModel $bindingModel, bool $verify = true): void
     {
-        if (!password_verify($bindingModel->getOldPassword(), $user->getPassword()))
+        if ($verify && !password_verify($bindingModel->getOldPassword(), $user->getPassword()))
             throw new IllegalArgumentException("passwordIsIncorrect");
         $user->setPassword($this->passwordEncoder->encodePassword($user, $bindingModel->getNewPassword()));
         $this->entityManager->merge($user);

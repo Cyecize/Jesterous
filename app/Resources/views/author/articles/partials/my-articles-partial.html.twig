@@ -14,6 +14,7 @@
         <p class="p-0 m-0">Comments: <strong>{{ article.comments|length }}</strong></p>
         <p class="p-0 m-0">Views: <strong>{{ article.views }}</strong></p>
         <p class="p-0 m-0">Weekly views: <strong>{{ article.dailyViews }}</strong></p>
+        <p class="p-0 m-0">Starred: <strong>{{ article.usersThatStarred|length }}</strong></p>
         <p class="p-0 m-0">Language: <strong>{{ article.category.language.localeName }}</strong></p>
         {% if article.isVisible %}
             <p class="p-0 m-0 text-success">Article is Visible</p>

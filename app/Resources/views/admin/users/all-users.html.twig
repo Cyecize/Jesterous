@@ -2,7 +2,7 @@
 {% block title %}All Users{% endblock %}
 {% block sectionBody %}
     <h2 class="text-dark">All Users</h2>
-    <small>TODO -> Add search box when users get too many</small>
+    <input type="text" placeholder="Search by Username" id="searchUserField">
     <hr>
     <div class="container">
         <table class="table">
@@ -16,10 +16,10 @@
                 </th>
             </tr>
             </thead>
-            <tbody>
+            <tbody id="tableBody">
             {% for user in users %}
                 {#<hr>#}
-                <tr>
+                <tr username="{{ user.username }}">
                     <th>
                         <a href="{{ path('user_details', {'username': user.username}) }}"><p
                                     class="text-dark">{{ user.username }}</p></a>
@@ -73,7 +73,6 @@
         }
 
         $(function () {
-
             $('.remove-role-btn').on('click', function (e) {
                 var props = getBtnProps(this);
                 if (!confirm('Alter user with id: ' + props['userId'] + ' and remove his role: ' + props['role'] + ' ?'))
@@ -88,5 +87,23 @@
                 ajaxCall(addRoleUrl, props);
             });
         });
+
+        $(function () {
+           var searchField = $('#searchUserField');
+           var tableBody = $('#tableBody');
+           var tableRows = tableBody.find('tr');
+
+            searchField.on('change', function (e) {
+                var searchWord = $(this).val();
+                tableRows.each(function (index,r) {
+                    var usrName = $(r).attr('username');
+                    if(usrName.indexOf(searchWord) !== -1)
+                        $(r).show();
+                    else
+                        $(r).hide();
+                }) ;
+           });
+        });
+
     </script>
 {% endblock %}

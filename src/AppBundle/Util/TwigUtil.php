@@ -43,7 +43,7 @@ class TwigUtil
             return $this->language->lessThanAMinute();
         if ($number < 3600)
             return sprintf($this->language->aboutNMinutesFormat(), floor($number / 60));
-        if ($number == 3600)
+        if ($number == 7200)
             return $this->language->aboutAnHour();
         return sprintf($this->language->aboutNHoursFormat(), floor($number / 3600));
     }

@@ -18,6 +18,7 @@ use AppBundle\Contracts\IMailSenderManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\GlobalSubscriber;
+use AppBundle\Entity\PasswordRecovery;
 use AppBundle\Entity\User;
 
 class MailingManager implements IMailingManager
@@ -115,8 +116,8 @@ class MailingManager implements IMailingManager
     {
         $admins = $this->userService->findByRole(Roles::ROLE_ADMIN);
         $this->logger->log(self::LOGGER_LOCATION, sprintf(self::FEEDBACK_SENT_FORMAT, $bindingModel->getName(), $bindingModel->getEmail(), count($admins)));
-        $html = $this->twig->render('mail/feedback-admin-form.html.twig',[
-           'sender'=>$bindingModel
+        $html = $this->twig->render('mail/feedback-admin-form.html.twig', [
+            'sender' => $bindingModel
         ]);
         foreach ($admins as $admin) {
             $this->mailerService->sendHtml(self::FEEDBACK_SUBJECT, $html, $admin->getEmail());
@@ -125,10 +126,19 @@ class MailingManager implements IMailingManager
 
     public function sendMessageToNewSubscriber(GlobalSubscriber $email, Article $article): void
     {
-        $content = $this->twig->render('mail/new-subscriber.html.twig',[
-            'article'=>$article,
-            'receiver'=>$email,
+        $content = $this->twig->render('mail/new-subscriber.html.twig', [
+            'article' => $article,
+            'receiver' => $email,
         ]);
         $this->mailerService->sendHtml($this->language->successfullySubscribed(), $content, $email->getEmail());
+    }
+
+    public function sendMessagePasswordRecovery(PasswordRecovery $passwordRecovery, User $user): void
+    {
+        $content = $this->twig->render('mail/password-recovery.html.twig', [
+            'user' => $user,
+            'passwordRecovery' => $passwordRecovery
+        ]);
+        $this->mailerService->sendHtml($this->language->forgottenPassword(), $content, $user->getEmail());
     }
 }

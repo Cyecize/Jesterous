@@ -98,6 +98,11 @@ class LocalLanguage implements ILanguagePack
     }
 
     //IMPLEMENTATIONS
+    public function forgottenPassword(): string
+    {
+        return $this->languagePack->forgottenPassword();
+    }
+
     public function starredArticles(): string
     {
         return $this->languagePack->starredArticles();

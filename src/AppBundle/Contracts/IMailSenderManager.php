@@ -24,4 +24,5 @@ interface IMailSenderManager
      * @param string $receiver
      */
     public function sendHtml(string $subject, $content, string $receiver) : void ;
+
 }

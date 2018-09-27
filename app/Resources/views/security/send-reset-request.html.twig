@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %}Forgotten Password{% endblock %}
+
+    {% block body %}
+        {% embed 'partials/banner.html.twig' %} {% endembed %}
+
+        <div class="page_content">
+            <div class="container">
+                <div class="row row-lg-eq-height">
+                    <div class="col-lg-9">
+                        <div class="main_content">
+                            {% embed 'user/profile/profile-details.html.twig' with {'user':user} %} {% endembed %}
+                            {% embed 'partials/lang/' ~ localLang.getLocalLang ~ '/send-reset-request-form.html.twig' %} {% endembed %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
+{% endblock %}

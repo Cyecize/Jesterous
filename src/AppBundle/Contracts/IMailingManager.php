@@ -12,6 +12,7 @@ namespace AppBundle\Contracts;
 use AppBundle\BindingModel\UserFeedbackBindingModel;
 use AppBundle\Entity\Article;
 use AppBundle\Entity\GlobalSubscriber;
+use AppBundle\Entity\PasswordRecovery;
 use AppBundle\Entity\User;
 
 interface IMailingManager
@@ -38,4 +39,10 @@ interface IMailingManager
      * @param Article $article
      */
     public function sendMessageToNewSubscriber(GlobalSubscriber $email, Article $article) : void ;
+
+    /**
+     * @param PasswordRecovery $passwordRecovery
+     * @param User $user
+     */
+    public function sendMessagePasswordRecovery(PasswordRecovery $passwordRecovery, User $user) : void ;
 }

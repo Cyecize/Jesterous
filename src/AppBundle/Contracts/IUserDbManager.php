@@ -53,9 +53,9 @@ interface IUserDbManager
     /**
      * @param User $user
      * @param ChangePasswordBindingModel $bindingModel
-     * @throws IllegalArgumentException
+     * @param bool $verify
      */
-    function changePassword(User $user, ChangePasswordBindingModel $bindingModel) : void ;
+    function changePassword(User $user, ChangePasswordBindingModel $bindingModel, bool $verify = true) : void ;
 
     /**
      * @param User $user

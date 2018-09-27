@@ -27,4 +27,19 @@ class UserRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    /**
+     * @param string $userOrEmail
+     * @return User|null
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    function findByUsernameOrEmail(string $userOrEmail) : ?User{
+        $qb = $this->createQueryBuilder('u');
+        return $qb
+            ->where('u.username = :username')
+            ->orWhere('u.email = :username')
+            ->setParameter('username', $userOrEmail)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

@@ -15,7 +15,7 @@ class Config
 {
     public const DEFAULT_TIMEZONE = "Europe/Sofia";
 
-    public const SIMPLE_DATE_FORMAT = "D M, Y -  H:m a";
+    public const SIMPLE_DATE_FORMAT = "d M, Y -  H:m a";
 
     public const MINIMUM_PASSWORD_LENGTH = 6;
 

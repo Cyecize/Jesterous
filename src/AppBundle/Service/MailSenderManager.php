@@ -77,4 +77,5 @@ class MailSenderManager implements IMailSenderManager
             $this->logger->log(self::LOG_LOCATION, sprintf(self::MAIL_FAIL_FORMAT, $subject, $receiver));
         }
     }
+
 }

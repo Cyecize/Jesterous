@@ -40,14 +40,15 @@ Steps:
 	
 	* Git pull
 	
-	* php (7.1.9 at least) composer.phar install
+	* run: php (7.1.9 at least) composer.phar install
 	
-	* set up proper smpt settings
+	* set up proper smtp settings
 	
 	* doctrine:schema:update --force
 	
 	* When you open the website, the db will be completely empty. 
 	
-	* Register the first account and that will trigger the first run service, which will create the initial roles, categories, languages and such..
+	* Register the first account and that will trigger the first run service, which will 
+	        create the initial roles, categories, languages and such..
 	
 	* Ready to go!

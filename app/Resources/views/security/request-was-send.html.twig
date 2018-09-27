@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %}Forgotten Password{% endblock %}
+
+    {% block body %}
+        {% embed 'partials/banner.html.twig' %} {% endembed %}
+
+        <div class="page_content">
+            <div class="container">
+                <div class="row row-lg-eq-height">
+                    <div class="col-lg-9">
+                        <div class="main_content">
+                            <h2 class="alert alert-success">Email sent! Expires in 30 minutes, be quick!</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset('styles/js/custom.js') }}"></script>
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
+{% endblock %}
