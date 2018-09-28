@@ -14,11 +14,11 @@
                         <div class="col-md-6">
                             <form action="{{ path('subscribe_global') }}" method="post">
                                 <div class="form-group">
-                                    <input class="btn btn-lg" name="email" id="email" type="email" placeholder="Вашия Email адрес" required>
+                                    <input class="btn btn-lg" name="email" id="email" type="email" placeholder="{{ localLang.yourEmail }}" required>
                                 </div>
                                 <div class="form-group">
                                     <input type="hidden" name="token" value="{{ csrf_token('token') }}">
-                                    <button class="btn btn-outline-info" type="submit">Абониране</button>
+                                    <button class="btn btn-outline-info" type="submit">{{ localLang.subscribe }}</button>
                                 </div>
                             </form>
                         </div>

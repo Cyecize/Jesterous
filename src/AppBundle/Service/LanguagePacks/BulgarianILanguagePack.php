@@ -51,7 +51,7 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const REGISTER = "Регистрация";
 
-    public const POST_COMMENT = "Споделете какво мислете";
+    public const POST_COMMENT = "Споделете какво мислите";
 
     public const YOUR_COMMENT = "Вашия коментар";
 
