@@ -582,9 +582,10 @@ section
 .home_content
 {
 	position: absolute;
-	top: 33%;
+	top: 15%;
 	left: 0;
 	width: 100%;
+	z-index: 100000;
 }
 .contact_form_container
 {
