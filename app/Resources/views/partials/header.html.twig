@@ -82,7 +82,7 @@
     <nav class="menu_nav">
         <ul class="menu_mm">
             <li class="menu_mm"><a href="/">{{ localLang.home }}</a></li>
-            <li class="menu_mm"><a href="{{ path('categories_page') }}">{{ localLang.blogPosts }}</a></li>
+            <li class="menu_mm"><a href="{{ path('browse_articles') }}">{{ localLang.blogPosts }}</a></li>
             <li class="menu_mm"><a href="{{ path('contacts_page') }}">{{ localLang.contacts }}</a></li>
             {% if app.user %}
                 <li class="menu_mm"><a href="{{ path('user_panel') }}">{{ localLang.profile }}</a>  </li>
