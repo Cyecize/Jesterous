@@ -6,16 +6,17 @@
             </div>
         </div>
         <div class="col">
-            <h4 class="text-dark toggle-article" style="cursor: pointer;">{{ article.title }}</h4>
+            <h4 class="text-dark toggle-article article-title" style="cursor: pointer;">{{ article.title }}</h4>
         </div>
     </div>
     <div class="article-details" articleId="{{ article.id }}" style="display: none;">
         <p class="p-0 m-0">Summary: {{ article.summary }}</p>
-        <p class="p-0 m-0">Comments: <strong>{{ article.comments|length }}</strong></p>
-        <p class="p-0 m-0">Views: <strong>{{ article.views }}</strong></p>
-        <p class="p-0 m-0">Weekly views: <strong>{{ article.dailyViews }}</strong></p>
-        <p class="p-0 m-0">Starred: <strong>{{ article.usersThatStarred|length }}</strong></p>
-        <p class="p-0 m-0">Language: <strong>{{ article.category.language.localeName }}</strong></p>
+        <p class="p-0 m-0">Comments: <strong class="article-comments-count">{{ article.comments|length }}</strong></p>
+        <p class="p-0 m-0">Views: <strong class="article-total-views">{{ article.views }}</strong></p>
+        <p class="p-0 m-0">Weekly views: <strong class="article-daily-views">{{ article.dailyViews }}</strong></p>
+        <p class="p-0 m-0">Starred: <strong class="article-starred-count">{{ article.usersThatStarred|length }}</strong>
+        </p>
+        <p class="p-0 m-0">Language: <strong class="article-language">{{ article.category.language.localeName }}</strong></p>
         {% if article.isVisible %}
             <p class="p-0 m-0 text-success">Article is Visible</p>
         {% else %}

@@ -65,14 +65,14 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
      */
     public function searchVisible(string $searchText, Pageable $pageable): Page
     {
-        $qb = $this->forgeQueryBuilder($searchText);
+        $qb = $this->forgeSearchQueryBuilder($searchText);
         $qb->andWhere('a.isVisible = TRUE');
         return new Page($qb, $pageable);
     }
 
     public function searchAll(string $searchText, Pageable $pageable): Page
     {
-        return new Page($this->forgeQueryBuilder($searchText), $pageable);
+        return new Page($this->forgeSearchQueryBuilder($searchText), $pageable);
     }
 
     /**
@@ -82,7 +82,7 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
      */
     public function searchMyArticles(string $searchText, User $user): array
     {
-        $qb = $this->forgeQueryBuilder($searchText);
+        $qb = $this->forgeSearchQueryBuilder($searchText);
         $qb
             ->andWhere('a.author = :author')
             ->setParameter('author', $user);
@@ -111,7 +111,7 @@ class ArticleRepository extends \Doctrine\ORM\EntityRepository
      * @param Pageable $pageable
      * @return \Doctrine\ORM\QueryBuilder
      */
-    private function forgeQueryBuilder(string $searchText): QueryBuilder
+    private function forgeSearchQueryBuilder(string $searchText): QueryBuilder
     {
         $searchText = preg_replace('/\s+/', '%', $searchText);
         $qb = $this->createQueryBuilder('a');

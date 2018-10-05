@@ -68,7 +68,8 @@ class ArticleController extends BaseController
      */
     private $mailingService;
 
-    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager, IUserDbManager $userDbManager, INotificationSenderManager $notificationSender, IMailingManager $mailing)
+    public function __construct(LocalLanguage $language, IArticleDbManager $articleDbManager, ICategoryDbManager $categoryDbManager,
+                                IUserDbManager $userDbManager, INotificationSenderManager $notificationSender, IMailingManager $mailing)
     {
         parent::__construct($language);
         $this->articleService = $articleDbManager;

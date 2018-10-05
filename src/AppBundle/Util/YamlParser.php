@@ -25,12 +25,12 @@ class YamlParser
             $this->filePath = self::FILE_PATH;
     }
 
-    public static function getMailerUsername(): string
+    public static function getMailerUsername(): ?string
     {
         return self::getFile()["parameters"]["mailer_user"];
     }
 
-    public static function getFbAppId(): string
+    public static function getFbAppId(): ?string
     {
         return self::getFile()["parameters"]["fb_app_id"];
     }

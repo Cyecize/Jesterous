@@ -2,6 +2,22 @@
 {% block sectionBody %}
     <h2 class="text-dark">My Posts</h2>
     <input class="form-control" id="searchMyArticles" placeholder="Type then press RETURN">
+    <div class="mt-2">
+        <label for="orderArticlesBy">Order By: </label>
+        <select id="orderArticlesBy" class="rounded btn btn-outline-dark">
+            <option value="id" selected>Id</option>
+            <option value="lang">Lang</option>
+            <option value="title">Title</option>
+            <option value="daily-views">Daily Views</option>
+            <option value="total-views">Total Views</option>
+            <option value="starred">Starred</option>
+            <option value="comments">Comments</option>
+        </select>
+        <select id="ascOrDesc" class="rounded btn btn-outline-dark">
+            <option>ASC</option>
+            <option selected>DESC</option>
+        </select>
+    </div>
     <hr>
     <div class="" id="articlesHolder">
         {% for article in articles %}
@@ -12,36 +28,36 @@
 
 {% block sectionScripts %}
     <script>
-       function initArticleDetails() {
-           var articleUrl = "{{ url('homepage') }}articles/";
+        function initArticleDetails() {
+            var articleUrl = "{{ url('homepage')}}post/";
 
-           $(function () {
-               var articlesDetailsHolders = $('.article-details');
-               var articleTogglers = $('.toggle-article');
+            $(function () {
+                var articlesDetailsHolders = $('.article-details');
+                var articleTogglers = $('.toggle-article');
 
-               articleTogglers.on('click', function () {
-                   var targetArticleDetails = $(this).parent().parent().parent().find('.article-details');
-                   var isDivToBeShown = targetArticleDetails.css('display') === 'none';
-                   articlesDetailsHolders.hide();
-                   if (isDivToBeShown) {
-                       targetArticleDetails.show(200);
-                       var articleId = targetArticleDetails.attr('articleId');
-                       var fbLikesUrl = 'https://graph.facebook.com/?fields=og_object{likes.summary(total_count).limit(0)},share&id=' + articleUrl + articleId;
-                       $.ajax({
-                           method: "GET",
-                           url: fbLikesUrl,
-                           success: function (data) {
-                               if (data) {
-                                   if (data['og_object'])
-                                       targetArticleDetails.find('.article-likes').html(data['og_object']['likes']['summary']['total_count']);
-                                   targetArticleDetails.find('.article-shares').html(data['share']['share_count']);
-                               }
-                           }
-                       });
-                   }
-               });
-           });
-       }
+                articleTogglers.on('click', function () {
+                    var targetArticleDetails = $(this).parent().parent().parent().find('.article-details');
+                    var isDivToBeShown = targetArticleDetails.css('display') === 'none';
+                    articlesDetailsHolders.hide();
+                    if (isDivToBeShown) {
+                        targetArticleDetails.show(200);
+                        var articleId = targetArticleDetails.attr('articleId');
+                        var fbLikesUrl = 'https://graph.facebook.com/?fields=og_object{likes.summary(total_count).limit(0)},share&id=' + articleUrl + articleId;
+                        $.ajax({
+                            method: "GET",
+                            url: fbLikesUrl,
+                            success: function (data) {
+                                if (data) {
+                                    if (data['og_object'])
+                                        targetArticleDetails.find('.article-likes').html(data['og_object']['likes']['summary']['total_count']);
+                                    targetArticleDetails.find('.article-shares').html(data['share']['share_count']);
+                                }
+                            }
+                        });
+                    }
+                });
+            });
+        }
 
         var searchUrl = "{{ url('search_my_articles') }}?q=";
         $(function () {
@@ -61,5 +77,72 @@
             });
         });
         initArticleDetails();
+
+        //Sort articles
+        $(function () {
+            var selectOrderTypeField = $('#orderArticlesBy');
+            var orderStrategyField = $('#ascOrDesc');
+
+            var articleComparators = {
+                id: function (a1, a2) {
+                    var id1 = $(a1).find('.article-details').attr('articleId');
+                    var id2 = $(a2).find('.article-details').attr('articleId');
+                    return Number(id1) - Number(id2);
+                },
+                lang: function (a1, a2) {
+                    var l1 = $(a1).find('.article-language').html();
+                    var l2 = $(a2).find('.article-language').html();
+                    return l1.localeCompare(l2);
+                },
+                title: function (a1, a2) {
+                    var t1 = $(a1).find('.article-title').html();
+                    var t2 = $(a2).find('.article-title').html();
+                    return t1.localeCompare(t2);
+                },
+                'daily-views': function (a1, a2) {
+                    var dv1 = $(a1).find('.article-daily-views').html();
+                    var dv2 = $(a2).find('.article-daily-views').html();
+                    return Number(dv1) - Number(dv2);
+                },
+                'total-views': function (a1, a2) {
+                    var v1 = $(a1).find('.article-total-views').html();
+                    var v2 = $(a2).find('.article-total-views').html();
+                    return Number(v1) - Number(v2);
+                },
+                'starred': function (a1, a2) {
+                    var s1 = $(a1).find('.article-starred-count').html();
+                    var s2 = $(a2).find('.article-starred-count').html();
+                    return Number(s1) - Number(s2);
+                },
+                'comments': function (a1, a2) {
+                    var c1 = $(a1).find('.article-comments-count').html();
+                    var c2 = $(a2).find('.article-comments-count').html();
+                    return Number(c1) - Number(c2);
+                }
+            };
+
+            function sortArticles(strategy, orderType) {
+                var direction = strategy === "ASC" ? 1 : -1;
+                var articlesHolder = $('#articlesHolder');
+                var currentArticles = articlesHolder.find('.article-group').toArray();
+                articlesHolder.html('');
+
+                currentArticles.sort(function (a, b) {
+                    return articleComparators[orderType](a, b) * direction;
+                }).forEach(function (el) {
+                    articlesHolder.append($(el));
+                });
+            }
+
+            selectOrderTypeField.on('change', function (e) {
+                sortArticles(orderStrategyField.val(), $(this).val());
+                initArticleDetails();
+            });
+
+            orderStrategyField.on('change', function (e) {
+                sortArticles($(this).val(), selectOrderTypeField.val());
+                initArticleDetails();
+            });
+        });
     </script>
 {% endblock %}
