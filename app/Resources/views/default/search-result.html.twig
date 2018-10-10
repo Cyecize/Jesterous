@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block title %}{{ searchText }}{% endblock %}
+{# @var localLang \AppBundle\Contracts\ILanguagePack #}
+{% block title %}{{ localLang.websiteName }} - {{ searchText }}{% endblock %}
 
 {% block body %}
     {% embed 'partials/banner.html.twig' with {'bannerTitle':searchText } %} {% endembed %}

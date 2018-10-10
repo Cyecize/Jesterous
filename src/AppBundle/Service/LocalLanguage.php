@@ -98,6 +98,11 @@ class LocalLanguage implements ILanguagePack
     }
 
     //IMPLEMENTATIONS
+    public function websiteName(): string
+    {
+        return $this->languagePack->websiteName();
+    }
+
     public function forgottenPassword(): string
     {
         return $this->languagePack->forgottenPassword();

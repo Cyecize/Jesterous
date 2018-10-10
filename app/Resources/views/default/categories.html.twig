@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% block title %}{{ localLang.websiteName }} - {{ viewModel.selectedCategory.categoryName }}{% endblock %}
 
 {% block body %}
     {% embed 'partials/banner.html.twig' %} {% endembed %}

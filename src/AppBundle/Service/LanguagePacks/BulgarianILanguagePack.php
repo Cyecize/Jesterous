@@ -141,6 +141,13 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const  FORGOTTEN_PASSWORD = "Забравена парола";
 
+    public const  WEBSITE_NAME = "Jesterous";
+
+    public function websiteName(): string
+    {
+       return self::WEBSITE_NAME;
+    }
+
     public function forgottenPassword(): string
     {
         return self::FORGOTTEN_PASSWORD;

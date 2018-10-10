@@ -1,6 +1,6 @@
 {%  extends 'base.html.twig' %}
-
-{% block title %} {% endblock %}
+{# @var localLang \AppBundle\Service\LocalLanguage #}
+{% block title %}{{ localLang.websiteName }} - Privacy Policy  {% endblock %}
 
 {% block body %}
     {% embed 'partials/banner.html.twig' %} {% endembed %}
@@ -9,7 +9,7 @@
         <div class="container">
             <div class="row row-lg-eq-height">
                 <div class="col-lg-9 pt-2 pb-2 text-dark bg-white">
-                    {% embed 'partials/lang/' ~ localLang.getLocalLang ~ '/privacy.html.twig' %} {% endembed %}
+                    {% embed 'partials/lang/' ~ localLang.localLang ~ '/privacy.html.twig' %} {% endembed %}
                 </div>
             </div>
         </div>

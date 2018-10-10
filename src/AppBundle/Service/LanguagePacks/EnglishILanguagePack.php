@@ -141,6 +141,13 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const  FORGOTTEN_PASSWORD = "Forgotten Password";
 
+    public const  WEBSITE_NAME = "Jesterous";
+
+    public function websiteName(): string
+    {
+        return self::WEBSITE_NAME;
+    }
+
     public function forgottenPassword(): string
     {
         return self::FORGOTTEN_PASSWORD;

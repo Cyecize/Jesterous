@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block title %}Jesterous: {{ localLang.subscribe }}{% endblock %}
+{# @var localLang \AppBundle\Contracts\ILanguagePack #}
+{% block title %}{{ localLang.websiteName }} - {{ localLang.subscribe }}  {% endblock %}
 {% block body %}
     {% embed 'partials/banner.html.twig' %} {% endembed %}
 

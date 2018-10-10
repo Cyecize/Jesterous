@@ -161,4 +161,6 @@ interface ILanguagePack
 
     function forgottenPassword() : string ;
 
+    function websiteName() : string ;
+
 }

@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
-{% block title %}JEsterous: {{ localLang.notifications }}{% endblock %}
+{# @var localLang \AppBundle\Contracts\ILanguagePack #}
+{% block title %}{{ localLang.websiteName }} - {{ localLang.notifications }}{% endblock %}
 
 {% block body %}
     <main>

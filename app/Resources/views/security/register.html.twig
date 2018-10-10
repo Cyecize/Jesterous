@@ -1,5 +1,8 @@
 {% extends 'base.html.twig' %}
 
+{# @var localLang \AppBundle\Contracts\ILanguagePack #}
+{% block title %}{{ localLang.websiteName }} - {{ localLang.register }}  {% endblock %}
+
 {% block body %}
 
     {% embed 'partials/banner.html.twig' %}{% endembed %}

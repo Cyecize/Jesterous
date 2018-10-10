@@ -1,4 +1,6 @@
 {% extends 'base.html.twig' %}
+{# @var localLang \AppBundle\Contracts\ILanguagePack #}
+{% block title %}{{ localLang.websiteName }} - {{ localLang.home }}  {% endblock %}
 
 {% block body %}
 
