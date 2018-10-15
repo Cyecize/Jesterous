@@ -36,7 +36,7 @@ class LogController extends BaseController
     public function showLogsAction()
     {
         return $this->render('admin/logs/browse-logs.html.twig', [
-            'logsPage' => $this->logService->findAll(new PageRequest(1, 2))
+            'logsPage' => $this->logService->findAll(new PageRequest(1, 10))
         ]);
     }
 

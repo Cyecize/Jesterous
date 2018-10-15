@@ -399,11 +399,10 @@ class Article
     }
 
     /**
-     * @return ArrayCollection
+     * @return Comment[]
      */
     public function getComments()
     {
-        //TODO improve autocomplete
         return $this->comments;
     }
 
