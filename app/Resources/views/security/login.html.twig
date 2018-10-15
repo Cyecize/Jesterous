@@ -1,5 +1,5 @@
 {% extends 'base.html.twig' %}
-{# @var localLang \AppBundle\Contracts\ILanguagePack #}
+{# @var localLang \AppBundle\Service\LocalLanguage #}
 {% block title %}{{ localLang.websiteName }} - {{ localLang.login }}  {% endblock %}
 {% block body %}
     {% embed 'partials/banner.html.twig' %} {% endembed %}
@@ -9,7 +9,7 @@
             <div class="row row-lg-eq-height">
                 <div class="col-lg-9">
                     <div class="main_content">
-                        {% embed 'partials/lang/' ~  localLang.getLocalLang ~'/login.html.twig' %} {% endembed %}
+                        {% embed 'partials/lang/' ~  localLang.localLang ~'/login.html.twig' %} {% endembed %}
                     </div>
                 </div>
             </div>
