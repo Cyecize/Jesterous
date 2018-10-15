@@ -1,5 +1,7 @@
 var LoadMoreManager = (function (targetUrl, loadMoreBtnId, holderId, onDataLoadedHandle) {
 
+    var baseUrl;
+    var size;
     var page;
     var url;
     var button;
@@ -11,9 +13,10 @@ var LoadMoreManager = (function (targetUrl, loadMoreBtnId, holderId, onDataLoade
     //private methord
     function init(btnId, holderId, onDataLoadedHandle) {
         page = 1;
+        size = 6;
         button = $(document.getElementById(btnId));
         holder = $(document.getElementById(holderId));
-        if(onDataLoadedHandle != null) {
+        if (onDataLoadedHandle != null) {
             dataLoadedHandler = onDataLoadedHandle;
         }
         initEvents();
@@ -25,9 +28,18 @@ var LoadMoreManager = (function (targetUrl, loadMoreBtnId, holderId, onDataLoade
         });
     }
 
+    function setUrl(mainUrl, pageSize) {
+        url = mainUrl + "?size=" + pageSize + "&page=";
+    }
+
     //public methods
     function setPage(p) {
         page = p;
+    }
+
+    function setSize(s) {
+        size = s;
+        setUrl(baseUrl, size);
     }
 
     function showButton() {
@@ -53,7 +65,15 @@ var LoadMoreManager = (function (targetUrl, loadMoreBtnId, holderId, onDataLoade
 
     //constructor
     init(loadMoreBtnId, holderId, onDataLoadedHandle);
-    url = targetUrl + "?page=";
+    baseUrl = targetUrl;
+    setUrl(baseUrl, size);
 
-    return {setPage: setPage, loadMore: loadMore, showButton: showButton, loadMasonry: loadMasonry, holder:holder};
+    return {
+        setPage: setPage,
+        loadMore: loadMore,
+        showButton: showButton,
+        loadMasonry: loadMasonry,
+        holder: holder,
+        setSize: setSize
+    };
 });

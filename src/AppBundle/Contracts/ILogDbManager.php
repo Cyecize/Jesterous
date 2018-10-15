@@ -9,6 +9,9 @@
 namespace AppBundle\Contracts;
 
 
+use AppBundle\Util\Page;
+use AppBundle\Util\Pageable;
+
 interface ILogDbManager
 {
     /**
@@ -16,4 +19,10 @@ interface ILogDbManager
      * @param string $message
      */
     public function log(string $location, string $message) : void ;
+
+    /**
+     * @param Pageable $pageable
+     * @return Page
+     */
+    public function findAll(Pageable $pageable) : Page;
 }

@@ -1,0 +1,66 @@
+{%  extends 'admin/panel.html.twig' %}
+{# @var localLang \AppBundle\Contracts\ILanguagePack #}
+{# @var log \AppBundle\Entity\Log #}
+{% block title %}{{ localLang.websiteName }} - Logs {% endblock %}
+{% block sectionBody %}
+    <h2 class="text-dark">Logs</h2>
+    <hr>
+    <table class="table">
+        <thead class="rounded bg-dark p-0 text-light">
+        <tr>
+            <th scope="row">
+                Id
+            </th>
+            <th scope="col">
+                Date
+            </th>
+            <th scope="col">
+                From
+            </th>
+            <th scope="col">
+                Log
+            </th>
+        </tr>
+        </thead>
+        <tbody id="logsHolder">
+
+        {% set logs = logsPage.elements %}
+        <!-- TODO CONSIDER REPLACING THIS WITH TEMPLATE SINCE IT IS USED IN load-more-logs as well -->
+        {% for log in logs %}
+            <tr>
+                <td>
+                    <p class="text-dark">{{ log.id }}</p>
+                </td>
+                <td class="text-left">
+                    <p>
+                        <small>{{ log.date|date }}</small>
+                    </p>
+                </td>
+                <td>
+                    <small class="text-dark">{{ log.location }}</small>
+                </td>
+                <td>
+                    <small class="text-dark">{{ log.message }}</small>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+    <div class="load_more">
+        {% if logsPage.pages > logsPage.pageable.page %}
+            <div id="load_more" class="load_more_button text-center trans_200">{{ localLang.loadMore }}</div>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block sectionStyles %}
+
+{% endblock %}
+{% block sectionScripts %}
+    <script src="{{ asset('styles/js/load-more.js') }}"></script>
+    <script>
+        var loadMoreManager = new LoadMoreManager('{{ path('show_more_logs') }}', 'load_more', 'logsHolder');
+        loadMoreManager.setSize({{ logsPage.pageable.size }});
+    </script>
+{% endblock %}

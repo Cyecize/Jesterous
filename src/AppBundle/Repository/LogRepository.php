@@ -2,6 +2,9 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Util\Page;
+use AppBundle\Util\Pageable;
+
 /**
  * LogRepository
  *
@@ -10,4 +13,7 @@ namespace AppBundle\Repository;
  */
 class LogRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllPage(Pageable $pageable) : Page{
+        return new Page($this->createQueryBuilder('l')->orderBy('l.id', 'DESC'), $pageable);
+    }
 }

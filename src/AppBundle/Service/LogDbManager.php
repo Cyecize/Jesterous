@@ -11,6 +11,8 @@ namespace AppBundle\Service;
 
 use AppBundle\Contracts\ILogDbManager;
 use AppBundle\Entity\Log;
+use AppBundle\Util\Page;
+use AppBundle\Util\Pageable;
 use Doctrine\ORM\EntityManagerInterface;
 
 class LogDbManager implements ILogDbManager
@@ -25,11 +27,6 @@ class LogDbManager implements ILogDbManager
      */
     private $logRepo;
 
-    /**
-     * LogDbManager constructor.
-     * @param $entityManger
-     * @param $logRepo
-     */
     public function __construct(EntityManagerInterface $entityManger)
     {
         $this->entityManger = $entityManger;
@@ -37,10 +34,6 @@ class LogDbManager implements ILogDbManager
     }
 
 
-    /**
-     * @param string $location
-     * @param string $message
-     */
     public function log(string $location, string $message): void
     {
         $log = new Log();
@@ -48,5 +41,10 @@ class LogDbManager implements ILogDbManager
         $log->setMessage($message);
         $this->entityManger->persist($log);
         $this->entityManger->flush();
+    }
+
+    public function findAll(Pageable $pageable): Page
+    {
+       return $this->logRepo->findAllPage($pageable);
     }
 }
