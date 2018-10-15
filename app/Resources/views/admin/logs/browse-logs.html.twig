@@ -25,24 +25,8 @@
         <tbody id="logsHolder">
 
         {% set logs = logsPage.elements %}
-        <!-- TODO CONSIDER REPLACING THIS WITH TEMPLATE SINCE IT IS USED IN load-more-logs as well -->
         {% for log in logs %}
-            <tr>
-                <td>
-                    <p class="text-dark">{{ log.id }}</p>
-                </td>
-                <td class="text-left">
-                    <p>
-                        <small>{{ log.date|date }}</small>
-                    </p>
-                </td>
-                <td>
-                    <small class="text-dark">{{ log.location }}</small>
-                </td>
-                <td>
-                    <small class="text-dark">{{ log.message }}</small>
-                </td>
-            </tr>
+           {% embed 'admin/logs/logs-single-row.html.twig' with {'log':log} %} {% endembed %}
         {% endfor %}
         </tbody>
 
