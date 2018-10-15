@@ -2,11 +2,6 @@
       class="mt-1 mb-1">
 
     <h3 class="text-dark">Регистрация</h3>
-    {% if errors %}
-        {% for err in errors %}
-            <h5 class="alert alert-danger">{{ localLang.forName(err.message) }}</h5>
-        {% endfor %}
-    {% endif %}
 
     {% if error %}
         <h5 class="alert alert-danger">{{ error }}</h5>
@@ -14,31 +9,32 @@
 
     <div class="row">
         <div class="text-dark col-md-6">
-
             <div class="form-group">
                 <label for="username">Потребителско име</label>
                 <input id="username" name="user_register[username]" maxlength="35" value="{{ userform.username }}"
                        type="text" required placeholder="Потр. име" class="form-control">
+                {% embed 'partials/errors/field-error-handler.html.twig' with {'field':form.username} %} {% endembed  %}
             </div>
             <div class="form-group">
                 <label for="email">Email адрес</label>
                 <input id="email" name="user_register[email]" maxlength="35" value="{{ userform.email }}" type="email"
                        required placeholder="Email" class="form-control">
+                {% embed 'partials/errors/field-error-handler.html.twig' with {'field':form.email} %} {% endembed  %}
             </div>
             <div class="form-group">
                 <label for="password">Парола:</label>
                 <input id="password" minlength="{{ twigInformer.passwordMinLength }}" name="user_register[password]"
                        type="password" maxlength="20" required
                        placeholder="Поне {{ twigInformer.passwordMinLength }} знака" class="form-control">
+                {% embed 'partials/errors/field-error-handler.html.twig' with {'field':form.password} %} {% endembed  %}
             </div>
             <div class="form-group">
                 <label for="passwordConf">Парола отново:</label>
                 <input id="passwordConf" name="user_register[confPassword]" type="password" required
                        placeholder="Потв. парола" class="form-control">
+                {% embed 'partials/errors/field-error-handler.html.twig' with {'field':form.confPassword} %} {% endembed  %}
             </div>
-
             {{ form_row(form._token) }}
-
             <div class="actions text-right"><input tabindex="9" class="btn btn-outline-primary " type="submit"
                                                    value="Създаване на профил"></div>
         </div>
@@ -58,8 +54,6 @@
                 <li> - Известия за нови постове, ъпдейти и съобщения. (иконката с камбанката)</li>
             </ul>
         </div>
-
     </div>
-
 </form>
 <h5 class="text-dark">Имате профил? <a href="{{ path('security_login') }}"> Вход</a></h5>

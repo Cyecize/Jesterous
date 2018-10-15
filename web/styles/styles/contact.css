@@ -585,7 +585,7 @@ section
 	top: 15%;
 	left: 0;
 	width: 100%;
-	z-index: 100000;
+	z-index: 99;
 }
 .contact_form_container
 {
