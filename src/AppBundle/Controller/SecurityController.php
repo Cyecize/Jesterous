@@ -9,22 +9,20 @@
 namespace AppBundle\Controller;
 
 use AppBundle\BindingModel\UserRegisterBindingModel;
-use AppBundle\Constants\Config;
 use AppBundle\Constants\Roles;
+use AppBundle\Contracts\IArticleAsMessageManager;
 use AppBundle\Contracts\IFirstRunManager;
 use AppBundle\Contracts\IGlobalSubscriberDbManager;
+use AppBundle\Contracts\IMailingManager;
 use AppBundle\Contracts\INotificationSenderManager;
-use AppBundle\Contracts\IRoleDbManager;
-use AppBundle\Entity\Role;
+use AppBundle\Contracts\IRoleDbManager;;
 use AppBundle\Entity\User;
+use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Form\UserRegisterType;
-use AppBundle\Repository\RoleRepository;
 use AppBundle\Service\LocalLanguage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends BaseController
@@ -62,12 +60,11 @@ class SecurityController extends BaseController
      * @Route("/login", name="security_login")
      * @param AuthenticationUtils $authUtils
      * @param Request $request
-     * @param LocalLanguage $language
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @Security("is_anonymous()", message="You are already logged in")
      */
 
-    public function loginAction(AuthenticationUtils $authUtils, Request $request, LocalLanguage $language)
+    public function loginAction(AuthenticationUtils $authUtils, Request $request)
     {
         $lastUsername = null;
         $error = $authUtils->getLastAuthenticationError();
@@ -77,14 +74,14 @@ class SecurityController extends BaseController
         $lastUsername = $authUtils->getLastUsername();
 
         if ($error != null) {
-            $error = $language->passwordIsIncorrect();
+            $error = $this->language->passwordIsIncorrect();
             $repo = $this->getDoctrine()->getRepository(User::class);
             $existingUser = $repo->findOneBy(array("username" => $lastUsername));
             if ($existingUser == null)
                 $existingUser = $repo->findOneBy(array("email" => $lastUsername));
             if ($existingUser == null) {
                 $lastUsername = null;
-                $error = $language->usernameDoesNotExist();
+                $error = $this->language->usernameDoesNotExist();
             }
         }
 
@@ -98,11 +95,13 @@ class SecurityController extends BaseController
     /**
      * @Route("/register", name="security_register")
      * @param Request $request
-     * @param LocalLanguage $language
+     * @param IArticleAsMessageManager $articleAsMessage
+     * @param IMailingManager $mailingManager
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \AppBundle\Exception\ArticleNotFoundException
      * @Security("is_anonymous()", message="You are already logged in")
      */
-    public function registerAction(Request $request, LocalLanguage $language)
+    public function registerAction(Request $request, IArticleAsMessageManager $articleAsMessage, IMailingManager $mailingManager)
     {
         $userRepo = $this->getDoctrine()->getRepository(User::class);
         $userBindingModel = new UserRegisterBindingModel();
@@ -120,14 +119,14 @@ class SecurityController extends BaseController
 
             $userInDb = $userRepo->findOneBy(array('username' => $userBindingModel->getUsername()));
             if ($userInDb != null) {
-                $error = $language->usernameAlreadyTaken();
+                $error = $this->language->usernameAlreadyTaken();
                 $userBindingModel->setUsername("");
                 goto escape;
             }
 
             $userInDbByEmail = $userRepo->findOneBy(array('email' => $userBindingModel->getEmail()));
             if ($userInDbByEmail != null) {
-                $error = $language->emailAlreadyInUse();
+                $error = $this->language->emailAlreadyInUse();
                 $userBindingModel->setEmail("");
                 goto  escape;
             }
@@ -150,8 +149,13 @@ class SecurityController extends BaseController
 
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->subscriberDbService->createSubscriberOnRegister($user->getEmail());
+            $globalSub = $this->subscriberDbService->createSubscriberOnRegister($user->getEmail());
             $this->notificationSenderService->onUserRegister($user);
+            try {
+                $article = $articleAsMessage->getSubscribeReward($this->currentLang);
+                $mailingManager->sendMessageToNewSubscriber($globalSub, $article);
+            } catch (ArticleNotFoundException $e) {
+            }
 
             return $this->redirectToRoute("security_login", []);
         }

@@ -1,4 +1,5 @@
 <!-- Small Card With Background -->
+{# @var twigUtil \AppBundle\Util\TwigUtil #}
 <div class="card card_default card_small_with_background grid-item">
     <div class="card_background"
          style="background:linear-gradient(to right,rgba(0,0,0,0.5), rgba(0,0,0,0.6)),url('{{ article.backgroundImageLink }}'); -webkit-background-size: cover;background-size: cover;">
@@ -9,7 +10,7 @@
         </div>
         <small class="post_meta ">
             <a href="{{ path('user_details', {'username': article.author.username }) }}"
-               class="text-light">{{ article.author.username }}</a>
+               class="text-light">{{ twigUtil.resolveUsername(article.author) }}</a>
             <span class="text-light">{{ article.dateAdded.format("d - M - Y") }}</span>
             {% if app.user %}
                 {% embed 'partials/articles/article-star.html.twig' with {'article':article} %} {% endembed %}

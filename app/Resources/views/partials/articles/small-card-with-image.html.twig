@@ -1,4 +1,5 @@
 <!-- Small Card With Image -->
+{# @var twigUtil \AppBundle\Util\TwigUtil #}
 <div class="card card_small_with_image grid-item">
     <a href="{{ path('show_article', {'id': article.id}) }}"> <img class="card-img-top" src="{{ article.backgroundImageLink }}" alt="{{ article.summary }}" style="max-height: 200px;"></a>
     <div class="card-body">
@@ -7,7 +8,7 @@
         </div>
         <small class="post_meta">
             <a href="{{ path('user_details', {'username':article.author.username}) }}">
-                {{ article.author.username }}
+                {{ twigUtil.resolveUsername(article.author) }}
             </a>
             <span>
                 {{ article.dateAdded.format("d - M - Y") }}

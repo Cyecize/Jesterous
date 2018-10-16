@@ -1,4 +1,5 @@
 <!-- Large Card With Image -->
+{# @var twigUtil \AppBundle\Util\TwigUtil #}
 <div class="card grid-item card_large_with_image">
     <a href="{{ path('show_article', {'id': article.id}) }}">
         <img class="card-img-top" src="{{ article.backgroundImageLink }}" alt="{{ article.title }}" style="max-height: 200px;">
@@ -10,7 +11,7 @@
             {% if app.user %}
                 {% embed 'partials/articles/article-star.html.twig' with {'article':article} %} {% endembed %}
             {% endif %}
-            <a href="{{ path('user_details', {'username':article.author.username}) }}">{{ article.author.username }}</a><span>{{ article.dateAdded.format(twigInformer.simpleDateFormat) }}</span>
+            <a href="{{ path('user_details', {'username':article.author.username}) }}">{{ twigUtil.resolveUsername(article.author) }}</a><span>{{ article.dateAdded.format(twigInformer.simpleDateFormat) }}</span>
         </small>
     </div>
 </div>
