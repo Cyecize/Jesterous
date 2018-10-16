@@ -1,9 +1,13 @@
+{# @var localLang \AppBundle\Service\LocalLanguage #}
+{# @var twigUtil \AppBundle\Util\TwigUtil #}
 <div class="post_content">
     <div class="post_body">
         <div class="row align-items-center">
             <div class="col-sm-1">
                 <div class="author_image">
-                    <div><img src="{% if user.profileImage %}{{ user.profileImage }}{% else %}{{ asset('images/profile-default.png') }}{% endif %}" alt=""></div>
+                    <div>
+                        <img src="{% if user.profileImage %}{{ user.profileImage }}{% else %}{{ asset('images/profile-default.png') }}{% endif %}">
+                    </div>
                 </div>
             </div>
             <div class="col">
@@ -17,15 +21,17 @@
         </div>
         <div class="row">
             <div class="col">
-                                    <span class="text-muted">{{ localLang.following }}: <b>{{ user.following|length }}
-                                            , </b></span>
-                <span class="text-muted">{{ localLang.followers }}
-                    : <b>{{ user.followers|length }}</b></span>
+                <span class="text-muted">
+                    {{ localLang.following }}: <b>{{ user.following|length }}, </b>
+                </span>
+                <span class="text-muted">
+                    {{ localLang.followers }}: <b>{{ user.followers|length }}</b>
+                </span>
             </div>
         </div>
         <div>
             <hr>
-            <h4 class="text-dark">{{ localLang.aboutUser(user.username) }}:</h4>
+            <h4 class="text-dark">{{ localLang.aboutUser(twigUtil.resolveUsername(user)) }}:</h4>
             <div class="text-muted raw-content">{% if user.userDescription %}{{ user.userDescription }}{% else %}N/A{% endif %}</div>
         </div>
     </div>

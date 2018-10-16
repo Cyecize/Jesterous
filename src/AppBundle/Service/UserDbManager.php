@@ -11,6 +11,7 @@ namespace AppBundle\Service;
 
 use AppBundle\BindingModel\ChangePasswordBindingModel;
 use AppBundle\BindingModel\ImageBindingModel;
+use AppBundle\BindingModel\UserInfoBindingModel;
 use AppBundle\Constants\Config;
 use AppBundle\Constants\Roles;
 use AppBundle\Contracts\IFileManager;
@@ -20,6 +21,7 @@ use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Exception\IllegalArgumentException;
 use AppBundle\Exception\RestFriendlyExceptionImpl;
+use AppBundle\Util\ModelMapper;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -59,19 +61,31 @@ class UserDbManager implements IUserDbManager
      */
     private $logService;
 
-    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, IFileManager $fileManager, ILogDbManager $logDb)
+    /**
+     * @var ModelMapper
+     */
+    private $modelMapper;
+
+    public function __construct(EntityManagerInterface $em, UserPasswordEncoderInterface $passwordEncoder, IFileManager $fileManager, ILogDbManager $logDb, ModelMapper $modelMapper)
     {
         $this->entityManager = $em;
         $this->userRepo = $em->getRepository(User::class);
         $this->passwordEncoder = $passwordEncoder;
         $this->fileService = $fileManager;
         $this->logService = $logDb;
+        $this->modelMapper = $modelMapper;
     }
 
     function save(User $user): void
     {
         $this->entityManager->merge($user);
         $this->entityManager->flush();
+    }
+
+    function editProfile(User $user, UserInfoBindingModel $bindingModel): void
+    {
+        $user = $this->modelMapper->merge($bindingModel, $user, true);
+        $this->save($user);
     }
 
     function removeRole(User $user, Role $role): void
@@ -92,13 +106,7 @@ class UserDbManager implements IUserDbManager
         $this->save($user);
     }
 
-
-    /**
-     * @param User $target
-     * @param User $celeb
-     * @throws RestFriendlyExceptionImpl
-     */
-    public function addFollower(User $target, User $celeb): void
+    function addFollower(User $target, User $celeb): void
     {
         if ($this->isUserFollowing($target, $celeb))
             throw new RestFriendlyExceptionImpl(self::USER_ALREADY_FOLLOWED);
@@ -107,12 +115,7 @@ class UserDbManager implements IUserDbManager
         $this->entityManager->flush();
     }
 
-    /**
-     * @param User $target
-     * @param User $celeb
-     * @throws RestFriendlyExceptionImpl
-     */
-    public function removeFollower(User $target, User $celeb): void
+    function removeFollower(User $target, User $celeb): void
     {
         if (!$this->isUserFollowing($target, $celeb))
             throw new RestFriendlyExceptionImpl(self::USER_ALREADY_UNFOLLOWED);
@@ -121,7 +124,7 @@ class UserDbManager implements IUserDbManager
         $this->entityManager->flush();
     }
 
-    public function changePassword(User $user, ChangePasswordBindingModel $bindingModel, bool $verify = true): void
+    function changePassword(User $user, ChangePasswordBindingModel $bindingModel, bool $verify = true): void
     {
         if ($verify && !password_verify($bindingModel->getOldPassword(), $user->getPassword()))
             throw new IllegalArgumentException("passwordIsIncorrect");
@@ -130,7 +133,7 @@ class UserDbManager implements IUserDbManager
         $this->entityManager->flush();
     }
 
-    public function changeProfilePicture(User $user, ImageBindingModel $bindingModel): void
+    function changeProfilePicture(User $user, ImageBindingModel $bindingModel): void
     {
         if ($user->getProfileImage() != null)
             $this->fileService->removeFile(substr($user->getProfileImage(), 1));
@@ -139,7 +142,7 @@ class UserDbManager implements IUserDbManager
         $this->entityManager->flush();
     }
 
-    public function removeAccount(User $user): void
+    function removeAccount(User $user): void
     {
         $dir = sprintf(Config::USER_FILES_PATH_FORMAT, $user->getUsername());
         $this->logService->log(self::LOGGER_LOCATION, sprintf(self::LOGGER_REMOVE_ACCOUNT_MESSAGE_FORMAT, $user->getUsername(), $dir));
@@ -148,12 +151,7 @@ class UserDbManager implements IUserDbManager
         $this->entityManager->flush();
     }
 
-    /**
-     * @param User $candidate
-     * @param User $celebrity
-     * @return bool
-     */
-    public function isUserFollowing(User $candidate, User $celebrity): bool
+    function isUserFollowing(User $candidate, User $celebrity): bool
     {
         foreach ($celebrity->getFollowers() as $follower) {
             if ($follower->getId() == $candidate->getId())
@@ -162,37 +160,22 @@ class UserDbManager implements IUserDbManager
         return false;
     }
 
-    /**
-     * @param int $id
-     * @return User
-     */
     function findOneById(int $id): ?User
     {
         return $this->userRepo->findOneBy(array('id' => $id));
     }
 
-    /**
-     * @param string $username
-     * @return User
-     */
     function findOneByUsername(string $username): ?User
     {
         return $this->userRepo->findOneBy(array('username' => $username));
     }
 
-    /**
-     * @return User[]
-     */
     function findAll(): array
     {
         return $this->userRepo->findAll();
     }
 
-    /**
-     * @param string $role
-     * @return User[]
-     */
-    public function findByRole(string $role): array
+    function findByRole(string $role): array
     {
         return $this->userRepo->findByRoleName($role);
     }

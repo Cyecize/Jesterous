@@ -163,4 +163,10 @@ interface ILanguagePack
 
     function websiteName() : string ;
 
+    function nickname() : string ;
+
+    function fieldTooLong() : string ;
+
+    function save() : string ;
+
 }

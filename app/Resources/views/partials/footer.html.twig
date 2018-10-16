@@ -1,4 +1,5 @@
-<footer class="footer" style="background: linear-gradient(to left, rgba(150, 111, 51,0.5), rgba(0,0,0,0.95)), url('{{ asset('images/plank.jpg') }}');">
+<footer class="footer"
+        style="background: linear-gradient(to left, rgba(150, 111, 51,0.5), rgba(0,0,0,0.95)), url('{{ asset('images/plank.jpg') }}');">
     <div class="container">
         <div class="row row-lg-eq-height">
 
@@ -55,18 +56,29 @@
                                 {% endif %}
                                 Copyright &copy;<script>document.write(new Date().getFullYear());</script>
                                 | Avision by <a href="https://colorlib.com" target="_blank">Colorlib</a><br>
-                                Website created by <a href="https://www.linkedin.com/in/cyecize/" target="_blank"> Tsvetelin Yakimov</a><br/>
+                                Website created by <a href="https://www.linkedin.com/in/cyecize/" target="_blank">
+                                    Tsvetelin Yakimov</a><br/>
                             </div>
                         </div>
                     </div>
                 </div>
-
             </div>
             <div class="col-lg-3  order-3">
                 <div class="subscribe">
                     <div class="subscribe_bg"></div>
                     <div class="subscribe_content">
-                         <a class="btn btn-outline-primary" href="{{ path('subscribe_page') }}">{{ localLang.subscribe }}</a>
+                        {#<a class="btn btn-outline-primary" href="{{ path('subscribe_page') }}">#}
+                        {#{{ localLang.subscribe }}#}
+                        {#</a>#}
+                        {% set quote = twigInformer.findQuote %}
+                        {% if quote %}
+                            {% set nameLocaleMethod = localLang.getLocalLang ~ 'AuthorName' %}
+                            {% set contentLocaleMethod = localLang.getLocalLang ~ 'Quote' %}
+                            <div class="font-pacifico text-info font-size-15">
+                                {{ attribute(quote, contentLocaleMethod) }}
+                            </div>
+                            {{ attribute(quote, nameLocaleMethod) }}
+                        {% endif %}
                     </div>
                 </div>
             </div>

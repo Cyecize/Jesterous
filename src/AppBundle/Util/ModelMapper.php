@@ -17,7 +17,8 @@ class ModelMapper
         return $this->merge($sourceInstance, new $destinationClass);
     }
 
-    public function merge($sourceInstance, $destinationInstance){
+    public function merge($sourceInstance, $destinationInstance, bool $allowNull = false)
+    {
         $reflOfDestination = new \ReflectionObject($destinationInstance);
         $reflOfSource = new \ReflectionObject($sourceInstance);
 
@@ -29,8 +30,10 @@ class ModelMapper
             $destProperty->setAccessible(true);
 
             $sourceValue = $sourceProperty->getValue($sourceInstance);
-            if ($sourceValue != null)
-                $destProperty->setValue($destinationInstance,$sourceValue);
+
+            if (!$allowNull && $sourceValue == null)
+                continue;
+            $destProperty->setValue($destinationInstance, $sourceValue);
         }
 
         return $destinationInstance;

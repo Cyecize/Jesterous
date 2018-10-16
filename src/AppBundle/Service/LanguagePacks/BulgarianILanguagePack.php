@@ -143,6 +143,27 @@ class BulgarianILanguagePack implements ILanguagePack
 
     public const  WEBSITE_NAME = "Jesterous";
 
+    public const  NICKNAME = "Псевдоним";
+
+    public const  FIELD_TOO_LONG = "Полето е прекалено дълго";
+
+    public const  SAVE = "Запазване";
+
+    public function save(): string
+    {
+       return self::SAVE;
+    }
+
+    public function nickname(): string
+    {
+       return self::NICKNAME;
+    }
+
+    public function fieldTooLong(): string
+    {
+       return self::FIELD_TOO_LONG;
+    }
+
     public function websiteName(): string
     {
        return self::WEBSITE_NAME;

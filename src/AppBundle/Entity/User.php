@@ -67,6 +67,12 @@ class User implements UserInterface
     private $profileImage;
 
     /**
+     * @var string
+     * @ORM\Column(name="nickname", type="string", length=100, nullable=true)
+     */
+    private $nickname;
+
+    /**
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Role")
      * @ORM\JoinTable(name="roles_users", joinColumns={@ORM\JoinColumn(name="user_id", onDelete="CASCADE")}, inverseJoinColumns={@ORM\JoinColumn(name="role_id", onDelete="CASCADE")})
@@ -262,13 +268,29 @@ class User implements UserInterface
     }
 
     /**
+     * @return string
+     */
+    public function getNickname(): ?string
+    {
+        return $this->nickname;
+    }
+
+
+    /**
+     * @param string $nickname
+     */
+    public function setNickname(string $nickname): void
+    {
+        $this->nickname = $nickname;
+    }
+
+    /**
      * @param ArrayCollection $roles
      */
     public function setRoles(ArrayCollection $roles): void
     {
         $this->roles = $roles;
     }
-
 
     /**
      * Returns the roles granted to the user.

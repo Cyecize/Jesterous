@@ -98,6 +98,21 @@ class LocalLanguage implements ILanguagePack
     }
 
     //IMPLEMENTATIONS
+    public function save(): string
+    {
+        return $this->languagePack->save();
+    }
+
+    public function fieldTooLong(): string
+    {
+        return $this->languagePack->fieldTooLong();
+    }
+
+    public function nickname(): string
+    {
+        return $this->languagePack->nickname();
+    }
+
     public function websiteName(): string
     {
         return $this->languagePack->websiteName();

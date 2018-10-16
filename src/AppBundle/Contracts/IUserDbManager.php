@@ -11,6 +11,7 @@ namespace AppBundle\Contracts;
 
 use AppBundle\BindingModel\ChangePasswordBindingModel;
 use AppBundle\BindingModel\ImageBindingModel;
+use AppBundle\BindingModel\UserInfoBindingModel;
 use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Exception\IllegalArgumentException;
@@ -21,6 +22,12 @@ interface IUserDbManager
      * @param User $user
      */
     function save(User $user) : void ;
+
+    /**
+     * @param User $user
+     * @param UserInfoBindingModel $bindingModel
+     */
+    function editProfile(User $user, UserInfoBindingModel $bindingModel): void ;
 
     /**
      * @param User $user

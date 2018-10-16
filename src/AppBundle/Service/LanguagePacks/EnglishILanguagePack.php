@@ -143,6 +143,27 @@ class EnglishILanguagePack implements ILanguagePack
 
     public const  WEBSITE_NAME = "Jesterous";
 
+    public const  NICKNAME = "Nickname";
+
+    public const  FIELD_TOO_LONG = "Field too long";
+
+    public const  SAVE = "Save";
+
+    public function save(): string
+    {
+        return self::SAVE;
+    }
+
+    public function nickname(): string
+    {
+        return self::NICKNAME;
+    }
+
+    public function fieldTooLong(): string
+    {
+        return self::FIELD_TOO_LONG;
+    }
+
     public function websiteName(): string
     {
         return self::WEBSITE_NAME;

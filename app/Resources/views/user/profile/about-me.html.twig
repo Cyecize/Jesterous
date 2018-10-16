@@ -1,5 +1,6 @@
 {% extends 'user/panel.html.twig' %}
 {% block title %}{{ localLang.editSummary }}{% endblock %}
+{# localLang \AppBundle\Service\LocalLanguage #}
 
 {% block sectionBody %}
     <h2 class="text-dark">{{ localLang.editSummary }}</h2>
@@ -7,11 +8,21 @@
     <div class="container">
         <div class="col-md-6">
             <form method="post">
+                <div class="form-group">
+                    <label for="aboutMe">{{ localLang.editSummary }}</label>
+                    <textarea maxlength="999" id="aboutMe" rows="10" class="form-control" name="user_info[userDescription]"
+                              required>{{ app.user.userDescription }}</textarea>
+                    {% embed 'partials/errors/field-error-handler.html.twig' with {'field':form1.userDescription } %} {% endembed %}
+                </div>
+                <div class="form-group">
+                    <label for="nickname">{{ localLang.nickname }}</label>
+                    <input value="{{ app.user.nickname }}" type="text" maxlength="50" id="nickname" class="form-control" name="user_info[nickname]">
+                    {% embed 'partials/errors/field-error-handler.html.twig' with {'field':form1.nickname} %} {% endembed %}
+                </div>
                 <input name="token" type="hidden" value="{{ csrf_token('token') }}">
-                <textarea maxlength="999" rows="10" class="form-control" name="summary" required>{{ app.user.userDescription }}</textarea>
-                <br/>
-                <button type="submit" class="btn btn-outline-dark">{{ localLang.editSummary }}</button>
+                <button type="submit" class="btn btn-outline-dark">{{ localLang.save }}</button>
             </form>
+            <br>
         </div>
     </div>
 {% endblock %}

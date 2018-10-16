@@ -1,3 +1,5 @@
+{# @var comment \AppBundle\Entity\Comment #}
+{# @var twigUtil \AppBundle\Util\TwigUtil #}
 <div class="comment_body" id="comment_id_{{ comment.id }}">
     <div class="comment_panel d-flex flex-row align-items-center justify-content-start">
         {% if comment.user %}
@@ -5,7 +7,7 @@
                 <div><img src="{% if comment.user.profileImage %}{{ comment.user.profileImage }}{% else %}{{ asset('images/profile-default.png') }}{% endif %}" alt=""></div>
             </div>
             <small class="post_meta">
-                <a href="{{ path('user_details', {'username':comment.user.username}) }}">{{ comment.user.username }}</a>
+                <a href="{{ path('user_details', {'username':comment.user.username}) }}">{{ twigUtil.resolveUsername(comment.user) }}</a>
                 {% if comment.parentComment %} <a href="#comment_id_{{ comment.parentComment.id }}"> <i class="fa fa-reply" aria-hidden="false"></i> {{ comment.parentComment.commenterName }} </a> {% endif %}
                 <span>{{ comment.dateAdded|date("d/m, Y - H:i ") }}</span>
             </small>

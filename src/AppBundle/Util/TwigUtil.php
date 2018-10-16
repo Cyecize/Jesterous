@@ -8,11 +8,14 @@
 
 namespace AppBundle\Util;
 
-
+use AppBundle\Entity\User;
 use AppBundle\Service\LocalLanguage;
 
 class TwigUtil
 {
+    /**
+     * @var LocalLanguage
+     */
     private $language;
 
     /**
@@ -22,6 +25,12 @@ class TwigUtil
     public function __construct(LocalLanguage $language)
     {
         $this->language = $language;
+    }
+
+    public function resolveUsername(User $user) : string {
+        if($user->getNickname() != null)
+            return $user->getNickname();
+        return $user->getUsername();
     }
 
     public function errorToArray($error = ""): array

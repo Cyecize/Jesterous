@@ -11,12 +11,14 @@ namespace AppBundle\Controller;
 
 use AppBundle\BindingModel\ChangePasswordBindingModel;
 use AppBundle\BindingModel\ImageBindingModel;
+use AppBundle\BindingModel\UserInfoBindingModel;
 use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Exception\IllegalArgumentException;
 use AppBundle\Exception\UserNotFoundException;
 use AppBundle\Form\EditPasswordType;
 use AppBundle\Form\ImageType;
+use AppBundle\Form\UserInfoType;
 use AppBundle\Service\LocalLanguage;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -165,21 +167,25 @@ class UserController extends BaseController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \AppBundle\Exception\RestFriendlyExceptionImpl
      */
-    public function aboutMeAction(Request $request) {
+    public function aboutMeAction(Request $request)
+    {
 
-        if($request->getMethod() == "POST"){
+        $bindingModel = new UserInfoBindingModel();
+        $form = $this->createForm(UserInfoType::class, $bindingModel);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
             $this->validateToken($request);
-            $summary = $request->get('summary');
-            if($summary == null || strlen($summary) > 1000)
-                return $this->redirectToRoute('edit_summary', ['error'=>$this->language->fieldCannotBeEmpty()]);
-            $user = $this->userService->findOneById($this->getUserId());
-            $user->setUserDescription($summary);
-            $this->userService->save($user);
+            if (count($this->validate($bindingModel)) > 0)
+                goto  escape;
+            $this->userService->editProfile($this->userService->findOneById($this->getUserId()), $bindingModel);
             return $this->redirectToRoute('user_panel');
         }
 
+        escape:
+
         return $this->render('user/profile/about-me.html.twig', [
-            'error'=>$request->get('error'),
+            'form1' => $form->createView(),
         ]);
     }
 
