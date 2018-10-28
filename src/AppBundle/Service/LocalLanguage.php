@@ -39,6 +39,8 @@ class LocalLanguage implements ILanguagePack
     {
         $this->languageDbService = $languageDb;
         $this->initLang();
+        if(isset($_GET['lang']))
+            $this->setLang($_GET['lang']);
     }
 
     public function findCurrentLangs(): array
