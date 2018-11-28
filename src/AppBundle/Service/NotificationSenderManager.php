@@ -16,6 +16,7 @@ use AppBundle\Contracts\INotificationDbManager;
 use AppBundle\Contracts\INotificationSenderManager;
 use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Question;
 use AppBundle\Entity\User;
 use AppBundle\Exception\IllegalArgumentException;
 
@@ -71,7 +72,11 @@ class NotificationSenderManager implements INotificationSenderManager
     {
         if (!$follower->isFollowing($celebrity))
             throw new IllegalArgumentException(self::USER_NOT_FOLLOWER);
-        $this->notificationDbService->sendNotification($celebrity, sprintf(self::USER_FOLLOWED_YOU_FORMAT, $follower->getUsername()), sprintf(self::ON_USER_REGISTER_HREF_FORMAT, $follower->getUsername()));
+        $this->notificationDbService->sendNotification(
+            $celebrity,
+            sprintf(self::USER_FOLLOWED_YOU_FORMAT, $follower->getUsername()),
+            sprintf(self::ON_USER_REGISTER_HREF_FORMAT, $follower->getUsername())
+        );
     }
 
     public function onNewBlogPost(Article $article): void
@@ -104,16 +109,20 @@ class NotificationSenderManager implements INotificationSenderManager
         }
     }
 
-    public function onFeedback(UserFeedbackBindingModel $bindingModel): void
+    public function onFeedback(UserFeedbackBindingModel $bindingModel, Question $question): void
     {
         $admins = $this->userService->findByRole(Roles::ROLE_ADMIN);
         foreach ($admins as $admin) {
-            $this->notificationDbService->sendNotification($admin, sprintf(self::ON_FEEDBACK_FORMAT, $bindingModel->getName(), $bindingModel->getEmail()), "#");
+            $this->notificationDbService->sendNotification(
+                $admin,
+                sprintf(self::ON_FEEDBACK_FORMAT, $bindingModel->getName(), $bindingModel->getEmail()),
+                "/admin/questions/observe/" . $question->getId()
+            );
         }
     }
 
     public function onComment(User $target, User $commenter, string $href): void
     {
-        $this->notificationDbService->sendNotification($target, sprintf($this->lang->commentMessageFormat(), $commenter->getUsername()),  $href);
+        $this->notificationDbService->sendNotification($target, sprintf($this->lang->commentMessageFormat(), $commenter->getUsername()), $href);
     }
 }

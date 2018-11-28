@@ -9,6 +9,8 @@ use AppBundle\Contracts\IArticleDbManager;
 use AppBundle\Contracts\ICategoryDbManager;
 use AppBundle\Contracts\IMailingManager;
 use AppBundle\Contracts\INotificationSenderManager;
+use AppBundle\Contracts\IQuestionDbManager;
+use AppBundle\Contracts\IUserDbManager;
 use AppBundle\Entity\User;
 use AppBundle\Exception\ArticleNotFoundException;
 use AppBundle\Form\FeedbackType;
@@ -65,7 +67,7 @@ class DefaultController extends BaseController
         $latestPosts = $this->articleService->findArticlesByCategories(new Pageable($request), $categories);
 
         $sliderArticles = $this->articleService->forgeSliderViewModel($latestPosts->getElements());
-        $trendingArticles = $this->articleService->findArticlesByCategories(new PageRequest(1,7),$categories)->getElements();
+        $trendingArticles = $this->articleService->findArticlesByCategories(new PageRequest(1, 7), $categories)->getElements();
 
         $subscribeMsg = null;
         try {
@@ -80,38 +82,47 @@ class DefaultController extends BaseController
             'trendingArticles' => $trendingArticles,
             'error' => $request->get('error'),
             'info' => $request->get('info'),
-            'subscribeMessage'=>$subscribeMsg
+            'subscribeMessage' => $subscribeMsg
         ]);
     }
 
     /**
      * @Route("/contacts", name="contacts_page")
      * @param Request $request
+     * @param IQuestionDbManager $questionDbManager
+     * @param IUserDbManager $userDb
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \AppBundle\Exception\RestFriendlyExceptionImpl
      */
-    public function contactsAction(Request $request)
+    public function contactsAction(Request $request, IQuestionDbManager $questionDbManager, IUserDbManager $userDb)
     {
         $info = null;
         $bindingModel = new UserFeedbackBindingModel();
         $form = $this->createForm(FeedbackType::class, $bindingModel);
         $form->handleRequest($request);
 
-        if($form->isSubmitted()){
+        if ($form->isSubmitted()) {
             $this->validateToken($request);
-            if(count($this->validate($bindingModel)) > 0)
+            if (count($this->validate($bindingModel)) > 0)
                 goto escape;
-            $this->notificationSenderService->onFeedback($bindingModel);
+
+            $user = null;
+            if ($this->getUser() != null)
+                $user = $userDb->findOneById($this->getUserId());
+
+            $question = $questionDbManager->createQuestion($bindingModel, $user);
             $this->mailingService->sendFeedback($bindingModel);
+            $this->notificationSenderService->onFeedback($bindingModel, $question);
+
             $info = $this->language->messageWasSent();
             $bindingModel = new UserFeedbackBindingModel();
         }
 
         escape:
         return $this->render("default/contacts.html.twig", array(
-            'form1'=>$form->createView(),
-            'bindingModel'=>$bindingModel,
-            'info'=>$info
+            'form1' => $form->createView(),
+            'bindingModel' => $bindingModel,
+            'info' => $info
         ));
     }
 
@@ -119,7 +130,8 @@ class DefaultController extends BaseController
      * @Route("/privacy", name="privacy_policy")
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function privacy(){
+    public function privacy()
+    {
         return $this->render('default/privacy-policy.html.twig');
     }
 

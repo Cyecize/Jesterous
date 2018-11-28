@@ -11,6 +11,7 @@ namespace AppBundle\Contracts;
 
 use AppBundle\BindingModel\UserFeedbackBindingModel;
 use AppBundle\Entity\Article;
+use AppBundle\Entity\Question;
 use AppBundle\Entity\User;
 use AppBundle\Exception\IllegalArgumentException;
 
@@ -49,8 +50,9 @@ interface INotificationSenderManager
 
     /**
      * @param UserFeedbackBindingModel $bindingModel
+     * @param Question $question
      */
-    public function onFeedback(UserFeedbackBindingModel $bindingModel) : void ;
+    public function onFeedback(UserFeedbackBindingModel $bindingModel, Question $question) : void ;
 
     /**
      * @param User $target

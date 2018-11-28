@@ -1,0 +1,68 @@
+{% extends 'admin/panel.html.twig' %}
+
+{% block title %}{{ localLang.websiteName }} - Questions {% endblock %}
+{% block sectionBody %}
+    <h2 class="text-dark">Questions/Feedback</h2>
+    <hr>
+    <table class="table">
+        <thead class="rounded bg-dark p-0 text-light">
+        <tr>
+            <th scope="row">
+                Id
+            </th>
+            <th scope="col">
+                Date
+            </th>
+            <th scope="col">
+                From
+            </th>
+            <th scope="col">
+                Email
+            </th>
+        </tr>
+        </thead>
+        <tbody id="logsHolder">
+
+        {% set questions = questionsPage.elements %}
+        {# @var question \AppBundle\Entity\Question #}
+        {% for question in questions %}
+            <tr>
+                <td>
+                    <p class="text-dark">
+                        <a href="{{ path('show_question_details', {"questionId":question.id}) }}">{{ question.id }}</a>
+                    </p>
+                </td>
+                <td class="text-left">
+                    <p>
+                        <small>{{ question.date|date }}</small>
+                    </p>
+                </td>
+                <td>
+                    {% if question.user %}
+                        <small class="text-dark">
+                            <a href="{{ path('user_details', {'username':question.user.username }) }}">
+                                {{ question.user.username }}
+                            </a>
+                        </small>
+                    {% else %}
+                        <small class="text-dark">{{ question.name }}</small>
+                    {% endif %}
+                </td>
+                <td>
+                    <small class="text-dark">{{ question.email }}</small>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+    {% embed 'partials/articles/pagination.html.twig' with {'page':questionsPage} %} {% endembed %}
+{% endblock %}
+
+{% block sectionStyles %}
+
+{% endblock %}
+
+{% block sectionScripts %}
+
+{% endblock %}

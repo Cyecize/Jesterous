@@ -1,0 +1,17 @@
+{
+  "methodCalls": [
+    {
+      "class": "\\AppBundle\\Util\\ModelMapper",
+      "method": "merge",
+      "position": 1
+    },
+    {
+      "class": "\\AppBundle\\Util\\ModelMapper",
+      "method": "map",
+      "position": 1
+    }
+  ],
+  "functionCalls": [
+
+  ]
+}

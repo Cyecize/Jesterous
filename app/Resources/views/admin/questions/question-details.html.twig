@@ -1,0 +1,49 @@
+{% extends 'admin/panel.html.twig' %}
+{% block title %}{{ localLang.websiteName }} - Questions {% endblock %}
+{% block sectionBody %}
+    <h2 class="text-dark">Questions/Feedback</h2>
+    <hr>
+    {# @var question \AppBundle\Entity\Question #}
+    <div class="post_content">
+        <div class="post_body">
+            <div class="row align-items-center">
+                <div class="col-sm-1">
+                    <div class="author_image">
+                        <div>
+                            <img src="{% if question.user and question.user.profileImage %}{{ question.user.profileImage }}{% else %}{{ asset('images/profile-default.png') }}{% endif %}">
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <span class="text-muted">{{ question.date.format(twigInformer.simpleDateFormat) }}</span>
+                </div>
+                <div class="col-sm-1">
+                </div>
+            </div>
+            <div class="row">
+                <span class="text-muted">Email: <a href="mailto:{{ question.email }}">{{ question.email }}</a></span>
+            </div>
+            {% if question.user %}
+                <div class="row">
+                    <span class="text-muted">
+                        User:<a href="{{ path('user_details', {'username':question.user.username}) }}">{{ question.user.username }}</a>
+                    </span>
+                </div>
+            {% endif %}
+            <div>
+                <hr>
+                <h4 class="text-dark">{{ question.name }} asked:</h4>
+                <div class="text-muted raw-content">{{ question.message }}</div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('styles/styles/post_responsive.css') }}">
+{% endblock %}
+
+{% block sectionScripts %}
+
+{% endblock %}
