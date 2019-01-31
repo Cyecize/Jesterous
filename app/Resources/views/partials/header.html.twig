@@ -11,15 +11,15 @@
                     </div>
                     <nav class="main_nav">
                         <ul>
-                            <li class="route-"><a href="/">{{ localLang.home }}</a></li>
-                            <li class="route-categories"><a href="{{ path('browse_articles') }}">{{ localLang.blogPosts }}</a></li>
-                            <li class="route-contacts"><a href="{{ path('contacts_page') }}">{{ localLang.contacts }}</a></li>
+                            <li><a href="/">{{ localLang.home }}</a></li>
+                            <li><a href="{{ path('browse_articles') }}">{{ localLang.blogPosts }}</a></li>
+                            <li><a href="{{ path('contacts_page') }}">{{ localLang.contacts }}</a></li>
                             {% if app.user %}
-                                <li class="route-logout"><a href="{{ path('user_panel') }}">{{ localLang.profile }}</a> </li>
-                                <li class="route-logout"><a href="{{ path('security_logout') }}">{{ localLang.logout }}</a> </li>
+                                <li><a href="{{ path('user_panel') }}">{{ localLang.profile }}</a> </li>
+                                <li><a href="{{ path('security_logout') }}">{{ localLang.logout }}</a> </li>
                             {% else %}
-                                <li class="route-login"><a href="{{ path('security_login') }}">{{ localLang.login }}</a> </li>
-                                <li class="route-register"><a href="{{ path('security_register') }}">{{ localLang.register }}</a> </li>
+                                <li><a href="{{ path('security_login') }}">{{ localLang.login }}</a> </li>
+                                <li><a href="{{ path('security_register') }}">{{ localLang.register }}</a> </li>
                             {% endif %}
                         </ul>
                     </nav>

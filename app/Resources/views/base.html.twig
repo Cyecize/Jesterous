@@ -56,11 +56,8 @@
 {% block javascripts %}{% endblock %}
 
 <!-- to be removed -->
-<script>
-    $(function () {
-        var activeNav = '.route{{ app.request.pathinfo }}'.replace(/\//g, "-");
-        $(activeNav).addClass('active');
-    });
+<script> //Constants from backend
+    var CURRENT_URL = '{{ app.request.pathinfo }}';
 </script>
 
 </body>
